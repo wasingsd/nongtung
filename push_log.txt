@@ -1,0 +1,26 @@
+remote: error: GH013: Repository rule violations found for refs/heads/develop.        
+remote: 
+remote: - GITHUB PUSH PROTECTION        
+remote:   —————————————————————————————————————————        
+remote:     Resolve the following violations before pushing again        
+remote: 
+remote:     - Push cannot contain secrets        
+remote: 
+remote:             
+remote:      (?) Learn how to resolve a blocked push        
+remote:      https://docs.github.com/code-security/secret-scanning/working-with-secret-scanning-and-push-protection/working-with-push-protection-from-the-command-line#resolving-a-blocked-push        
+remote:             
+remote:             
+remote:       —— GitHub SSH Private Key ————————————————————————————        
+remote:        locations:        
+remote:          - commit: a6bc58d2e2a86e272cc6f3dc6309b15f12e03f6d        
+remote:            path: nongtung_key:1        
+remote:             
+remote:        (?) To push, remove secret from commit(s) or follow this URL to allow the secret.        
+remote:        https://github.com/wasingsd/nongtung/security/secret-scanning/unblock-secret/37ryRuF5oSEkphl4xWpM0Zmb6KV        
+remote:             
+remote: 
+remote: 
+To github.com:wasingsd/nongtung.git
+ ! [remote rejected] develop -> develop (push declined due to repository rule violations)
+error: failed to push some refs to 'github.com:wasingsd/nongtung.git'

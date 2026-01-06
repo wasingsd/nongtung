@@ -1,37 +1,6 @@
 import { Trip, Rental, Transport, Article } from '@/types/types';
 
-export const trips: Trip[] = [
-    {
-        id: '1',
-        title: 'Amazing Chiang Mai Adventure',
-        description: 'Explore the mountains and temples of Chiang Mai in this 3-day immersive tour.',
-        price: 5900,
-        duration: '3 Days',
-        images: ['https://images.unsplash.com/photo-1598226023348-18e00cb101a9?q=80&w=1000&auto=format&fit=crop'],
-        location: 'Chiang Mai, Thailand',
-        highlights: ['Doi Suthep Temple', 'Elephant Sanctuary', 'Night Bazaar']
-    },
-    {
-        id: '2',
-        title: 'Phuket Island Hopping',
-        description: 'Visit the most beautiful islands around Phuket, including Phi Phi and James Bond Island.',
-        price: 4500,
-        duration: '1 Day',
-        images: ['https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?q=80&w=1000&auto=format&fit=crop'],
-        location: 'Phuket, Thailand',
-        highlights: ['Phi Phi Islands', 'Snorkeling', 'Speedboat Ride']
-    },
-    {
-        id: '3',
-        title: 'Bangkok City Culture',
-        description: 'Discover the hidden gems of Bangkok, from ancient temples to modern rooftop bars.',
-        price: 2500,
-        duration: '1 Day',
-        images: ['https://images.unsplash.com/photo-1563492065599-3520f775eeed?q=80&w=1000&auto=format&fit=crop'],
-        location: 'Bangkok, Thailand',
-        highlights: ['Grand Palace', 'Chinatown', 'Street Food']
-    }
-];
+
 
 export const rentals: Rental[] = [
     {

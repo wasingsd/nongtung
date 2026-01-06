@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { LayoutDashboard, Ticket, Car, Truck } from 'lucide-react';
+import { LayoutDashboard, Ticket, Car, Truck, LogOut } from 'lucide-react';
+import { logoutAction } from '@/app/actions/authActions';
 
 export default function AdminLayout({
     children,
@@ -27,10 +28,15 @@ export default function AdminLayout({
                     </Link>
                 </nav>
 
-                <div className="p-6 border-t border-forest-light">
+                <div className="p-6 border-t border-forest-light space-y-4">
                     <Link href="/" className="text-sm text-gray-300 hover:text-white flex items-center gap-2">
                         &larr; Back to Website
                     </Link>
+                    <form action={logoutAction}>
+                        <button type="submit" className="w-full text-left text-sm text-red-300 hover:text-white flex items-center gap-2">
+                            <LogOut className="w-4 h-4" /> Logout
+                        </button>
+                    </form>
                 </div>
             </aside>
 

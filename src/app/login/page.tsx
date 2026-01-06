@@ -44,7 +44,7 @@ export default function LoginPage() {
         <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
             <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-100">
                 <div className="text-center mb-8">
-                    <h1 className="text-3xl font-bold font-heading text-forest">Admin Login</h1>
+                    <h1 className="text-3xl font-bold font-heading text-forest">Admin Login <span className="text-xs bg-green-500 text-white px-2 py-1 rounded">v3.0</span></h1>
                     <p className="text-gray-400 text-sm mt-2">Sign in to manage your site</p>
                 </div>
 

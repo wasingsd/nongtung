@@ -14,7 +14,7 @@ export async function middleware(request: NextRequest) {
         try {
             await decrypt(session);
             return await updateSession(request);
-        } catch (e) {
+        } catch {
             // Invalid token
             return NextResponse.redirect(new URL('/login', request.url));
         }
@@ -27,7 +27,7 @@ export async function middleware(request: NextRequest) {
             try {
                 await decrypt(session);
                 return NextResponse.redirect(new URL('/adminnongtung/trips', request.url));
-            } catch (e) {
+            } catch {
                 // Token invalid, let them stay on login
             }
         }

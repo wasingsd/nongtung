@@ -33,8 +33,9 @@ export default function LoginPage() {
             }
 
         } catch (err: any) {
-            console.error(err);
-            setError('Invalid email or password.');
+            console.error("Firebase Login Error:", err);
+            // Show the actual error message to help debug
+            setError(err.message || 'Login failed. Please check console.');
             setLoading(false);
         }
     };

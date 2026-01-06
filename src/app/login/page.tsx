@@ -1,19 +1,43 @@
 'use client';
 
-import { loginAction } from '@/app/actions/authActions';
-import { useActionState } from 'react';
-import { Lock, Mail } from 'lucide-react';
-
-const initialState = {
-    error: '',
-};
+import { useState } from 'react';
+import { createSession } from '@/app/actions/authActions';
+import { Lock, Mail, Loader2, AlertCircle } from 'lucide-react';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
 
 export default function LoginPage() {
-    // We use a simple wrapper to handle the server action response if needed
-    // But for this basic version, standard form action works fine.
-    // If we want error handling, we'd use useFormState/useActionState.
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
-    // Using a simpler approach: Client Component wrapping the form
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setLoading(true);
+        setError('');
+
+        const formData = new FormData(e.currentTarget);
+        const email = formData.get('email') as string;
+        const password = formData.get('password') as string;
+
+        try {
+            // 1. Client-Side Login with Firebase
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            if (user.email) {
+                // 2. Server-Side Session Creation
+                await createSession(user.email);
+            } else {
+                setError('Login failed: No email returned from provider.');
+                setLoading(false);
+            }
+
+        } catch (err: any) {
+            console.error(err);
+            setError('Invalid email or password.');
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
@@ -23,7 +47,13 @@ export default function LoginPage() {
                     <p className="text-gray-400 text-sm mt-2">Sign in to manage your site</p>
                 </div>
 
-                <form action={loginAction} className="space-y-6">
+                {error && (
+                    <div className="bg-red-50 text-red-500 text-sm p-3 rounded-lg mb-4 flex items-center gap-2">
+                        <AlertCircle className="w-4 h-4" /> {error}
+                    </div>
+                )}
+
+                <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
                         <label className="block text-sm font-bold text-gray-700 mb-2">Email Address</label>
                         <div className="relative">
@@ -54,13 +84,15 @@ export default function LoginPage() {
 
                     <button
                         type="submit"
-                        className="w-full bg-primary hover:bg-primary-deep text-white font-bold py-3 rounded-lg shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1"
+                        disabled={loading}
+                        className="w-full bg-primary hover:bg-primary-deep text-white font-bold py-3 rounded-lg shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1 flex justify-center items-center gap-2"
                     >
-                        Sign In
+                        {loading && <Loader2 className="w-4 h-4 animate-spin" />}
+                        {loading ? 'Signing in...' : 'Sign In'}
                     </button>
 
                     <p className="text-center text-xs text-gray-400 mt-4">
-                        Default: admin@nongtung.com / 1234
+                        Protected by Firebase Auth
                     </p>
                 </form>
             </div>

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { LayoutDashboard, Ticket, Car, Truck, LogOut } from 'lucide-react';
+import { LayoutDashboard, Ticket, Car, Truck, LogOut, Database } from 'lucide-react';
 import { logoutAction } from '@/app/actions/authActions';
 
 export default function AdminLayout({
@@ -26,6 +26,12 @@ export default function AdminLayout({
                     <Link href="/adminnongtung/rental" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-colors text-sm font-bold">
                         <Truck className="w-5 h-5" /> Rental Gear
                     </Link>
+
+                    <div className="pt-4 mt-4 border-t border-forest-light">
+                        <Link href="/adminnongtung/migrate" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-colors text-sm font-bold text-amber-300">
+                            <Database className="w-5 h-5" /> Migrate Database
+                        </Link>
+                    </div>
                 </nav>
 
                 <div className="p-6 border-t border-forest-light space-y-4">

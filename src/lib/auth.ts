@@ -20,8 +20,8 @@ export async function decrypt(input: string): Promise<any> {
     return payload;
 }
 
-export async function login(formData: FormData) {
-    const user = { email: 'admin@nongtung.com', name: 'Admin' };
+export async function loginSimple(email: string) {
+    const user = { email, name: 'Admin' };
 
     // Create the session
     const expires = new Date(Date.now() + ONE_DAY);

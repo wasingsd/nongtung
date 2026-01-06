@@ -1,0 +1,69 @@
+[
+  {
+    "id": "t1",
+    "title": "TEST",
+    "price": 3500,
+    "difficulty": "Hard",
+    "status": "limited",
+    "image": "/uploads/upload-1767627940434-637677264.png",
+    "gallery": [],
+    "tags": [
+      "Join-in",
+      "Hiking"
+    ],
+    "duration": "2D1N",
+    "type": "join",
+    "description": "Embark on an unforgettable journey through the heart of Northern Thailand. This trip is designed for those who seek to disconnect from the hustle and bustle of city life and reconnect with nature.",
+    "location": "Chiang Dao, Chiang Mai",
+    "highlights": [
+      "Experience the breathtaking sunrise from the summit",
+      "Professional local guide with English proficiency"
+    ],
+    "itinerary": [
+      {
+        "day": "Day 1",
+        "title": "Departure & Hiking",
+        "desc": "08:00 Pick up from hotel. 10:00 Arrive at trail head. Hike for 4-5 hours to the campsite."
+      },
+      {
+        "day": "Day 2",
+        "title": "",
+        "desc": ""
+      }
+    ],
+    "whatsIncluded": [
+      "VIP Van transfer from Chiang Mai city",
+      "National Park entrance fees"
+    ],
+    "notIncluded": [
+      "Alcoholic beverages",
+      "Personal expenses"
+    ]
+  },
+  {
+    "id": "t2",
+    "title": "Private Camp: Doi Pui",
+    "price": 4500,
+    "difficulty": "Easy",
+    "status": "available",
+    "image": "https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&q=80&w=800",
+    "gallery": [],
+    "tags": [
+      "Private",
+      "Glamping"
+    ],
+    "duration": "2D1N",
+    "type": "private",
+    "description": "Exclusive private camping experience.",
+    "location": "Doi Pui, Chiang Mai",
+    "highlights": [
+      "Private Chef",
+      "Luxury Tent"
+    ],
+    "itinerary": [],
+    "whatsIncluded": [
+      "Everything"
+    ],
+    "notIncluded": []
+  }
+]

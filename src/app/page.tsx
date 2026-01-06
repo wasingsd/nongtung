@@ -1,0 +1,101 @@
+'use client';
+
+import Link from 'next/link';
+import Image from 'next/image';
+import { ShieldCheck, Gem, UserCheck, ChevronRight } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+
+export default function Home() {
+  const router = useRouter();
+
+  return (
+    <div className="fade-in">
+      {/* Hero */}
+      <div className="relative h-[80vh] flex items-center justify-center overflow-hidden bg-forest">
+        <div className="absolute inset-0 bg-black/40 z-10"></div>
+        <Image
+          src="https://images.unsplash.com/photo-1510312305653-8ed496efae75?auto=format&fit=crop&q=80&w=1600"
+          fill
+          className="absolute inset-0 w-full h-full object-cover z-0 opacity-80"
+          alt="Hero"
+          priority
+        />
+        <div className="relative z-20 text-center text-white px-4 max-w-4xl">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 font-heading leading-tight drop-shadow-lg">
+            EXPLORE NORTHERN<br /><span className="text-primary">THAILAND</span>
+          </h1>
+          <p className="text-xl text-gray-200 mb-8 max-w-2xl mx-auto font-light drop-shadow-md">
+            บริการท่องเที่ยวครบวงจรสำหรับคนรักการผจญภัย<br />
+            <span className="font-bold text-primary">Trips • Transport • Gear Rental</span>
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/trips" className="bg-primary hover:bg-primary-deep text-white px-8 py-3 rounded-sm font-bold uppercase tracking-wider transition-all transform hover:scale-105">
+              Find Your Trip
+            </Link>
+            <Link href="/transport" className="bg-white/10 backdrop-blur border border-white hover:bg-white hover:text-forest text-white px-8 py-3 rounded-sm font-bold uppercase tracking-wider transition-all">
+              Book Transport
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Value Proposition (Why Choose Us) */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold font-heading text-forest mb-4">WHY NONGTUENG?</h2>
+            <p className="text-forest-light">มาตรฐานใหม่ของการท่องเที่ยวเชิงผจญภัยในเชียงใหม่</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div className="text-center p-6 border border-gray-100 rounded-lg hover:shadow-xl transition-all group">
+              <div className="w-16 h-16 bg-surface rounded-full flex items-center justify-center text-primary mx-auto mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
+                <ShieldCheck className="w-8 h-8" />
+              </div>
+              <h3 className="text-xl font-bold mb-2">Safety First</h3>
+              <p className="text-sm text-gray-500">ทีมงานผ่านการอบรม First Aid และมีความเชี่ยวชาญในพื้นที่ ประเมินความเสี่ยงทุกทริป</p>
+            </div>
+            <div className="text-center p-6 border border-gray-100 rounded-lg hover:shadow-xl transition-all group">
+              <div className="w-16 h-16 bg-surface rounded-full flex items-center justify-center text-primary mx-auto mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
+                <Gem className="w-8 h-8" />
+              </div>
+              <h3 className="text-xl font-bold mb-2">Premium Quality</h3>
+              <p className="text-sm text-gray-500">คัดสรรอุปกรณ์แคมป์ปิ้งแบรนด์ดัง และรถตู้ VIP ที่สะอาด ใหม่ พร้อมให้บริการ</p>
+            </div>
+            <div className="text-center p-6 border border-gray-100 rounded-lg hover:shadow-xl transition-all group">
+              <div className="w-16 h-16 bg-surface rounded-full flex items-center justify-center text-primary mx-auto mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
+                <UserCheck className="w-8 h-8" />
+              </div>
+              <h3 className="text-xl font-bold mb-2">Expert Guides</h3>
+              <p className="text-sm text-gray-500">ไกด์ท้องถิ่นที่มีประสบการณ์สูง ดูแลดุจคนในครอบครัว เป็นกันเองแต่เป็นงาน</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Process (How it works) */}
+      <section className="py-20 bg-surface">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold font-heading text-forest mb-4">HOW IT WORKS</h2>
+            <div className="flex flex-wrap justify-center gap-4 text-sm font-bold text-gray-400 uppercase tracking-widest items-center">
+              <span>Select</span> <ChevronRight className="w-4 h-4 text-primary" />
+              <span>Book</span> <ChevronRight className="w-4 h-4 text-primary" />
+              <span>Enjoy</span>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {['Choose Service', 'Contact / Book', 'Confirmation', 'Adventure Time'].map((step, i) => (
+              <div key={i} className="relative">
+                <div className="text-6xl font-black text-gray-200 absolute -top-4 -left-2 z-0 select-none">0{i + 1}</div>
+                <div className="relative z-10 pl-6 pt-4">
+                  <h3 className="text-xl font-bold text-forest mb-2">{step}</h3>
+                  <p className="text-sm text-gray-500">Simple and fast process via Line MyShop or Website.</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}

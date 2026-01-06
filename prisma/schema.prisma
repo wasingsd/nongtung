@@ -1,0 +1,27 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Trip {
+  id          String   @id @default(uuid())
+  title       String
+  price       Float
+  difficulty  String   // Easy, Moderate, Hard
+  status      String   // available, limited, sold-out
+  image       String
+  tags        String   // Comma separated tags
+  duration    String   // 1D, 2D1N, 3D+
+  type        String   // join, private
+  description String?
+  highlights  String?  // JSON string or stored as text with delimiters? Let's use simple text for now or JSON if we want to get fancy, but String is safer for SQLite basic usage. Let's assume standard String for simple description.
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

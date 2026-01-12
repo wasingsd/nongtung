@@ -133,7 +133,7 @@ export default async function TripDetailPage({
                                             <div className="pb-6">
                                                 <span className="text-xs font-bold text-primary uppercase tracking-wider mb-1 block">{day.day}</span>
                                                 <h3 className="text-lg font-bold text-forest mb-2">{day.title}</h3>
-                                                <p className="text-sm text-gray-500 leading-relaxed">{day.desc}</p>
+                                                <p className="text-sm text-gray-500 leading-relaxed whitespace-pre-line">{day.desc}</p>
                                             </div>
                                         </div>
                                     ))}

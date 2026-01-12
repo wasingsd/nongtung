@@ -1,11 +1,11 @@
-import { getTrips } from '@/lib/db';
+import { getTrips, getTrip } from '@/lib/firestore-db';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { MapPin, Clock, Users, CheckCircle, Shield, AlertCircle, ChevronLeft } from 'lucide-react';
 
-export function generateStaticParams() {
-    const TRIPS = getTrips();
+export async function generateStaticParams() {
+    const TRIPS = await getTrips();
     return TRIPS.map((trip) => ({
         id: trip.id,
     }));
@@ -17,8 +17,7 @@ export default async function TripDetailPage({
     params: Promise<{ id: string }>;
 }) {
     const { id } = await params;
-    const TRIPS = getTrips();
-    const trip = TRIPS.find((t) => t.id === id);
+    const trip = await getTrip(id);
 
     if (!trip) {
         notFound();
@@ -144,7 +143,7 @@ export default async function TripDetailPage({
 
                         {/* Included / Excluded */}
                         <section className="mb-12 bg-surface rounded-2xl p-8">
-                            <h2 className="text-2xl font-bold font-heading text-forest mb-6">What's Included</h2>
+                            <h2 className="text-2xl font-bold font-heading text-forest mb-6">What&apos;s Included</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
                                 {whatsIncluded.map((item, i) => (
                                     <div key={i} className="flex items-center gap-2 text-sm text-gray-600">

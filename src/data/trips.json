@@ -65,5 +65,25 @@
       "Everything"
     ],
     "notIncluded": []
+  },
+  {
+    "id": "a17c5073-ac2b-4290-b7bc-aa2dede443bb",
+    "title": "Test Trip from Agent",
+    "price": 1500,
+    "difficulty": "Moderate",
+    "status": "available",
+    "image": "/placeholder.jpg",
+    "gallery": [],
+    "tags": [
+      ""
+    ],
+    "duration": "2D1N",
+    "type": "join",
+    "description": "This is a test trip created by agent",
+    "location": "Test Location",
+    "highlights": [],
+    "itinerary": [],
+    "whatsIncluded": [],
+    "notIncluded": []
   }
 ]

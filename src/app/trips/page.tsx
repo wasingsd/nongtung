@@ -1,8 +1,8 @@
-import { getTrips } from '@/lib/db';
+import { getTrips } from '@/lib/firestore-db';
 import TripList from '@/components/TripList';
 
-export default function TripsPage() {
-    const trips = getTrips();
+export default async function TripsPage() {
+    const trips = await getTrips();
 
     return (
         <div className="container mx-auto px-6 py-12 fade-in">

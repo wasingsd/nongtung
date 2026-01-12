@@ -1,4 +1,4 @@
-import { getRentals } from '@/lib/db';
+import { getRental } from '@/lib/firestore-db';
 import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import RentalForm from '@/components/RentalForm';
@@ -6,8 +6,7 @@ import { notFound } from 'next/navigation';
 
 export default async function EditRentalPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
-    const rentals = getRentals();
-    const rental = rentals.find((t) => t.id === id);
+    const rental = await getRental(id);
 
     if (!rental) notFound();
 

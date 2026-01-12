@@ -1,11 +1,11 @@
 import Link from 'next/link';
-import { getTrips } from '@/lib/db';
+import { getTrips } from '@/lib/firestore-db';
 import { Plus, Edit } from 'lucide-react';
 import { deleteTrip } from '@/app/actions/tripActions';
 import { DeleteButton } from '@/components/DeleteButton';
 
-export default function AdminTripsPage() {
-    const trips = getTrips();
+export default async function AdminTripsPage() {
+    const trips = await getTrips();
 
     return (
         <div className="container mx-auto px-6 py-12">
@@ -28,6 +28,13 @@ export default function AdminTripsPage() {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
+                        {trips.length === 0 && (
+                            <tr>
+                                <td colSpan={5} className="px-6 py-8 text-center text-gray-400">
+                                    No trips found. Click &quot;Add New Trip&quot; to create one.
+                                </td>
+                            </tr>
+                        )}
                         {trips.map((trip) => (
                             <tr key={trip.id} className="hover:bg-gray-50 transition-colors">
                                 <td className="px-6 py-4 font-medium text-forest">{trip.title}</td>

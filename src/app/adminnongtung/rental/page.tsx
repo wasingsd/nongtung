@@ -1,12 +1,12 @@
 import Link from 'next/link';
-import { getRentals } from '@/lib/db';
+import { getRentals } from '@/lib/firestore-db';
 import { Plus, Edit } from 'lucide-react';
 import { deleteRental } from '@/app/actions/rentalActions';
 import { DeleteButton } from '@/components/DeleteButton';
 import Image from 'next/image';
 
-export default function AdminRentalPage() {
-    const rentals = getRentals();
+export default async function AdminRentalPage() {
+    const rentals = await getRentals();
 
     return (
         <div className="container mx-auto px-6 py-12">

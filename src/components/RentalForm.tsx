@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Rental } from '@/types/types';
 import { createRental, updateRental } from '@/app/actions/rentalActions';
-import { Save, Plus, X, Upload } from 'lucide-react';
+import { Save, Plus, X, Link as LinkIcon } from 'lucide-react';
 import Image from 'next/image';
 
 interface RentalFormProps {
@@ -11,23 +11,12 @@ interface RentalFormProps {
 }
 
 export default function RentalForm({ rental }: RentalFormProps) {
-    const [imagePreview, setImagePreview] = useState<string>(rental?.image || '');
+    const [imageUrl, setImageUrl] = useState<string>(rental?.image || '');
     const [features, setFeatures] = useState<string[]>(rental?.features || []);
-
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            const url = URL.createObjectURL(file);
-            setImagePreview(url);
-        }
-    };
 
     const handleSubmit = async (formData: FormData) => {
         formData.append('features', JSON.stringify(features));
-        // Pass existing image URL if no new file is uploaded
-        if (!formData.get('imageFile') && rental?.image) {
-            formData.append('image', rental.image);
-        }
+        formData.append('imageUrl', imageUrl);
 
         if (rental) {
             await updateRental(rental.id, formData);
@@ -62,17 +51,30 @@ export default function RentalForm({ rental }: RentalFormProps) {
                     </div>
                 </div>
 
+                {/* Image URL Input */}
                 <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Image</label>
+                    <label className="block text-sm font-bold text-gray-700 mb-2">Image URL</label>
                     <div className="flex gap-4 items-start">
-                        <div className="relative w-40 h-32 bg-gray-100 rounded-lg overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center group hover:border-primary transition-colors">
-                            {imagePreview ? (
-                                <Image src={imagePreview} alt="Preview" fill className="object-cover" />
-                            ) : (
-                                <Upload className="text-gray-400" />
-                            )}
-                            <input type="file" name="imageFile" accept="image/*" onChange={handleImageChange} className="absolute inset-0 opacity-0 cursor-pointer" />
+                        <div className="flex-grow">
+                            <div className="relative">
+                                <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                <input
+                                    type="url"
+                                    value={imageUrl}
+                                    onChange={(e) => setImageUrl(e.target.value)}
+                                    placeholder="https://images.unsplash.com/..."
+                                    className="w-full border border-gray-300 rounded p-3 pl-10 focus:ring-2 focus:ring-primary outline-none"
+                                />
+                            </div>
+                            <p className="text-xs text-gray-400 mt-2">
+                                💡 ใช้รูปจาก Unsplash, Imgur หรือ URL รูปภาพอื่นๆ
+                            </p>
                         </div>
+                        {imageUrl && (
+                            <div className="relative w-24 h-20 rounded-lg overflow-hidden border border-gray-200 shrink-0">
+                                <Image src={imageUrl} alt="Preview" fill className="object-cover" />
+                            </div>
+                        )}
                     </div>
                 </div>
 

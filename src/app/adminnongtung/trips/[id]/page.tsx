@@ -1,4 +1,4 @@
-import { getTrips } from '@/lib/db';
+import { getTrip } from '@/lib/firestore-db';
 import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import TripForm from '@/components/TripForm';
@@ -6,8 +6,7 @@ import { notFound } from 'next/navigation';
 
 export default async function EditTripPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
-    const trips = getTrips();
-    const trip = trips.find((t) => t.id === id);
+    const trip = await getTrip(id);
 
     if (!trip) notFound();
 

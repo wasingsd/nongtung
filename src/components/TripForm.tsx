@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Trip } from '@/types/types';
 import { createTrip, updateTrip } from '@/app/actions/tripActions';
-import { Save, Plus, X, Upload } from 'lucide-react';
+import { Save, Plus, X, Link as LinkIcon } from 'lucide-react';
 import Image from 'next/image';
 
 interface TripFormProps {
@@ -12,7 +12,7 @@ interface TripFormProps {
 
 export default function TripForm({ trip }: TripFormProps) {
     // Basic Fields
-    const [imagePreview, setImagePreview] = useState<string>(trip?.image || '');
+    const [imageUrl, setImageUrl] = useState<string>(trip?.image || '');
 
     // Dynamic Lists
     const [highlights, setHighlights] = useState<string[]>(trip?.highlights || []);
@@ -20,6 +20,7 @@ export default function TripForm({ trip }: TripFormProps) {
     const [notIncluded, setNotIncluded] = useState<string[]>(trip?.notIncluded || []);
     const [itinerary, setItinerary] = useState<{ day: string, title: string, desc: string }[]>(trip?.itinerary || []);
     const [gallery, setGallery] = useState<string[]>(trip?.gallery || []);
+    const [newGalleryUrl, setNewGalleryUrl] = useState('');
 
     // Handlers for lists
     const addHighlight = () => setHighlights([...highlights, '']);
@@ -30,12 +31,11 @@ export default function TripForm({ trip }: TripFormProps) {
     };
     const removeHighlight = (i: number) => setHighlights(highlights.filter((_, idx) => idx !== i));
 
-    // Handle Image Preview
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            const url = URL.createObjectURL(file);
-            setImagePreview(url);
+    // Add gallery URL
+    const addGalleryUrl = () => {
+        if (newGalleryUrl.trim()) {
+            setGallery([...gallery, newGalleryUrl.trim()]);
+            setNewGalleryUrl('');
         }
     };
 
@@ -45,12 +45,8 @@ export default function TripForm({ trip }: TripFormProps) {
         formData.append('whatsIncluded', JSON.stringify(included));
         formData.append('notIncluded', JSON.stringify(notIncluded));
         formData.append('itinerary', JSON.stringify(itinerary));
-        formData.append('gallery', JSON.stringify(gallery)); // Send existing gallery items
-
-        // Pass existing image URL if no new file is uploaded
-        if (!formData.get('imageFile') && trip?.image) {
-            formData.append('image', trip.image);
-        }
+        formData.append('gallery', JSON.stringify(gallery));
+        formData.append('imageUrl', imageUrl);
 
         if (trip) {
             await updateTrip(trip.id, formData);
@@ -81,32 +77,39 @@ export default function TripForm({ trip }: TripFormProps) {
                     </div>
                 </div>
 
-                {/* Image Upload */}
+                {/* Image URL Input */}
                 <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Cover Image</label>
+                    <label className="block text-sm font-bold text-gray-700 mb-2">Cover Image URL</label>
                     <div className="flex gap-4 items-start">
-                        <div className="relative w-40 h-32 bg-gray-100 rounded-lg overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center group hover:border-primary transition-colors">
-                            {imagePreview ? (
-                                <Image src={imagePreview} alt="Preview" fill className="object-cover" />
-                            ) : (
-                                <Upload className="text-gray-400" />
-                            )}
-                            <input type="file" name="imageFile" accept="image/*" onChange={handleImageChange} className="absolute inset-0 opacity-0 cursor-pointer" />
+                        <div className="flex-grow">
+                            <div className="flex gap-2">
+                                <div className="relative flex-grow">
+                                    <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                    <input
+                                        type="url"
+                                        value={imageUrl}
+                                        onChange={(e) => setImageUrl(e.target.value)}
+                                        placeholder="https://images.unsplash.com/..."
+                                        className="w-full border border-gray-300 rounded p-3 pl-10 focus:ring-2 focus:ring-primary outline-none"
+                                    />
+                                </div>
+                            </div>
+                            <p className="text-xs text-gray-400 mt-2">
+                                💡 ใช้รูปจาก Unsplash, Imgur หรือ URL รูปภาพอื่นๆ
+                            </p>
                         </div>
-                        <div className="text-sm text-gray-500 pt-2">
-                            <p>Click to upload a new cover image.</p>
-                            <p className="text-xs mt-1">Accepts JPG, PNG, WebP.</p>
-                        </div>
+                        {imageUrl && (
+                            <div className="relative w-24 h-20 rounded-lg overflow-hidden border border-gray-200 shrink-0">
+                                <Image src={imageUrl} alt="Preview" fill className="object-cover" />
+                            </div>
+                        )}
                     </div>
-                    {/* Hidden input to keep old URL if not changed */}
-                    <input type="hidden" name="image" value={trip?.image || ''} />
                 </div>
 
-                {/* Gallery Upload */}
+                {/* Gallery URLs */}
                 <div>
                     <label className="block text-sm font-bold text-gray-700 mb-2">Gallery Images</label>
                     <div className="grid grid-cols-4 gap-4 mb-4">
-                        {/* Existing Gallery Preview */}
                         {gallery.map((url, i) => (
                             <div key={i} className="relative aspect-square rounded-lg overflow-hidden border border-gray-200 group">
                                 <Image src={url} alt={`Gallery ${i}`} fill className="object-cover" />
@@ -117,12 +120,17 @@ export default function TripForm({ trip }: TripFormProps) {
                         ))}
                     </div>
 
-                    <div className="flex gap-4 items-center">
-                        <div className="relative overflow-hidden inline-flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg cursor-pointer transition-colors font-medium text-sm">
-                            <Upload className="w-4 h-4" /> Upload More
-                            <input type="file" name="galleryFiles" accept="image/*" multiple className="absolute inset-0 opacity-0 cursor-pointer" />
-                        </div>
-                        <p className="text-xs text-gray-400">Select multiple files to add to the gallery.</p>
+                    <div className="flex gap-2">
+                        <input
+                            type="url"
+                            value={newGalleryUrl}
+                            onChange={(e) => setNewGalleryUrl(e.target.value)}
+                            placeholder="Paste image URL here..."
+                            className="flex-grow border border-gray-300 rounded p-2 text-sm"
+                        />
+                        <button type="button" onClick={addGalleryUrl} className="bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded flex items-center gap-2 text-sm font-bold">
+                            <Plus className="w-4 h-4" /> Add
+                        </button>
                     </div>
                 </div>
 
@@ -169,7 +177,7 @@ export default function TripForm({ trip }: TripFormProps) {
 
                 <div>
                     <label className="block text-sm font-bold text-gray-700 mb-2">Tags</label>
-                    <input name="tags" defaultValue={trip?.tags.join(', ')} placeholder="Hiking, Nature" type="text" className="w-full border border-gray-300 rounded p-3" />
+                    <input name="tags" defaultValue={trip?.tags?.join(', ')} placeholder="Hiking, Nature" type="text" className="w-full border border-gray-300 rounded p-3" />
                 </div>
             </section>
 
@@ -203,7 +211,7 @@ export default function TripForm({ trip }: TripFormProps) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div>
                         <div className="flex justify-between items-center mb-2">
-                            <label className="block text-sm font-bold text-green-700">What's Included</label>
+                            <label className="block text-sm font-bold text-green-700">What&apos;s Included</label>
                             <button type="button" onClick={() => setIncluded([...included, ''])} className="text-xs bg-green-50 hover:bg-green-100 px-2 py-1 rounded flex items-center gap-1 text-green-700 font-bold"><Plus className="w-3 h-3" /> Add</button>
                         </div>
                         <div className="space-y-2">

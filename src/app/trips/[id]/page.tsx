@@ -2,7 +2,7 @@ import { getTrips, getTrip } from '@/lib/firestore-db';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { MapPin, Clock, Users, CheckCircle, MessageCircle, BarChart, AlertCircle, ChevronLeft } from 'lucide-react';
+import { MapPin, Clock, Users, CheckCircle, MessageCircle, BarChart, AlertCircle, ChevronLeft, Shield } from 'lucide-react';
 import ImageLightbox from '@/components/ImageLightbox';
 import { Metadata } from 'next';
 

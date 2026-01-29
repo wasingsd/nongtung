@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-    --color-primary: #ee7528;
+    --color-primary: #f07d3a;
     --color-primary-deep: #d76627;
     --color-accent: #778950;
     --color-forest: #2e3022;
-    --color-forest-light: #455941;
+    --color-forest-light: #4c523d;
     --color-ochre: #857744;
-    --color-surface: #f4f5f0;
+    --color-surface: #f9f9f5;
     --color-line: #06c755;
 
     --font-heading: var(--font-urbanist), sans-serif;
@@ -16,7 +16,7 @@
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -24,38 +24,46 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #ee7528;
-    border-radius: 4px;
+    background: #f07d3a;
+    border-radius: 10px;
 }
 
 body {
     font-family: var(--font-body);
     color: var(--color-forest);
-    background: white;
+    background: #fdfdfb;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.font-heading {
+h1, h2, h3, h4, h5, h6, .font-heading {
     font-family: var(--font-heading);
+    letter-spacing: -0.02em;
+}
+
+.glass-nav {
+    @apply bg-white/80 backdrop-blur-md border-b border-white/20;
 }
 
 .fade-in {
-    animation: fadeIn 0.5s ease-out;
+    animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(20px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.immersive-shadow {
+    box-shadow: 0 10px 50px -12px rgba(46, 48, 34, 0.1);
+}
+
+.btn-pill {
+    @apply rounded-full px-8 py-3 font-bold transition-all duration-300;
 }

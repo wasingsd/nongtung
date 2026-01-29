@@ -74,107 +74,108 @@ export default async function TripDetailPage({
     };
 
     return (
-        <div className="fade-in pb-20">
+        <div className="fade-in pb-32 bg-[#fdfdfb]">
             {/* Structured Data */}
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
 
-            {/* Breadcrumb / Back Navigation */}
-            <div className="bg-surface py-4">
-                <div className="container mx-auto px-6">
-                    <Link href="/trips" className="inline-flex items-center text-sm font-bold text-gray-500 hover:text-primary transition-colors">
-                        <ChevronLeft className="w-4 h-4 mr-1" /> Back to All Trips
+            {/* Immersive Hero Section */}
+            <div className="relative h-[60vh] md:h-[75vh] w-full overflow-hidden">
+                <Image
+                    src={trip.image}
+                    alt={trip.title}
+                    fill
+                    className="object-cover scale-105"
+                    priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60"></div>
+
+                {/* Back Link Overlay */}
+                <div className="absolute top-8 left-8 z-20">
+                    <Link href="/trips" className="inline-flex items-center text-sm font-bold text-white/90 hover:text-white transition-all bg-black/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+                        <ChevronLeft className="w-4 h-4 mr-1" /> All Adventures
                     </Link>
+                </div>
+
+                {/* Hero Content Overlay */}
+                <div className="absolute bottom-16 left-0 w-full z-10">
+                    <div className="container mx-auto px-6">
+                        <div className="max-w-4xl">
+                            <div className="flex gap-3 mb-6">
+                                <span className="bg-primary text-white font-black px-4 py-1.5 rounded-full text-[10px] uppercase tracking-[0.2em] shadow-xl">
+                                    {trip.duration} EXPLORATION
+                                </span>
+                                <span className="bg-white/20 backdrop-blur-md text-white font-black px-4 py-1.5 rounded-full text-[10px] uppercase tracking-[0.2em] border border-white/20">
+                                    {trip.type} group
+                                </span>
+                            </div>
+                            <h1 className="text-4xl md:text-7xl font-black font-heading text-white leading-[1.1] tracking-tighter drop-shadow-2xl">
+                                {trip.title}
+                            </h1>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div className="container mx-auto px-6 py-8">
+            <div className="container mx-auto px-6 -mt-10 relative z-20">
                 <div className="flex flex-col lg:flex-row gap-12">
 
-                    {/* Left Column: Main Content */}
-                    <div className="lg:w-2/3">
-                        {/* Hero Image */}
-                        <div className="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-2xl mb-4">
-                            <Image
-                                src={trip.image}
-                                alt={trip.title}
-                                fill
-                                className="object-cover hover:scale-105 transition-transform duration-700"
-                                priority
-                            />
-                            <div className="absolute top-4 left-4 flex gap-2">
-                                <span className="bg-white/90 backdrop-blur text-forest font-bold px-3 py-1 rounded text-sm uppercase tracking-wide shadow-sm">
-                                    {trip.duration}
-                                </span>
-                                <span className={`px-3 py-1 rounded text-sm font-bold uppercase tracking-wide shadow-sm text-white ${trip.type === 'private' ? 'bg-primary-deep' : 'bg-forest/80'}`}>
-                                    {trip.type} Group
-                                </span>
+                    {/* Left Column: The Journal Content */}
+                    <div className="lg:w-2/3 bg-white p-8 md:p-16 rounded-[3rem] immersive-shadow border border-forest/5">
+
+                        {/* Highlights Row */}
+                        <div className="flex flex-wrap gap-8 md:gap-12 mb-16 border-b border-forest/5 pb-10">
+                            <div className="flex flex-col gap-1">
+                                <span className="text-[10px] font-black text-forest/30 uppercase tracking-widest">WHERE</span>
+                                <span className="text-forest font-bold">{trip.location || 'Chiang Mai, TH'}</span>
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <span className="text-[10px] font-black text-forest/30 uppercase tracking-widest">LEVEL</span>
+                                <span className="text-forest font-bold">{trip.difficulty}</span>
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <span className="text-[10px] font-black text-forest/30 uppercase tracking-widest">PACE</span>
+                                <span className="text-forest font-bold">Standard Adventure</span>
                             </div>
                         </div>
 
-                        {/* Gallery Thumbnails with Lightbox - Below Hero */}
-                        {(trip.gallery && trip.gallery.length > 0) && (
-                            <ImageLightbox images={trip.gallery} mainImage={trip.image} />
-                        )}
-
-                        {/* Title & Stats */}
-                        <div className="mb-10">
-                            <h1 className="text-3xl md:text-5xl font-bold font-heading text-forest mb-4 leading-tight">{trip.title}</h1>
-                            <div className="flex flex-wrap gap-4 md:gap-8 text-sm text-gray-600 border-b border-gray-100 pb-8">
-                                <div className="flex items-center gap-2">
-                                    <MapPin className="w-5 h-5 text-primary" />
-                                    <span>{trip.location || 'Chiang Mai, Thailand'}</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Clock className="w-5 h-5 text-primary" />
-                                    <span>{trip.duration} Adventure</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Users className="w-5 h-5 text-primary" />
-                                    <span>Min 2 Pax</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <BarChart className="w-5 h-5 text-primary" />
-                                    <span>Difficulty: <span className="font-bold text-forest">{trip.difficulty}</span></span>
-                                </div>
+                        {/* Story/Description */}
+                        <section className="mb-20">
+                            <h2 className="text-3xl font-black font-heading text-forest mb-8 tracking-tighter">The Experience</h2>
+                            <div className="prose prose-forest max-w-none">
+                                <p className="text-xl text-forest/70 leading-relaxed whitespace-pre-line font-medium italic mb-12 border-l-4 border-primary/20 pl-8">
+                                    {trip.description || 'No description available.'}
+                                </p>
                             </div>
-                        </div>
 
-                        {/* Description */}
-                        <section className="mb-12">
-                            <h2 className="text-2xl font-bold font-heading text-forest mb-4">Overview</h2>
-                            <p className="text-gray-600 leading-relaxed mb-6 whitespace-pre-line">
-                                {trip.description || 'No description available.'}
-                            </p>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
                                 {highlights.map((item, i) => (
-                                    <div key={i} className="flex items-start gap-3 bg-surface p-4 rounded-lg">
-                                        <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                                        <span className="text-sm text-forest-light font-medium">{item}</span>
+                                    <div key={i} className="flex items-start gap-4 p-6 rounded-2xl bg-surface/50 border border-forest/5 hover:border-primary/20 transition-all group">
+                                        <div className="bg-white p-2 rounded-xl shadow-sm text-primary group-hover:scale-110 transition-transform">
+                                            <CheckCircle className="w-5 h-5" />
+                                        </div>
+                                        <span className="text-sm text-forest-light font-bold leading-tight mt-1">{item}</span>
                                     </div>
                                 ))}
                             </div>
                         </section>
 
-                        {/* Itinerary */}
+                        {/* Journal Timeline (Itinerary) */}
                         {itinerary.length > 0 && (
-                            <section className="mb-12">
-                                <h2 className="text-2xl font-bold font-heading text-forest mb-6">Itinerary</h2>
-                                <div className="space-y-6">
+                            <section className="mb-20">
+                                <h2 className="text-3xl font-black font-heading text-forest mb-12 tracking-tighter">Day by Day Journal</h2>
+                                <div className="space-y-12 relative before:absolute before:left-5 before:top-2 before:bottom-0 before:w-px before:bg-forest/5">
                                     {itinerary.map((day, i) => (
-                                        <div key={i} className="flex gap-4 group">
-                                            <div className="flex flex-col items-center">
-                                                <div className="w-10 h-10 rounded-full bg-forest text-white flex items-center justify-center font-bold text-sm shadow-md group-hover:bg-primary transition-colors">
-                                                    {i + 1}
-                                                </div>
-                                                {i !== itinerary.length - 1 && <div className="w-px h-full bg-gray-200 my-2"></div>}
+                                        <div key={i} className="relative pl-16 group">
+                                            <div className="absolute left-0 top-0 w-10 h-10 rounded-full bg-white border-4 border-surface text-forest flex items-center justify-center font-black text-xs shadow-soft z-10 group-hover:border-primary group-hover:text-primary transition-all">
+                                                {i + 1}
                                             </div>
-                                            <div className="pb-6">
-                                                <span className="text-xs font-bold text-primary uppercase tracking-wider mb-1 block">{day.day}</span>
-                                                <h3 className="text-lg font-bold text-forest mb-2">{day.title}</h3>
-                                                <p className="text-sm text-gray-500 leading-relaxed whitespace-pre-line">{day.desc}</p>
+                                            <div className="bg-surface/30 p-8 rounded-3xl border border-forest/5 group-hover:bg-white group-hover:immersive-shadow transition-all duration-500">
+                                                <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-2 block">{day.day}</span>
+                                                <h3 className="text-2xl font-black text-forest mb-4 tracking-tighter">{day.title}</h3>
+                                                <p className="text-lg text-forest/50 leading-relaxed font-medium">{day.desc}</p>
                                             </div>
                                         </div>
                                     ))}
@@ -182,98 +183,105 @@ export default async function TripDetailPage({
                             </section>
                         )}
 
-                        {/* Included / Excluded */}
-                        <section className="mb-12 bg-surface rounded-2xl p-8">
-                            <h2 className="text-2xl font-bold font-heading text-forest mb-6">What&apos;s Included</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
+                        {/* Gallery Section */}
+                        {(trip.gallery && trip.gallery.length > 0) && (
+                            <section className="mb-20">
+                                <h2 className="text-3xl font-black font-heading text-forest mb-8 tracking-tighter">Capture the Moment</h2>
+                                <ImageLightbox images={trip.gallery} mainImage={trip.image} />
+                            </section>
+                        )}
+
+                        {/* Inclusions */}
+                        <section className="bg-forest text-white/90 rounded-[3rem] p-10 md:p-16">
+                            <h2 className="text-3xl font-black font-heading text-white mb-10 tracking-tighter">Essentials Included</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
                                 {whatsIncluded.map((item, i) => (
-                                    <div key={i} className="flex items-center gap-2 text-sm text-gray-600">
-                                        <CheckCircle className="w-4 h-4 text-line" />
-                                        <span>{item}</span>
+                                    <div key={i} className="flex items-center gap-4 text-white/70">
+                                        <div className="w-2 h-2 rounded-full bg-primary shadow-glow"></div>
+                                        <span className="text-lg font-bold tracking-tight">{item}</span>
                                     </div>
                                 ))}
                             </div>
+
                             {notIncluded.length > 0 && (
-                                <div className="pt-6 border-t border-gray-200">
-                                    <div className="flex flex-col gap-2 text-sm text-gray-500">
-                                        <div className="flex items-center gap-2 font-bold text-orange-400">
-                                            <AlertCircle className="w-4 h-4 shrink-0" />
-                                            <span>Not Included:</span>
-                                        </div>
-                                        <ul className="list-disc list-inside pl-6">
-                                            {notIncluded.map((item, i) => (
-                                                <li key={i}>{item}</li>
-                                            ))}
-                                        </ul>
+                                <div className="mt-16 pt-10 border-t border-white/5">
+                                    <p className="text-xs font-black text-white/30 uppercase tracking-widest mb-6">NOT INCLUDED</p>
+                                    <div className="flex flex-wrap gap-4">
+                                        {notIncluded.map((item, i) => (
+                                            <span key={i} className="bg-white/5 border border-white/10 px-4 py-2 rounded-full text-sm font-bold text-white/50">
+                                                × {item}
+                                            </span>
+                                        ))}
                                     </div>
                                 </div>
                             )}
                         </section>
                     </div>
 
-                    {/* Right Column: Booking Card (Sticky) */}
+                    {/* Right Column: Premium Concierge Card */}
                     <div className="lg:w-1/3">
-                        <div className="sticky top-24">
-                            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-                                <div className="bg-forest p-6 text-white text-center">
-                                    <p className="text-sm opacity-80 mb-1">Starting Price</p>
-                                    <div className="text-4xl font-bold font-heading">฿{trip.price.toLocaleString()}</div>
-                                    <p className="text-xs opacity-60 mt-2">Per Person</p>
+                        <div className="sticky top-28">
+                            <div className="bg-white rounded-[2.5rem] immersive-shadow border border-forest/5 overflow-hidden p-8 md:p-10">
+                                <div className="text-center mb-10">
+                                    <span className="text-[10px] font-black text-forest/30 uppercase tracking-[0.3em] block mb-2">PRIVATE CONCIERGE BOOKING</span>
+                                    <div className="flex items-baseline justify-center gap-2">
+                                        <span className="text-sm font-black text-forest/40">THB</span>
+                                        <span className="text-6xl font-black font-heading text-forest tracking-tighter">
+                                            {trip.price.toLocaleString()}
+                                        </span>
+                                    </div>
+                                    <span className="text-xs font-bold text-forest/30 mt-2 block">Premium Experience Per Person</span>
                                 </div>
 
-                                <div className="p-8">
-                                    <div className="space-y-4 mb-8">
-                                        <div className="flex justify-between items-center text-sm border-b border-dashed border-gray-200 pb-3">
-                                            <span className="text-gray-500">Status</span>
-                                            <span className={`font-bold uppercase ${trip.status === 'available' ? 'text-line' : 'text-orange-500'}`}>{trip.status}</span>
-                                        </div>
-                                        <div className="flex justify-between items-center text-sm border-b border-dashed border-gray-200 pb-3">
-                                            <span className="text-gray-500">Duration</span>
-                                            <span className="font-bold text-forest">{trip.duration}</span>
-                                        </div>
-                                        <div className="flex justify-between items-center text-sm border-b border-dashed border-gray-200 pb-3">
-                                            <span className="text-gray-500">Group Type</span>
-                                            <span className="font-bold text-forest">{trip.type === 'join' ? 'Join-in Group' : 'Private Group'}</span>
-                                        </div>
+                                <div className="space-y-4 mb-10 bg-surface/50 p-6 rounded-3xl border border-forest/5">
+                                    <div className="flex justify-between items-center py-2">
+                                        <span className="text-xs font-bold text-forest/40 uppercase tracking-widest">Availability</span>
+                                        <span className="text-xs font-black text-line uppercase tracking-widest">{trip.status}</span>
                                     </div>
+                                    <div className="flex justify-between items-center py-2">
+                                        <span className="text-xs font-bold text-forest/40 uppercase tracking-widest">Group Choice</span>
+                                        <span className="text-xs font-black text-forest uppercase tracking-widest">{trip.type}</span>
+                                    </div>
+                                </div>
 
+                                <div className="space-y-4">
                                     <a
                                         href={`https://m.me/Venturevibecnx?text=${encodeURIComponent(`สวัสดีครับ สนใจจองทริป: ${trip.title}`)}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="block w-full bg-primary hover:bg-primary-deep text-white text-center font-bold py-4 rounded-lg uppercase tracking-wider shadow-lg hover:shadow-xl transition-all mb-4 transform hover:-translate-y-1"
+                                        className="block w-full bg-primary hover:bg-forest text-white text-center font-black py-5 rounded-full uppercase text-xs tracking-[0.2em] shadow-xl hover:shadow-primary/20 transition-all transform hover:-translate-y-1"
                                     >
-                                        Book This Trip
+                                        Initiate Booking
                                     </a>
 
                                     <a
                                         href={`https://m.me/Venturevibecnx?text=${encodeURIComponent(`สวัสดีครับ มีคำถามเกี่ยวกับทริป: ${trip.title}`)}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="block w-full bg-surface hover:bg-gray-200 text-forest text-center font-bold py-3 rounded-lg uppercase text-sm transition-all flex items-center justify-center gap-2"
+                                        className="block w-full bg-surface hover:bg-white text-forest text-center font-black py-4 rounded-full uppercase text-[10px] tracking-[0.2em] transition-all border border-forest/5 flex items-center justify-center gap-2"
                                     >
-                                        <MessageCircle className="w-4 h-4" /> Ask a Question
+                                        <MessageCircle className="w-4 h-4" /> Personal Question
                                     </a>
+                                </div>
 
-                                    <p className="text-center text-xs text-gray-400 mt-6">
-                                        No credit card required. Free cancellation up to 7 days before trip.
-                                    </p>
+                                <div className="mt-8 flex items-center justify-center gap-2 text-[10px] font-black text-forest/20 uppercase tracking-[0.2em]">
+                                    <Shield className="w-3 h-3" /> SECURE COMMUNICATION
                                 </div>
                             </div>
 
-                            {/* Support Box */}
+                            {/* Help Box */}
                             <a
                                 href="https://m.me/Venturevibecnx"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="mt-8 bg-surface rounded-xl p-6 flex items-center gap-4 hover:shadow-md transition-all group"
+                                className="mt-8 bg-forest rounded-3xl p-8 flex items-center gap-6 hover:bg-primary transition-all duration-500 group shadow-xl"
                             >
-                                <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-primary shadow-sm group-hover:scale-110 transition-transform">
-                                    <MessageCircle className="w-6 h-6" />
+                                <div className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center text-white shadow-soft group-hover:scale-110 group-hover:bg-white group-hover:text-primary transition-all">
+                                    <MessageCircle className="w-7 h-7" />
                                 </div>
                                 <div>
-                                    <p className="text-xs font-bold text-gray-500 uppercase">Need Help?</p>
-                                    <p className="font-bold text-forest group-hover:text-primary transition-colors">Contact Support Team</p>
+                                    <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em] mb-1">CRAFTED FOR YOU</p>
+                                    <p className="text-lg font-black text-white tracking-tighter">Expert Assistance</p>
                                 </div>
                             </a>
                         </div>

@@ -1,159 +1,179 @@
 import Image from 'next/image';
-import { CheckCircle, Bus, Phone, Info, Calendar } from 'lucide-react';
+import { CheckCircle, Bus, Phone, Info, Calendar, MapPin, Gauge } from 'lucide-react';
 import { getTransport } from '@/lib/firestore-db';
 
 export default async function TransportPage() {
     const transports = await getTransport();
 
     return (
-        <div className="fade-in">
-            {/* Hero Section */}
-            <div className="bg-forest text-white py-20 relative overflow-hidden">
-                <div className="absolute inset-0 opacity-10">
-                    <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600')] bg-cover bg-center" />
-                </div>
-                <div className="container mx-auto px-6 relative z-10">
-                    <div className="max-w-3xl">
-                        <h1 className="text-4xl md:text-6xl font-bold font-heading mb-6">
-                            PRIVATE CAR SERVICE
-                        </h1>
-                        <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                            บริการรถนำเที่ยวพร้อมคนขับ ชำนาญเส้นทางดอยและแหล่งท่องเที่ยวในเชียงใหม่
-                            ให้คุณเดินทางอย่างสะดวกสบายและปลอดภัย
-                        </p>
-                        <div className="flex flex-wrap gap-4">
-                            <div className="bg-white/10 backdrop-blur-md border border-white/20 px-5 py-2 rounded-full text-sm font-medium flex items-center gap-2">
-                                <CheckCircle className="w-4 h-4 text-primary" />
-                                ราคารวมค่าคนขับ
-                            </div>
-                            <div className="bg-white/10 backdrop-blur-md border border-white/20 px-5 py-2 rounded-full text-sm font-medium flex items-center gap-2">
-                                <CheckCircle className="w-4 h-4 text-primary" />
-                                ไม่รวมค่าน้ำมันตามจริง
-                            </div>
-                            <div className="bg-white/10 backdrop-blur-md border border-white/20 px-5 py-2 rounded-full text-sm font-medium flex items-center gap-2">
-                                <CheckCircle className="w-4 h-4 text-primary" />
-                                คนขับสุภาพ ชำนาญทาง
-                            </div>
+        <div className="fade-in pb-32 bg-[#fdfdfb]">
+            {/* Immersive Hero Section */}
+            <div className="relative h-[60vh] md:h-[70vh] w-full overflow-hidden bg-forest">
+                <Image
+                    src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600"
+                    fill
+                    className="object-cover opacity-60 scale-105"
+                    alt="Transport Hero"
+                    priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-forest z-10"></div>
+
+                <div className="absolute bottom-20 left-0 w-full z-20">
+                    <div className="container mx-auto px-6">
+                        <div className="max-w-4xl">
+                            <span className="text-[10px] font-black text-primary uppercase tracking-[0.5em] mb-4 block drop-shadow-lg">Premium Private Fleet</span>
+                            <h1 className="text-4xl md:text-7xl font-black font-heading text-white leading-[0.9] tracking-tighter drop-shadow-2xl">
+                                CHAUFFEUR<br /><span className="italic">DESIGNED</span> TRAVEL
+                            </h1>
+                            <p className="text-xl text-white/70 mt-8 max-w-2xl font-medium leading-relaxed">
+                                Expert northern guides and a premium fleet ready to take you deep into the mountains of Chiang Mai.
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
 
             {/* Price Cards Section */}
-            <section className="py-20 bg-surface">
+            <section className="relative z-30 -mt-12">
                 <div className="container mx-auto px-6">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl md:text-4xl font-bold font-heading text-forest mb-4">บริการรถนำเที่ยวพร้อมคนขับ</h2>
-                        <p className="text-gray-500 max-w-2xl mx-auto">
-                            เลือกประเภทรถที่เหมาะสมกับการเดินทางของคุณ ราคานี้เป็นค่าบริการรวมคนขับ (10 ชม./วัน)
-                        </p>
-                        <div className="mt-6 inline-flex items-center gap-2 bg-orange-50 text-orange-700 px-6 py-3 rounded-full text-sm font-bold border border-orange-100 italic">
-                            <Info className="w-4 h-4" /> หมายเหตุ: ราคาข้างต้นยังไม่รวมค่าน้ำมัน (เติมตามจริง)
-                        </div>
-                    </div>
-
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                         {transports.map((car) => (
-                            <div key={car.id} className="bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col group border border-gray-100">
-                                <div className="relative h-64 overflow-hidden">
+                            <div key={car.id} className="group flex flex-col h-full bg-white rounded-[3rem] overflow-hidden immersive-shadow border border-forest/5 hover:-translate-y-2 transition-all duration-500">
+                                <div className="relative h-72 overflow-hidden">
                                     <Image
                                         src={car.image}
                                         alt={car.type}
                                         fill
-                                        className="object-cover group-hover:scale-105 transition-transform duration-700"
+                                        className="object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                                    <div className="absolute bottom-6 left-6">
-                                        <h3 className="text-2xl font-bold text-white">{car.type}</h3>
+                                    <div className="absolute inset-0 bg-gradient-to-t from-forest/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                    <div className="absolute bottom-6 left-8">
+                                        <h3 className="text-3xl font-black text-white tracking-tighter drop-shadow-lg">{car.type}</h3>
                                     </div>
                                 </div>
 
-                                <div className="p-8 flex-grow">
-                                    <div className="space-y-4 mb-8">
-                                        <div className="flex items-center justify-between p-4 bg-surface rounded-2xl border border-gray-100 hover:border-primary/30 transition-colors">
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary shadow-sm font-bold">1</div>
-                                                <span className="font-bold text-forest">ทริป 1 วัน</span>
+                                <div className="p-10 flex flex-col flex-grow">
+                                    <div className="space-y-4 mb-10">
+                                        <div className="flex items-center justify-between p-6 bg-surface rounded-[2rem] border border-forest/5 group-hover:bg-white group-hover:shadow-soft transition-all duration-500">
+                                            <div className="flex items-center gap-4">
+                                                <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-primary shadow-sm font-black text-xs">1D</div>
+                                                <span className="font-bold text-forest/40 uppercase tracking-widest text-xs">Full Day</span>
                                             </div>
                                             <div className="text-right">
-                                                <span className="text-2xl font-black text-primary">฿{(car.price1Day || 0).toLocaleString()}</span>
+                                                <span className="text-2xl font-black text-forest tracking-tighter">฿{(car.price1Day || 0).toLocaleString()}</span>
                                             </div>
                                         </div>
 
-                                        <div className="flex items-center justify-between p-4 bg-surface rounded-2xl border border-gray-100 hover:border-primary/30 transition-colors">
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary shadow-sm font-bold">2</div>
-                                                <span className="font-bold text-forest">ทริป 2 วัน 1 คืน</span>
+                                        <div className="flex items-center justify-between p-6 bg-surface rounded-[2rem] border border-forest/5 group-hover:bg-white group-hover:shadow-soft transition-all duration-500">
+                                            <div className="flex items-center gap-4">
+                                                <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-primary shadow-sm font-black text-xs">2D</div>
+                                                <span className="font-bold text-forest/40 uppercase tracking-widest text-xs">Overnight</span>
                                             </div>
                                             <div className="text-right">
-                                                <span className="text-2xl font-black text-primary">฿{(car.price2Day || 0).toLocaleString()}</span>
+                                                <span className="text-2xl font-black text-forest tracking-tighter">฿{(car.price2Day || 0).toLocaleString()}</span>
                                             </div>
                                         </div>
                                     </div>
 
                                     {car.note && (
-                                        <p className="text-sm text-gray-500 italic mb-8 flex items-start gap-2">
-                                            <Info className="w-4 h-4 shrink-0 mt-0.5 text-primary" />
-                                            {car.note}
-                                        </p>
+                                        <div className="mb-10 p-6 rounded-2xl bg-[#fffcf5] border border-orange-100/50">
+                                            <p className="text-xs text-orange-800 font-bold italic flex items-start gap-3 leading-relaxed">
+                                                <Info className="w-4 h-4 shrink-0 text-primary" />
+                                                {car.note}
+                                            </p>
+                                        </div>
                                     )}
 
-                                    <button className="w-full bg-forest text-white py-4 rounded-2xl font-bold uppercase tracking-wider hover:bg-forest-light transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-3">
-                                        <Phone className="w-5 h-5" /> ติดต่อจองรถ
-                                    </button>
+                                    <div className="mt-auto">
+                                        <a
+                                            href={`https://m.me/Venturevibecnx?text=${encodeURIComponent(`สวัสดีครับ สนใจจองรถ: ${car.type}`)}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="block w-full bg-forest text-white py-5 rounded-full font-black text-[10px] tracking-[0.2em] text-center transition-all duration-300 shadow-lg hover:shadow-forest/30 uppercase group-hover:bg-primary"
+                                        >
+                                            Inquire Availability
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         ))}
                     </div>
 
                     {transports.length === 0 && (
-                        <div className="text-center py-24 bg-white rounded-3xl border-2 border-dashed border-gray-200">
-                            <Bus className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-                            <p className="text-gray-400 font-medium">ยังไม่มีข้อมูลรถนำเที่ยวในขณะนี้</p>
+                        <div className="text-center py-32 bg-surface/30 rounded-[3rem] border-2 border-dashed border-forest/5">
+                            <Bus className="w-16 h-16 mx-auto mb-6 text-forest/10" />
+                            <p className="text-forest/30 font-black uppercase tracking-[0.3em] text-xs">Fleet currently on assignment</p>
                         </div>
                     )}
                 </div>
             </section>
 
-            {/* Rental Conditions Section */}
-            <section className="py-20 bg-white">
+            {/* Service Charter Section */}
+            <section className="py-32">
                 <div className="container mx-auto px-6">
-                    <div className="max-w-4xl mx-auto bg-forest text-white rounded-[40px] p-10 md:p-16 shadow-2xl relative overflow-hidden">
-                        <div className="absolute top-0 right-0 p-8 opacity-10">
-                            <Bus className="w-48 h-48" />
+                    <div className="max-w-5xl mx-auto bg-forest rounded-[4rem] p-10 md:p-20 shadow-2xl relative overflow-hidden group">
+                        <div className="absolute inset-0 opacity-5 group-hover:opacity-10 transition-opacity">
+                            <Bus className="w-[40rem] h-[40rem] -right-20 -bottom-20 absolute rotate-12" />
                         </div>
-                        <div className="relative z-10 text-center md:text-left">
-                            <h3 className="text-3xl font-bold font-heading mb-8 flex items-center justify-center md:justify-start gap-3">
-                                <Info className="w-8 h-8 text-primary" />
-                                เงื่อนไขการรับบริการ
-                            </h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-gray-200">
-                                <ul className="space-y-4">
-                                    <li className="flex items-start gap-3">
-                                        <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-1" />
-                                        <span>บริการนำเที่ยว 10 ชม./วัน (เริ่มนับจากเวลาตามนัดหมาย)</span>
+                        <div className="relative z-10">
+                            <span className="text-[10px] font-black text-primary uppercase tracking-[0.4em] mb-6 block">The Service Charter</span>
+                            <h2 className="text-4xl md:text-5xl font-black font-heading text-white mb-16 tracking-tighter">
+                                TERMS OF <span className="italic">ENGAGEMENT</span>
+                            </h2>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-16 text-white/50">
+                                <ul className="space-y-8">
+                                    <li className="flex items-start gap-6">
+                                        <div className="bg-white/5 p-3 rounded-2xl text-primary border border-white/10">
+                                            <Gauge className="w-6 h-6" />
+                                        </div>
+                                        <div>
+                                            <p className="text-white font-black text-lg tracking-tight mb-2">10 Hours Daily Service</p>
+                                            <p className="text-sm font-medium leading-relaxed">Begins from your scheduled pickup time. Extra hours available on request.</p>
+                                        </div>
                                     </li>
-                                    <li className="flex items-start gap-3">
-                                        <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-1" />
-                                        <span>ราคาที่แสดง **ไม่รวมค่าน้ำมัน** ลูกค้าเติมเองตามจริง</span>
+                                    <li className="flex items-start gap-6">
+                                        <div className="bg-white/5 p-3 rounded-2xl text-primary border border-white/10">
+                                            <CheckCircle className="w-6 h-6" />
+                                        </div>
+                                        <div>
+                                            <p className="text-white font-black text-lg tracking-tight mb-2">All-Inclusive Driver Fees</p>
+                                            <p className="text-sm font-medium leading-relaxed">Includes wages, accident insurance, and specialist cleaning fees.</p>
+                                        </div>
                                     </li>
                                 </ul>
-                                <ul className="space-y-4">
-                                    <li className="flex items-start gap-3">
-                                        <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-1" />
-                                        <span>ราคารวมค่าจ้างคนขับ ประกันอุบัติเหตุ และค่าทำความสะอาดรถแล้ว</span>
+                                <ul className="space-y-8">
+                                    <li className="flex items-start gap-6">
+                                        <div className="bg-white/5 p-3 rounded-2xl text-primary border border-white/10">
+                                            <Info className="w-6 h-6" />
+                                        </div>
+                                        <div>
+                                            <p className="text-white font-black text-lg tracking-tight mb-2">Fuel Excluded</p>
+                                            <p className="text-sm font-medium leading-relaxed">Fuel is charged at actual cost. Please settle directly at the pump.</p>
+                                        </div>
                                     </li>
-                                    <li className="flex items-start gap-3">
-                                        <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-1" />
-                                        <span>กรณีนอกเวลาบริการ (OT) คิดเพิ่มตามประเภทรถ</span>
+                                    <li className="flex items-start gap-6">
+                                        <div className="bg-white/5 p-3 rounded-2xl text-primary border border-white/10">
+                                            <MapPin className="w-6 h-6" />
+                                        </div>
+                                        <div>
+                                            <p className="text-white font-black text-lg tracking-tight mb-2">Northern Expertise</p>
+                                            <p className="text-sm font-medium leading-relaxed">Our drivers are specialists in navigating remote northern mountain passes.</p>
+                                        </div>
                                     </li>
                                 </ul>
                             </div>
-                            <div className="mt-12 flex flex-col md:flex-row items-center justify-center md:justify-start gap-6">
-                                <a href="https://line.me" target="_blank" rel="noopener noreferrer" className="bg-primary text-white px-10 py-4 rounded-2xl font-bold uppercase hover:bg-primary-deep transition-all shadow-lg flex items-center gap-3">
-                                    <Phone className="w-5 h-5" /> จองผ่าน Line
+
+                            <div className="mt-20 pt-16 border-t border-white/5 flex flex-col md:flex-row items-center gap-10">
+                                <a
+                                    href="https://m.me/Venturevibecnx"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="bg-primary text-white px-12 py-5 rounded-full font-black uppercase text-[10px] tracking-[0.2em] hover:bg-white hover:text-forest transition-all shadow-xl shadow-primary/20"
+                                >
+                                    Book via Concierge
                                 </a>
-                                <p className="text-sm text-gray-400 italic">สอบถามข้อมูลเพิ่มเติมได้ตลอด 24 ชม.</p>
+                                <p className="text-[10px] text-white/20 font-black uppercase tracking-[0.3em]">Specialist Support Available 24/7</p>
                             </div>
                         </div>
                     </div>

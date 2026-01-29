@@ -46,17 +46,27 @@ export default function ImageLightbox({ images, mainImage }: ImageLightboxProps)
 
     return (
         <>
-            {/* Thumbnails Grid */}
-            <div className="grid grid-cols-5 md:grid-cols-10 gap-2 mb-8">
-                {images.slice(0, 10).map((img, i) => (
-                    <button
-                        key={i}
-                        onClick={() => openLightbox(mainImage ? i + 1 : i)}
-                        className="relative aspect-square rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer group border-2 border-transparent hover:border-primary"
-                    >
-                        <Image src={img} alt={`Gallery ${i + 1}`} fill className="object-cover group-hover:scale-110 transition-transform duration-300" />
-                    </button>
-                ))}
+            {/* Balanced Thumbnails Grid */}
+            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 mb-12">
+                {images.slice(0, 10).map((img, i) => {
+                    const isLast = i === 9 && images.length > 10;
+                    return (
+                        <button
+                            key={i}
+                            onClick={() => openLightbox(mainImage ? i + 1 : i)}
+                            className="relative aspect-square rounded-2xl overflow-hidden immersive-shadow border border-forest/5 group cursor-pointer"
+                        >
+                            <Image src={img} alt={`Gallery ${i + 1}`} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                            {isLast ? (
+                                <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white font-black text-lg">
+                                    +{images.length - 9}
+                                </div>
+                            ) : (
+                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
+                            )}
+                        </button>
+                    );
+                })}
             </div>
 
             {/* Lightbox Modal */}

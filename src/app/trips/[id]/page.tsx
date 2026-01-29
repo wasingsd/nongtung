@@ -141,6 +141,14 @@ export default async function TripDetailPage({
                             </div>
                         </div>
 
+                        {/* Gallery Section */}
+                        {(trip.gallery && trip.gallery.length > 0) && (
+                            <section className="mb-20">
+                                <h2 className="text-3xl font-black font-heading text-forest mb-8 tracking-tighter">Capture the Moment</h2>
+                                <ImageLightbox images={trip.gallery} mainImage={trip.image} />
+                            </section>
+                        )}
+
                         {/* Story/Description */}
                         <section className="mb-20">
                             <h2 className="text-3xl font-black font-heading text-forest mb-8 tracking-tighter">The Experience</h2>
@@ -175,19 +183,11 @@ export default async function TripDetailPage({
                                             <div className="bg-surface/30 p-8 rounded-3xl border border-forest/5 group-hover:bg-white group-hover:immersive-shadow transition-all duration-500">
                                                 <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-2 block">{day.day}</span>
                                                 <h3 className="text-2xl font-black text-forest mb-4 tracking-tighter">{day.title}</h3>
-                                                <p className="text-lg text-forest/50 leading-relaxed font-medium">{day.desc}</p>
+                                                <p className="text-lg text-forest/50 leading-relaxed font-medium whitespace-pre-line">{day.desc}</p>
                                             </div>
                                         </div>
                                     ))}
                                 </div>
-                            </section>
-                        )}
-
-                        {/* Gallery Section */}
-                        {(trip.gallery && trip.gallery.length > 0) && (
-                            <section className="mb-20">
-                                <h2 className="text-3xl font-black font-heading text-forest mb-8 tracking-tighter">Capture the Moment</h2>
-                                <ImageLightbox images={trip.gallery} mainImage={trip.image} />
                             </section>
                         )}
 

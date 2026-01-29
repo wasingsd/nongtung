@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import { Trip } from '@/types/types';
 import { createTrip, updateTrip } from '@/app/actions/tripActions';
-import { Save, Plus, X, Link as LinkIcon } from 'lucide-react';
+import { Save, Plus, X, Link as LinkIcon, RefreshCw } from 'lucide-react';
 import Image from 'next/image';
+import { slugify } from '@/lib/utils';
 
 interface TripFormProps {
     trip?: Trip; // Optional, if provided = edit mode
@@ -23,6 +24,7 @@ export default function TripForm({ trip }: TripFormProps) {
     const [newGalleryUrl, setNewGalleryUrl] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [slug, setSlug] = useState(trip?.id || '');
 
     // Handlers for lists
     const addHighlight = () => setHighlights([...highlights, '']);
@@ -89,10 +91,20 @@ export default function TripForm({ trip }: TripFormProps) {
                 </div>
 
                 <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Trip ID / Slug (สำหรับ SEO)</label>
+                    <div className="flex justify-between items-center mb-2">
+                        <label className="block text-sm font-bold text-gray-700">Trip ID / Slug (สำหรับ SEO)</label>
+                        <button
+                            type="button"
+                            onClick={() => setSlug(slugify(trip?.title || ''))}
+                            className="text-[10px] font-black uppercase tracking-widest text-primary hover:text-forest transition-colors flex items-center gap-1"
+                        >
+                            <RefreshCw className="w-3 h-3" /> Auto-generate from title
+                        </button>
+                    </div>
                     <input
                         name="slug"
-                        defaultValue={trip?.id}
+                        value={slug}
+                        onChange={(e) => setSlug(slugify(e.target.value))}
                         required
                         type="text"
                         placeholder="เช่น hiking-doi-lang-ka-luang"
@@ -101,7 +113,10 @@ export default function TripForm({ trip }: TripFormProps) {
                     <p className="text-xs text-gray-400 mt-1">
                         {trip
                             ? "⚠️ การเปลี่ยน ID จะทำให้ลิงก์เก่าเข้าไม่ได้ และสร้างลิงก์ใหม่ตามที่ตั้ง (ดีต่อ SEO ถ้าใช้ Keyword)"
-                            : "ใช้ตัวอักษรภาษาอังกฤษ, ตัวเลข และขีดกลาง (-) เท่านั้น เช่น my-trip-2024"}
+                            : "ใช้ตัวอักษรภาษาอังกฤษ, ตัวเลข และขีดกลาง (-) เท่านั้น เช่น my-trip-2024 (ระบบจะปรับให้อัตโนมัติ)"}
+                    </p>
+                    <p className="text-[10px] text-primary mt-1 font-bold">
+                        URL Preview: /trips/{slug || '...'}
                     </p>
                 </div>
 

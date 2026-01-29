@@ -4,6 +4,7 @@ import { deleteTrip as dbDeleteTrip, saveTrip as dbSaveTrip, getTrip } from '@/l
 import { Trip } from '@/types/types';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { slugify } from '@/lib/utils';
 
 export async function createTrip(formData: FormData) {
     // Get image URL directly from form
@@ -19,7 +20,8 @@ export async function createTrip(formData: FormData) {
         gallery = galleryInput.split(',').map(url => url.trim()).filter(url => url.length > 0);
     }
 
-    const slug = (formData.get('slug') as string)?.trim().toLowerCase() || crypto.randomUUID();
+    const slugInput = formData.get('slug') as string;
+    const slug = slugInput ? slugify(slugInput) : crypto.randomUUID();
 
     // Validate Duplicate ID
     const existingTrip = await getTrip(slug);
@@ -66,7 +68,8 @@ export async function updateTrip(originalId: string, formData: FormData) {
         gallery = galleryInput.split(',').map(url => url.trim()).filter(url => url.length > 0);
     }
 
-    const newId = (formData.get('slug') as string)?.trim().toLowerCase() || originalId;
+    const slugInput = formData.get('slug') as string;
+    const newId = slugInput ? slugify(slugInput) : originalId;
 
     // Validate Duplicate ID if ID changed
     if (newId !== originalId) {

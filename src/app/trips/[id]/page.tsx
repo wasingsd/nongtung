@@ -41,6 +41,7 @@ export default async function TripDetailPage({
     params: Promise<{ id: string }>;
 }) {
     const { id } = await params;
+    console.log('Fetching Public Trip Page for ID:', id);
     const trip = await getTrip(id);
 
     if (!trip) {

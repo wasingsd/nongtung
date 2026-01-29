@@ -1,6 +1,6 @@
 'use server';
 
-import { deleteTrip as dbDeleteTrip, saveTrip as dbSaveTrip } from '@/lib/firestore-db';
+import { deleteTrip as dbDeleteTrip, saveTrip as dbSaveTrip, getTrip } from '@/lib/firestore-db';
 import { Trip } from '@/types/types';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
@@ -20,6 +20,12 @@ export async function createTrip(formData: FormData) {
     }
 
     const slug = (formData.get('slug') as string)?.trim().toLowerCase() || crypto.randomUUID();
+
+    // Validate Duplicate ID
+    const existingTrip = await getTrip(slug);
+    if (existingTrip) {
+        throw new Error(`Trip ID "${slug}" นี้ถูกใช้งานไปแล้ว กรุณาใช้ชื่ออื่นเพื่อ SEO`);
+    }
 
     const trip: Trip = {
         id: slug,
@@ -47,7 +53,7 @@ export async function createTrip(formData: FormData) {
     redirect('/adminnongtung/trips');
 }
 
-export async function updateTrip(id: string, formData: FormData) {
+export async function updateTrip(originalId: string, formData: FormData) {
     // Get image URL directly from form
     const imageUrl = formData.get('imageUrl') as string;
 
@@ -60,8 +66,18 @@ export async function updateTrip(id: string, formData: FormData) {
         gallery = galleryInput.split(',').map(url => url.trim()).filter(url => url.length > 0);
     }
 
+    const newId = (formData.get('slug') as string)?.trim().toLowerCase() || originalId;
+
+    // Validate Duplicate ID if ID changed
+    if (newId !== originalId) {
+        const existingTrip = await getTrip(newId);
+        if (existingTrip) {
+            throw new Error(`Trip ID "${newId}" นี้ถูกใช้งานไปแล้ว กรุณาใช้ชื่ออื่นเพื่อ SEO`);
+        }
+    }
+
     const trip: Trip = {
-        id: id,
+        id: newId,
         title: formData.get('title') as string,
         price: Number(formData.get('price')),
         difficulty: formData.get('difficulty') as Trip['difficulty'],
@@ -79,10 +95,20 @@ export async function updateTrip(id: string, formData: FormData) {
         notIncluded: JSON.parse(formData.get('notIncluded') as string || '[]'),
     };
 
+    // Save with the NEW ID
     await dbSaveTrip(trip);
+
+    // If ID has changed, delete the OLD document
+    if (newId !== originalId) {
+        await dbDeleteTrip(originalId);
+    }
+
     revalidatePath('/trips');
-    revalidatePath('/trips/' + id);
+    revalidatePath('/trips/' + originalId);
+    revalidatePath('/trips/' + newId);
     revalidatePath('/adminnongtung/trips');
+
+    // Redirect to the list or the NEW edit page
     redirect('/adminnongtung/trips');
 }
 

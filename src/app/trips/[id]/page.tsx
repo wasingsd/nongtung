@@ -4,12 +4,35 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { MapPin, Clock, Users, CheckCircle, Shield, AlertCircle, ChevronLeft } from 'lucide-react';
 import ImageLightbox from '@/components/ImageLightbox';
+import { Metadata } from 'next';
 
 export async function generateStaticParams() {
     const TRIPS = await getTrips();
     return TRIPS.map((trip) => ({
         id: trip.id,
     }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+    const { id } = await params;
+    const trip = await getTrip(id);
+
+    if (!trip) return { title: 'Trip Not Found | Nongtung' };
+
+    return {
+        title: `${trip.title} | Nongtung`,
+        description: trip.description?.substring(0, 160) || `Explore ${trip.title} with Nongtung. ${trip.duration} adventure in ${trip.location}.`,
+        openGraph: {
+            title: trip.title,
+            description: trip.description?.substring(0, 160),
+            images: [trip.image],
+            type: 'website',
+        },
+        keywords: [trip.location, trip.type, 'trekking chiang mai', 'adventure thailand', trip.title, ...trip.tags],
+        alternates: {
+            canonical: `https://nongtung.com/trips/${trip.id}`
+        }
+    };
 }
 
 export default async function TripDetailPage({
@@ -30,8 +53,34 @@ export default async function TripDetailPage({
     const whatsIncluded = trip.whatsIncluded || [];
     const notIncluded = trip.notIncluded || [];
 
+    // JSON-LD for SEO
+    const jsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'Product',
+        name: trip.title,
+        description: trip.description,
+        image: trip.image,
+        offers: {
+            '@type': 'Offer',
+            price: trip.price,
+            priceCurrency: 'THB',
+            availability: trip.status === 'available' ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+            url: `https://nongtung.com/trips/${id}`
+        },
+        brand: {
+            '@type': 'Brand',
+            name: 'Nongtung'
+        }
+    };
+
     return (
         <div className="fade-in pb-20">
+            {/* Structured Data */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+
             {/* Breadcrumb / Back Navigation */}
             <div className="bg-surface py-4">
                 <div className="container mx-auto px-6">

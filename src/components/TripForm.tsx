@@ -21,6 +21,8 @@ export default function TripForm({ trip }: TripFormProps) {
     const [itinerary, setItinerary] = useState<{ day: string, title: string, desc: string }[]>(trip?.itinerary || []);
     const [gallery, setGallery] = useState<string[]>(trip?.gallery || []);
     const [newGalleryUrl, setNewGalleryUrl] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     // Handlers for lists
     const addHighlight = () => setHighlights([...highlights, '']);
@@ -40,23 +42,43 @@ export default function TripForm({ trip }: TripFormProps) {
     };
 
     const handleSubmit = async (formData: FormData) => {
-        // Serialize complex fields
-        formData.append('highlights', JSON.stringify(highlights));
-        formData.append('whatsIncluded', JSON.stringify(included));
-        formData.append('notIncluded', JSON.stringify(notIncluded));
-        formData.append('itinerary', JSON.stringify(itinerary));
-        formData.append('gallery', JSON.stringify(gallery));
-        formData.append('imageUrl', imageUrl);
+        setIsSubmitting(true);
+        setError(null);
 
-        if (trip) {
-            await updateTrip(trip.id, formData);
-        } else {
-            await createTrip(formData);
+        try {
+            // Serialize complex fields
+            formData.append('highlights', JSON.stringify(highlights));
+            formData.append('whatsIncluded', JSON.stringify(included));
+            formData.append('notIncluded', JSON.stringify(notIncluded));
+            formData.append('itinerary', JSON.stringify(itinerary));
+            formData.append('gallery', JSON.stringify(gallery));
+            formData.append('imageUrl', imageUrl);
+
+            if (trip) {
+                await updateTrip(trip.id, formData);
+            } else {
+                await createTrip(formData);
+            }
+        } catch (err: any) {
+            console.error(err);
+            setError(err.message || 'Something went wrong. Please try again.');
+            setIsSubmitting(false);
+            // Scroll to top to see error
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     };
 
     return (
-        <form action={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg border border-gray-100 space-y-8">
+        <form action={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg border border-gray-100 space-y-8 relative">
+            {error && (
+                <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6 flex items-start gap-3">
+                    <X className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                    <div>
+                        <p className="text-red-800 font-bold">เกิดข้อผิดพลาด</p>
+                        <p className="text-red-700 text-sm">{error}</p>
+                    </div>
+                </div>
+            )}
             {/* Basic Info */}
             <section className="space-y-6">
                 <h3 className="text-xl font-bold text-forest border-b pb-2">Basic Information</h3>
@@ -74,10 +96,13 @@ export default function TripForm({ trip }: TripFormProps) {
                         required
                         type="text"
                         placeholder="เช่น hiking-doi-lang-ka-luang"
-                        readOnly={!!trip}
-                        className={`w-full border border-gray-300 rounded p-3 focus:ring-2 focus:ring-primary outline-none ${trip ? 'bg-gray-100 cursor-not-allowed' : ''}`}
+                        className="w-full border border-gray-300 rounded p-3 focus:ring-2 focus:ring-primary outline-none"
                     />
-                    {!trip && <p className="text-xs text-gray-400 mt-1">ใช้ตัวอักษรภาษาอังกฤษ, ตัวเลข และขีดกลาง (-) เท่านั้น เช่น my-trip-2024</p>}
+                    <p className="text-xs text-gray-400 mt-1">
+                        {trip
+                            ? "⚠️ การเปลี่ยน ID จะทำให้ลิงก์เก่าเข้าไม่ได้ และสร้างลิงก์ใหม่ตามที่ตั้ง (ดีต่อ SEO ถ้าใช้ Keyword)"
+                            : "ใช้ตัวอักษรภาษาอังกฤษ, ตัวเลข และขีดกลาง (-) เท่านั้น เช่น my-trip-2024"}
+                    </p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-6">
@@ -289,8 +314,23 @@ export default function TripForm({ trip }: TripFormProps) {
             </section>
 
             <div className="pt-6 border-t border-gray-100">
-                <button type="submit" className="w-full bg-primary text-white font-bold py-4 rounded-lg hover:bg-primary-deep transition-all flex justify-center items-center gap-2 shadow-lg text-lg">
-                    <Save className="w-6 h-6" /> {trip ? 'Update Trip' : 'Create Trip'}
+                <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className={`w-full font-bold py-4 rounded-lg transition-all flex justify-center items-center gap-2 shadow-lg text-lg text-white
+                        ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-primary hover:bg-primary-deep'}
+                    `}
+                >
+                    {isSubmitting ? (
+                        <>
+                            <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                            Saving...
+                        </>
+                    ) : (
+                        <>
+                            <Save className="w-6 h-6" /> {trip ? 'Update Trip' : 'Create Trip'}
+                        </>
+                    )}
                 </button>
             </div>
         </form>

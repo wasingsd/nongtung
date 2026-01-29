@@ -19,8 +19,10 @@ export async function createTrip(formData: FormData) {
         gallery = galleryInput.split(',').map(url => url.trim()).filter(url => url.length > 0);
     }
 
+    const slug = (formData.get('slug') as string)?.trim().toLowerCase() || crypto.randomUUID();
+
     const trip: Trip = {
-        id: crypto.randomUUID(),
+        id: slug,
         title: formData.get('title') as string,
         price: Number(formData.get('price')),
         difficulty: formData.get('difficulty') as Trip['difficulty'],
@@ -40,6 +42,7 @@ export async function createTrip(formData: FormData) {
 
     await dbSaveTrip(trip);
     revalidatePath('/trips');
+    revalidatePath(`/trips/${slug}`);
     revalidatePath('/adminnongtung/trips');
     redirect('/adminnongtung/trips');
 }

@@ -66,6 +66,20 @@ export default function TripForm({ trip }: TripFormProps) {
                     <input name="title" defaultValue={trip?.title} required type="text" className="w-full border border-gray-300 rounded p-3 focus:ring-2 focus:ring-primary outline-none" />
                 </div>
 
+                <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2">Trip ID / Slug (สำหรับ SEO)</label>
+                    <input
+                        name="slug"
+                        defaultValue={trip?.id}
+                        required
+                        type="text"
+                        placeholder="เช่น hiking-doi-lang-ka-luang"
+                        readOnly={!!trip}
+                        className={`w-full border border-gray-300 rounded p-3 focus:ring-2 focus:ring-primary outline-none ${trip ? 'bg-gray-100 cursor-not-allowed' : ''}`}
+                    />
+                    {!trip && <p className="text-xs text-gray-400 mt-1">ใช้ตัวอักษรภาษาอังกฤษ, ตัวเลข และขีดกลาง (-) เท่านั้น เช่น my-trip-2024</p>}
+                </div>
+
                 <div className="grid grid-cols-2 gap-6">
                     <div>
                         <label className="block text-sm font-bold text-gray-700 mb-2">Price (฿)</label>

@@ -2,7 +2,7 @@ import { getTrips, getTrip } from '@/lib/firestore-db';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { MapPin, Clock, Users, CheckCircle, Shield, AlertCircle, ChevronLeft } from 'lucide-react';
+import { MapPin, Clock, Users, CheckCircle, MessageCircle, BarChart, AlertCircle, ChevronLeft } from 'lucide-react';
 import ImageLightbox from '@/components/ImageLightbox';
 import { Metadata } from 'next';
 
@@ -108,7 +108,7 @@ export default async function TripDetailPage({
                                 <span className="bg-white/90 backdrop-blur text-forest font-bold px-3 py-1 rounded text-sm uppercase tracking-wide shadow-sm">
                                     {trip.duration}
                                 </span>
-                                <span className={`px-3 py-1 rounded text-sm font-bold uppercase tracking-wide shadow-sm text-white ${trip.type === 'private' ? 'bg-primary-deep' : 'bg-accent'}`}>
+                                <span className={`px-3 py-1 rounded text-sm font-bold uppercase tracking-wide shadow-sm text-white ${trip.type === 'private' ? 'bg-primary-deep' : 'bg-forest/80'}`}>
                                     {trip.type} Group
                                 </span>
                             </div>
@@ -136,7 +136,7 @@ export default async function TripDetailPage({
                                     <span>Min 2 Pax</span>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <AlertCircle className="w-5 h-5 text-primary" />
+                                    <BarChart className="w-5 h-5 text-primary" />
                                     <span>Difficulty: <span className="font-bold text-forest">{trip.difficulty}</span></span>
                                 </div>
                             </div>
@@ -237,13 +237,23 @@ export default async function TripDetailPage({
                                         </div>
                                     </div>
 
-                                    <button className="w-full bg-primary hover:bg-primary-deep text-white font-bold py-4 rounded-lg uppercase tracking-wider shadow-lg hover:shadow-xl transition-all mb-4 transform hover:-translate-y-1">
+                                    <a
+                                        href={`https://m.me/Venturevibecnx?text=${encodeURIComponent(`สวัสดีครับ สนใจจองทริป: ${trip.title}`)}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="block w-full bg-primary hover:bg-primary-deep text-white text-center font-bold py-4 rounded-lg uppercase tracking-wider shadow-lg hover:shadow-xl transition-all mb-4 transform hover:-translate-y-1"
+                                    >
                                         Book This Trip
-                                    </button>
+                                    </a>
 
-                                    <button className="w-full bg-surface hover:bg-gray-200 text-forest font-bold py-3 rounded-lg uppercase text-sm transition-all flex items-center justify-center gap-2">
-                                        <Shield className="w-4 h-4" /> Ask a Question
-                                    </button>
+                                    <a
+                                        href={`https://m.me/Venturevibecnx?text=${encodeURIComponent(`สวัสดีครับ มีคำถามเกี่ยวกับทริป: ${trip.title}`)}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="block w-full bg-surface hover:bg-gray-200 text-forest text-center font-bold py-3 rounded-lg uppercase text-sm transition-all flex items-center justify-center gap-2"
+                                    >
+                                        <MessageCircle className="w-4 h-4" /> Ask a Question
+                                    </a>
 
                                     <p className="text-center text-xs text-gray-400 mt-6">
                                         No credit card required. Free cancellation up to 7 days before trip.
@@ -252,15 +262,20 @@ export default async function TripDetailPage({
                             </div>
 
                             {/* Support Box */}
-                            <div className="mt-8 bg-surface rounded-xl p-6 flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-primary shadow-sm">
-                                    <Users className="w-6 h-6" />
+                            <a
+                                href="https://m.me/Venturevibecnx"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="mt-8 bg-surface rounded-xl p-6 flex items-center gap-4 hover:shadow-md transition-all group"
+                            >
+                                <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-primary shadow-sm group-hover:scale-110 transition-transform">
+                                    <MessageCircle className="w-6 h-6" />
                                 </div>
                                 <div>
                                     <p className="text-xs font-bold text-gray-500 uppercase">Need Help?</p>
-                                    <p className="font-bold text-forest cursor-pointer hover:text-primary transition-colors">Contact Support Team</p>
+                                    <p className="font-bold text-forest group-hover:text-primary transition-colors">Contact Support Team</p>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
 

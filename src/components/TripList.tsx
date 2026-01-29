@@ -52,37 +52,79 @@ export default function TripList({ trips }: { trips: Trip[] }) {
             </div>
 
             {/* Trip Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-12">
                 {filteredTrips.map(t => (
-                    <div key={t.id} className="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100 hover:shadow-xl transition-all group flex flex-col h-full">
-                        <div className="relative h-64 overflow-hidden">
+                    <div key={t.id} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col h-full group">
+                        {/* Image Container */}
+                        <div className="relative h-72 overflow-hidden shadow-inner translate-z-0">
                             <Image
                                 src={t.image}
                                 alt={t.title}
                                 fill
-                                className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                className="object-cover group-hover:scale-110 transition-transform duration-700"
                             />
-                            <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
-                                <span className="px-2 py-1 rounded-sm text-xs font-bold uppercase bg-white/90 text-forest shadow-sm">{t.duration}</span>
+                            {/* Duration Badge */}
+                            <div className="absolute top-4 left-4 z-10">
+                                <span className="bg-white/90 backdrop-blur-sm text-forest font-bold px-3 py-1.5 rounded-lg text-xs uppercase tracking-wider shadow-sm border border-white/20">
+                                    {t.duration}
+                                </span>
                             </div>
-                            <div className="absolute bottom-4 left-4 bg-primary text-white px-3 py-1 text-sm font-bold z-10">฿{t.price.toLocaleString()}</div>
+                            {/* Price Badge */}
+                            <div className="absolute bottom-4 left-4 z-10">
+                                <span className="bg-[#f07d2f] text-white px-4 py-1.5 rounded-lg text-lg font-bold shadow-lg flex items-center gap-1">
+                                    <span className="text-xs font-normal opacity-80">฿</span>
+                                    {t.price.toLocaleString()}
+                                </span>
+                            </div>
+                            {/* Overlay Gradient */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </div>
-                        <div className="p-6 flex flex-col flex-grow">
-                            <div className="flex gap-2 mb-3">
+
+                        {/* Content Container */}
+                        <div className="p-8 flex flex-col flex-grow">
+                            {/* Tags - Flex wrap to support many tags */}
+                            <div className="flex flex-wrap gap-2 mb-6">
                                 {t.tags.map(tag => (
-                                    <span key={tag} className="text-[10px] bg-surface text-forest-light px-2 py-1 rounded font-bold uppercase tracking-wide">{tag}</span>
+                                    <span key={tag} className="bg-[#f2f4f1] text-forest-light px-3 py-1.5 rounded text-[10px] sm:text-[11px] font-bold uppercase tracking-widest hover:bg-primary/10 transition-colors">
+                                        {tag}
+                                    </span>
                                 ))}
                             </div>
-                            <h3 className="text-xl font-bold text-forest font-heading leading-tight mb-4">{t.title}</h3>
 
-                            <div className="space-y-2 mb-6 text-sm text-gray-500">
-                                <div className="flex items-center gap-2"><Map className="w-4 h-4 text-primary" /> เชียงใหม่, ไทย</div>
-                                <div className="flex items-center gap-2"><BarChart className="w-4 h-4 text-primary" /> ความยาก: {t.difficulty}</div>
-                                <div className="flex items-center gap-2"><CheckSquare className="w-4 h-4 text-primary" /> รวม: รถรับส่ง, อาหาร, ประกัน</div>
+                            <h3 className="text-2xl font-bold text-forest font-heading leading-tight mb-6 hover:text-primary transition-colors line-clamp-2">
+                                {t.title}
+                            </h3>
+
+                            {/* Info Rows */}
+                            <div className="space-y-3 mb-8 flex-grow">
+                                <div className="flex items-center gap-3 text-forest-light/80 font-medium">
+                                    <div className="bg-orange-50 p-1.5 rounded-lg">
+                                        <Map className="w-4 h-4 text-orange-400" />
+                                    </div>
+                                    <span className="text-sm">{t.location || 'เชียงใหม่, ไทย'}</span>
+                                </div>
+                                <div className="flex items-center gap-3 text-forest-light/80 font-medium">
+                                    <div className="bg-orange-50 p-1.5 rounded-lg">
+                                        <BarChart className="w-4 h-4 text-orange-400" />
+                                    </div>
+                                    <span className="text-sm">ความยาก: {t.difficulty}</span>
+                                </div>
+                                <div className="flex items-center gap-3 text-forest-light/80 font-medium">
+                                    <div className="bg-orange-50 p-1.5 rounded-lg">
+                                        <CheckSquare className="w-4 h-4 text-orange-400" />
+                                    </div>
+                                    <span className="text-sm line-clamp-1">รวม: {t.whatsIncluded?.slice(0, 3).join(', ') || 'รถรับส่ง, อาหาร, ประกัน'}</span>
+                                </div>
                             </div>
 
-                            <div className="mt-auto pt-4 border-t border-gray-100">
-                                <Link href={`/trips/${t.id}`} className="block w-full border-2 border-forest text-forest hover:bg-forest hover:text-white font-bold py-2 rounded transition-colors uppercase text-sm text-center">View Details</Link>
+                            {/* View Details Button */}
+                            <div className="mt-auto pt-6 border-t border-gray-50">
+                                <Link
+                                    href={`/trips/${t.id}`}
+                                    className="block w-full border-2 border-forest text-forest hover:bg-forest hover:text-white font-black py-3.5 rounded-xl transition-all duration-300 uppercase text-sm text-center tracking-widest shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0"
+                                >
+                                    VIEW DETAILS
+                                </Link>
                             </div>
                         </div>
                     </div>

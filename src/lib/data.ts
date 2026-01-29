@@ -5,49 +5,44 @@ import { Trip, Rental, Transport, Article } from '@/types/types';
 export const rentals: Rental[] = [
     {
         id: '1',
-        name: 'Honda City',
-        type: 'Car',
-        pricePerDay: 1200,
-        image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=1000&auto=format&fit=crop',
-        features: ['Automatic', 'GPS', 'Bluetooth'],
-        capacity: 4
+        name: 'Tent Standard',
+        type: 'Tent',
+        price: 350,
+        unit: 'Night',
+        stock: 50,
+        image: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?q=80&w=1000',
+        description: 'เต็นท์นอนมาตรฐาน 2-3 คน กันน้ำ กันลม',
+        features: ['Waterproof', 'Easy Setup', 'Sleeps 3'],
     },
     {
         id: '2',
-        name: 'Toyota Commuter',
-        type: 'Van',
-        pricePerDay: 2500,
-        image: 'https://images.unsplash.com/photo-1559416523-140ddc3d238c?q=80&w=1000&auto=format&fit=crop',
-        features: ['Manual', '9 Seats', 'Large Luggage Space'],
-        capacity: 9
-    },
-    {
-        id: '3',
-        name: 'Honda Scoopy',
-        type: 'Bike',
-        pricePerDay: 300,
-        image: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?q=80&w=1000&auto=format&fit=crop',
-        features: ['Automatic', 'Helmet included'],
-        capacity: 2
+        name: 'Camping Chair',
+        type: 'Chair',
+        price: 50,
+        unit: 'Day',
+        stock: 100,
+        image: 'https://images.unsplash.com/photo-1596435678311-6411516e87d5?q=80&w=1000',
+        description: 'เก้าอี้สนามพับได้ พกพาสะดวก',
+        features: ['Foldable', 'Lightweight'],
     }
 ];
 
 export const transports: Transport[] = [
     {
         id: '1',
-        type: 'Van',
-        route: 'Bangkok - Pattaya',
-        price: 300,
-        departureTime: '10:00 AM',
-        image: 'https://images.unsplash.com/photo-1570125909232-eb2be79a1c74?q=80&w=1000&auto=format&fit=crop'
+        type: 'VIP Van 9 Seats',
+        price1Day: 2000,
+        price2Day: 3800,
+        image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800',
+        note: 'บริการ 10 ชม./วัน (ไม่รวมน้ำมัน)'
     },
     {
         id: '2',
-        type: 'Train',
-        route: 'Bangkok - Chiang Mai',
-        price: 900,
-        departureTime: '08:00 PM',
-        image: 'https://images.unsplash.com/photo-1527684651001-73604f5e7144?q=80&w=1000&auto=format&fit=crop'
+        type: 'Red Truck 4WD',
+        price1Day: 1500,
+        price2Day: 2800,
+        image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=800',
+        note: 'เหมาะสำหรับขึ้นดอยสูง'
     }
 ];
 

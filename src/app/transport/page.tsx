@@ -1,79 +1,220 @@
 import Image from 'next/image';
-import { CheckCircle, Bus } from 'lucide-react';
+import { CheckCircle, Bus, Users, Clock, MapPin, ChevronRight, Phone } from 'lucide-react';
+import { getTransport } from '@/lib/firestore-db';
+import Link from 'next/link';
 
-export default function TransportPage() {
+export default async function TransportPage() {
+    const transports = await getTransport();
+
+    // Group transports by vehicle type
+    const groupedByType = transports.reduce((acc, item) => {
+        if (!acc[item.type]) {
+            acc[item.type] = [];
+        }
+        acc[item.type].push(item);
+        return acc;
+    }, {} as Record<string, typeof transports>);
+
+    // Get unique vehicle types with their minimum price
+    const vehicleTypes = Object.keys(groupedByType).map(type => ({
+        type,
+        routes: groupedByType[type],
+        minPrice: Math.min(...groupedByType[type].map(r => r.price)),
+        image: groupedByType[type][0].image
+    }));
+
     return (
-        <div className="container mx-auto px-6 py-12 fade-in">
-            <div className="flex flex-col md:flex-row items-center justify-between mb-12">
-                <div>
-                    <h2 className="text-4xl font-bold font-heading text-forest mb-2">TRANSPORTATION</h2>
-                    <p className="text-gray-500">บริการรถรับส่งดอย และนำเที่ยวเชียงใหม่ โดยทีมขับรถชำนาญเส้นทางเขา</p>
-                </div>
-                <div className="mt-4 md:mt-0 bg-surface px-4 py-2 rounded text-sm text-forest font-medium">
-                    <CheckCircle className="w-4 h-4 inline mr-1 text-primary" /> รถตู้ VIP 9 ที่นั่ง / รถแดง 4WD
+        <div className="fade-in">
+            {/* Hero Section */}
+            <div className="bg-forest text-white py-16">
+                <div className="container mx-auto px-6">
+                    <div className="max-w-3xl">
+                        <h1 className="text-4xl md:text-5xl font-bold font-heading mb-4">
+                            TRANSPORTATION SERVICE
+                        </h1>
+                        <p className="text-xl text-gray-300 mb-6">
+                            บริการรถรับส่งดอย และนำเที่ยวเชียงใหม่ โดยทีมขับรถชำนาญเส้นทางเขา
+                        </p>
+                        <div className="flex flex-wrap gap-4">
+                            <div className="bg-white/10 backdrop-blur px-4 py-2 rounded-full text-sm">
+                                <CheckCircle className="w-4 h-4 inline mr-2 text-primary" />
+                                คนขับชำนาญเส้นทาง
+                            </div>
+                            <div className="bg-white/10 backdrop-blur px-4 py-2 rounded-full text-sm">
+                                <CheckCircle className="w-4 h-4 inline mr-2 text-primary" />
+                                รถสะอาด ปลอดภัย
+                            </div>
+                            <div className="bg-white/10 backdrop-blur px-4 py-2 rounded-full text-sm">
+                                <CheckCircle className="w-4 h-4 inline mr-2 text-primary" />
+                                ราคายุติธรรม
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Card 1: Doi Suthep Zone */}
-                <div className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-100">
-                    <div className="relative w-full h-48">
-                        <Image
-                            src="https://images.unsplash.com/photo-1596423737522-675975298839?auto=format&fit=crop&q=80&w=800"
-                            alt="Doi Suthep"
-                            fill
-                            className="object-cover"
-                        />
-                    </div>
-                    <div className="p-6">
-                        <h3 className="text-xl font-bold text-forest mb-2">Zone: Doi Suthep & Pui</h3>
-                        <p className="text-sm text-gray-500 mb-4">เส้นทางยอดฮิต ใกล้ตัวเมือง เหมาะสำหรับ One Day Trip</p>
-                        <ul className="space-y-3 mb-6">
-                            <li className="flex justify-between text-sm border-b border-dashed pb-2"><span>City - Wat Phra That</span><span className="font-bold">800.-</span></li>
-                            <li className="flex justify-between text-sm border-b border-dashed pb-2"><span>City - Doi Pui Village</span><span className="font-bold">1,200.-</span></li>
-                            <li className="flex justify-between text-sm border-b border-dashed pb-2"><span>City - Khun Chang Kian</span><span className="font-bold">1,800.-</span></li>
-                        </ul>
-                        <button className="w-full bg-primary text-white py-2 rounded font-bold text-sm uppercase hover:bg-primary-deep">Book Now</button>
-                    </div>
-                </div>
+            {/* Vehicle Types Section */}
+            {vehicleTypes.length > 0 && (
+                <section className="py-16 bg-surface">
+                    <div className="container mx-auto px-6">
+                        <div className="text-center mb-12">
+                            <h2 className="text-3xl font-bold font-heading text-forest mb-4">ประเภทรถให้บริการ</h2>
+                            <p className="text-gray-500">เลือกประเภทรถที่เหมาะกับความต้องการของคุณ</p>
+                        </div>
 
-                {/* Card 2: Doi Inthanon Zone */}
-                <div className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-100">
-                    <div className="relative w-full h-48">
-                        <Image
-                            src="https://images.unsplash.com/photo-1599573860017-d586d1c97a89?auto=format&fit=crop&q=80&w=800"
-                            alt="Doi Inthanon"
-                            fill
-                            className="object-cover"
-                        />
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {vehicleTypes.map((vehicle, index) => (
+                                <div key={index} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all group">
+                                    <div className="relative h-48 overflow-hidden">
+                                        <Image
+                                            src={vehicle.image}
+                                            alt={vehicle.type}
+                                            fill
+                                            className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                                        <div className="absolute bottom-4 left-4 right-4">
+                                            <h3 className="text-xl font-bold text-white">{vehicle.type}</h3>
+                                        </div>
+                                    </div>
+                                    <div className="p-6">
+                                        <div className="flex items-center justify-between mb-4">
+                                            <div className="text-sm text-gray-500">
+                                                <Users className="w-4 h-4 inline mr-1" />
+                                                {vehicle.routes.length} เส้นทาง
+                                            </div>
+                                            <div className="text-right">
+                                                <div className="text-xs text-gray-400">ราคาเริ่มต้น</div>
+                                                <div className="text-2xl font-bold text-primary">฿{vehicle.minPrice.toLocaleString()}</div>
+                                            </div>
+                                        </div>
+                                        <a href="#routes" className="block w-full text-center bg-forest text-white py-3 rounded-lg font-bold text-sm uppercase hover:bg-forest-light transition-colors">
+                                            ดูเส้นทาง <ChevronRight className="w-4 h-4 inline" />
+                                        </a>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                    <div className="p-6">
-                        <h3 className="text-xl font-bold text-forest mb-2">Zone: Doi Inthanon</h3>
-                        <p className="text-sm text-gray-500 mb-4">หลังคาแดนสยาม เส้นทางคดเคี้ยว ต้องการคนขับชำนาญ</p>
-                        <ul className="space-y-3 mb-6">
-                            <li className="flex justify-between text-sm border-b border-dashed pb-2"><span>City - Summit (Round trip)</span><span className="font-bold">3,500.-</span></li>
-                            <li className="flex justify-between text-sm border-b border-dashed pb-2"><span>City - Kew Mae Pan</span><span className="font-bold">3,500.-</span></li>
-                            <li className="flex justify-between text-sm border-b border-dashed pb-2"><span>Overnight Charge</span><span className="font-bold">+1,000.-</span></li>
-                        </ul>
-                        <button className="w-full bg-primary text-white py-2 rounded font-bold text-sm uppercase hover:bg-primary-deep">Book Now</button>
-                    </div>
-                </div>
+                </section>
+            )}
 
-                {/* Card 3: Custom / Van Rental */}
-                <div className="bg-forest text-white rounded-lg shadow-lg overflow-hidden p-8 flex flex-col justify-center text-center">
-                    <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6 text-primary">
-                        <Bus className="w-8 h-8" />
+            {/* Routes Pricing Section */}
+            <section id="routes" className="py-16 bg-white">
+                <div className="container mx-auto px-6">
+                    <div className="text-center mb-12">
+                        <h2 className="text-3xl font-bold font-heading text-forest mb-4">เส้นทางและราคา</h2>
+                        <p className="text-gray-500">รายละเอียดเส้นทางและราคาสำหรับแต่ละประเภทรถ</p>
                     </div>
-                    <h3 className="text-2xl font-bold mb-4 font-heading">VIP VAN RENTAL</h3>
-                    <p className="text-gray-300 mb-8 text-sm leading-relaxed">
-                        เหมาวันพร้อมคนขับ สำหรับท่องเที่ยวในเชียงใหม่และจังหวัดใกล้เคียง
-                        (ไม่รวมค่าน้ำมัน)
-                    </p>
-                    <div className="text-3xl font-bold text-primary mb-2">2,000.- <span className="text-sm text-white font-normal">/ Day</span></div>
-                    <div className="text-xs text-gray-400 mb-8">(Service 10 hrs/day)</div>
-                    <button className="w-full bg-white text-forest py-3 rounded font-bold text-sm uppercase hover:bg-gray-100">Contact to Book</button>
+
+                    {vehicleTypes.length > 0 ? (
+                        <div className="space-y-8">
+                            {vehicleTypes.map((vehicle, index) => (
+                                <div key={index} className="bg-surface rounded-2xl p-6 md:p-8">
+                                    <div className="flex flex-col md:flex-row md:items-center gap-4 mb-6">
+                                        <div className="relative w-24 h-24 rounded-xl overflow-hidden flex-shrink-0">
+                                            <Image
+                                                src={vehicle.image}
+                                                alt={vehicle.type}
+                                                fill
+                                                className="object-cover"
+                                            />
+                                        </div>
+                                        <div className="flex-grow">
+                                            <h3 className="text-2xl font-bold text-forest">{vehicle.type}</h3>
+                                            <p className="text-gray-500 text-sm">ราคาเริ่มต้น ฿{vehicle.minPrice.toLocaleString()}</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-white rounded-xl overflow-hidden">
+                                        <table className="w-full">
+                                            <thead className="bg-forest text-white text-sm">
+                                                <tr>
+                                                    <th className="text-left px-6 py-3">เส้นทาง</th>
+                                                    <th className="text-left px-6 py-3 hidden md:table-cell">เวลาออก</th>
+                                                    <th className="text-right px-6 py-3">ราคา</th>
+                                                    <th className="text-right px-6 py-3"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-gray-100">
+                                                {vehicle.routes.map((route) => (
+                                                    <tr key={route.id} className="hover:bg-gray-50 transition-colors">
+                                                        <td className="px-6 py-4">
+                                                            <div className="flex items-center gap-2">
+                                                                <MapPin className="w-4 h-4 text-primary flex-shrink-0" />
+                                                                <span className="font-medium text-forest">{route.route}</span>
+                                                            </div>
+                                                        </td>
+                                                        <td className="px-6 py-4 text-gray-500 hidden md:table-cell">
+                                                            <Clock className="w-4 h-4 inline mr-1" />
+                                                            {route.departureTime}
+                                                        </td>
+                                                        <td className="px-6 py-4 text-right">
+                                                            <span className="text-xl font-bold text-primary">฿{route.price.toLocaleString()}</span>
+                                                        </td>
+                                                        <td className="px-6 py-4 text-right">
+                                                            <button className="bg-primary text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-primary-deep transition-colors">
+                                                                จอง
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="text-center py-20 text-gray-400">
+                            <Bus className="w-16 h-16 mx-auto mb-4 opacity-50" />
+                            <p>ยังไม่มีข้อมูลบริการรับส่ง กรุณาเพิ่มข้อมูลในระบบหลังบ้าน</p>
+                        </div>
+                    )}
                 </div>
-            </div>
+            </section>
+
+            {/* VIP Van Rental */}
+            <section className="py-16 bg-forest">
+                <div className="container mx-auto px-6">
+                    <div className="bg-white/10 backdrop-blur rounded-2xl p-8 md:p-12">
+                        <div className="flex flex-col lg:flex-row items-center gap-8">
+                            <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center text-primary flex-shrink-0">
+                                <Bus className="w-12 h-12" />
+                            </div>
+                            <div className="flex-grow text-center lg:text-left">
+                                <h3 className="text-3xl font-bold font-heading text-white mb-2">VIP VAN RENTAL</h3>
+                                <p className="text-gray-300 mb-4">
+                                    เหมาวันพร้อมคนขับ สำหรับท่องเที่ยวในเชียงใหม่และจังหวัดใกล้เคียง (ไม่รวมค่าน้ำมัน)
+                                </p>
+                                <div className="flex flex-wrap gap-4 justify-center lg:justify-start text-sm text-gray-300">
+                                    <span><CheckCircle className="w-4 h-4 inline mr-1 text-primary" /> รถตู้ VIP 9 ที่นั่ง</span>
+                                    <span><CheckCircle className="w-4 h-4 inline mr-1 text-primary" /> บริการ 10 ชม./วัน</span>
+                                    <span><CheckCircle className="w-4 h-4 inline mr-1 text-primary" /> คนขับชำนาญ</span>
+                                </div>
+                            </div>
+                            <div className="text-center flex-shrink-0">
+                                <div className="text-4xl font-bold text-primary mb-1">฿2,000</div>
+                                <div className="text-sm text-gray-400 mb-4">/ วัน</div>
+                                <button className="bg-primary text-white px-8 py-4 rounded-lg font-bold uppercase hover:bg-primary-deep transition-colors flex items-center gap-2">
+                                    <Phone className="w-5 h-5" /> ติดต่อจอง
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Contact CTA */}
+            <section className="py-16 bg-white">
+                <div className="container mx-auto px-6 text-center">
+                    <h2 className="text-2xl font-bold text-forest mb-4">ต้องการเส้นทางพิเศษ?</h2>
+                    <p className="text-gray-500 mb-8">ติดต่อเราสำหรับเส้นทางที่ไม่มีในรายการ หรือต้องการใบเสนอราคาพิเศษสำหรับกรุ๊ป</p>
+                    <a href="https://line.me" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-forest text-white px-8 py-4 rounded-lg font-bold uppercase hover:bg-forest-light transition-colors">
+                        <Phone className="w-5 h-5" /> ติดต่อผ่าน Line
+                    </a>
+                </div>
+            </section>
         </div>
     );
 }

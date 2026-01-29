@@ -18,7 +18,7 @@ export default function Navbar() {
         { id: 'trips', label: 'Trips', href: '/trips' },
         { id: 'transport', label: 'Transport', href: '/transport' },
         { id: 'rental', label: 'Rental', href: '/rental' },
-        { id: 'shop', label: 'Shop', href: '/shop' },
+        // { id: 'shop', label: 'Shop', href: '/shop' }, // Hidden - Shop is disabled
         { id: 'corporate', label: 'Corporate', href: '/corporate' },
     ];
 

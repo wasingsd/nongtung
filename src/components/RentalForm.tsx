@@ -26,34 +26,57 @@ export default function RentalForm({ rental }: RentalFormProps) {
     };
 
     return (
-        <form action={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg border border-gray-100 space-y-8">
+        <form action={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg border border-gray-100 space-y-8 max-w-2xl">
             <section className="space-y-6">
-                <h3 className="text-xl font-bold text-forest border-b pb-2">Rental Info</h3>
+                <h3 className="text-xl font-bold text-forest border-b pb-2">ข้อมูลอุปกรณ์</h3>
 
                 <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Item Name</label>
-                    <input name="name" defaultValue={rental?.name} required type="text" className="w-full border border-gray-300 rounded p-3 focus:ring-2 focus:ring-primary outline-none" />
+                    <label className="block text-sm font-bold text-gray-700 mb-2">ชื่ออุปกรณ์</label>
+                    <input name="name" defaultValue={rental?.name} required type="text" placeholder="เช่น Coleman Tough Screen 2-Room" className="w-full border border-gray-300 rounded p-3 focus:ring-2 focus:ring-primary outline-none" />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2">คำอธิบาย</label>
+                    <textarea name="description" defaultValue={rental?.description} rows={2} placeholder="เช่น เต็นท์ครอบครัว กันฝนเยี่ยม" className="w-full border border-gray-300 rounded p-3 focus:ring-2 focus:ring-primary outline-none" />
                 </div>
 
                 <div className="grid grid-cols-2 gap-6">
                     <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">Price Per Day (฿)</label>
-                        <input name="pricePerDay" defaultValue={rental?.pricePerDay} required type="number" className="w-full border border-gray-300 rounded p-3 focus:ring-2 focus:ring-primary outline-none" />
+                        <label className="block text-sm font-bold text-gray-700 mb-2">ราคา (฿)</label>
+                        <input name="price" defaultValue={rental?.price} required type="number" placeholder="800" className="w-full border border-gray-300 rounded p-3 focus:ring-2 focus:ring-primary outline-none" />
                     </div>
                     <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">Type</label>
-                        <select name="type" defaultValue={rental?.type || 'Bike'} className="w-full border border-gray-300 rounded p-3 bg-white">
-                            <option value="Bike">Bike</option>
-                            <option value="Car">Car</option>
-                            <option value="Van">Van</option>
-                            <option value="Gear">Camping Gear</option>
+                        <label className="block text-sm font-bold text-gray-700 mb-2">หน่วย</label>
+                        <select name="unit" defaultValue={rental?.unit || 'Day'} className="w-full border border-gray-300 rounded p-3 bg-white">
+                            <option value="Day">ต่อวัน (Day)</option>
+                            <option value="Trip">ต่อทริป (Trip)</option>
+                            <option value="Night">ต่อคืน (Night)</option>
+                            <option value="Set">ต่อเซ็ต (Set)</option>
                         </select>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-6">
+                    <div>
+                        <label className="block text-sm font-bold text-gray-700 mb-2">ประเภท</label>
+                        <select name="type" defaultValue={rental?.type || 'Tent'} className="w-full border border-gray-300 rounded p-3 bg-white">
+                            <option value="Tent">เต็นท์ (Tent)</option>
+                            <option value="Chair">เก้าอี้ (Chair)</option>
+                            <option value="Sleeping">ถุงนอน/แมท (Sleeping)</option>
+                            <option value="Kitchen">อุปกรณ์ครัว (Kitchen)</option>
+                            <option value="Lighting">ไฟ/ตะเกียง (Lighting)</option>
+                            <option value="Other">อื่นๆ (Other)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label className="block text-sm font-bold text-gray-700 mb-2">จำนวนสต็อก</label>
+                        <input name="stock" defaultValue={rental?.stock || 1} required type="number" min="0" className="w-full border border-gray-300 rounded p-3 focus:ring-2 focus:ring-primary outline-none" />
                     </div>
                 </div>
 
                 {/* Image URL Input */}
                 <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Image URL</label>
+                    <label className="block text-sm font-bold text-gray-700 mb-2">รูปภาพ (URL)</label>
                     <div className="flex gap-4 items-start">
                         <div className="flex-grow">
                             <div className="relative">
@@ -80,28 +103,23 @@ export default function RentalForm({ rental }: RentalFormProps) {
 
                 <div>
                     <div className="flex justify-between items-center mb-2">
-                        <label className="block text-sm font-bold text-gray-700">Features</label>
-                        <button type="button" onClick={() => setFeatures([...features, ''])} className="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded flex items-center gap-1 text-primary font-bold"><Plus className="w-3 h-3" /> Add</button>
+                        <label className="block text-sm font-bold text-gray-700">คุณสมบัติพิเศษ (Features)</label>
+                        <button type="button" onClick={() => setFeatures([...features, ''])} className="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded flex items-center gap-1 text-primary font-bold"><Plus className="w-3 h-3" /> เพิ่ม</button>
                     </div>
                     <div className="space-y-2">
                         {features.map((f, i) => (
                             <div key={i} className="flex gap-2">
-                                <input type="text" value={f} onChange={(e) => { const n = [...features]; n[i] = e.target.value; setFeatures(n); }} className="flex-grow border border-gray-300 rounded p-2 text-sm" placeholder="Feature..." />
+                                <input type="text" value={f} onChange={(e) => { const n = [...features]; n[i] = e.target.value; setFeatures(n); }} className="flex-grow border border-gray-300 rounded p-2 text-sm" placeholder="เช่น กันน้ำ 100%" />
                                 <button type="button" onClick={() => setFeatures(features.filter((_, idx) => idx !== i))} className="text-red-400 hover:text-red-600"><X className="w-4 h-4" /></button>
                             </div>
                         ))}
                     </div>
                 </div>
-
-                <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Capacity (Persons)</label>
-                    <input name="capacity" defaultValue={rental?.capacity || 1} type="number" className="w-full border border-gray-300 rounded p-3 focus:ring-2 focus:ring-primary outline-none" />
-                </div>
             </section>
 
             <div className="pt-6 border-t border-gray-100">
                 <button type="submit" className="w-full bg-primary text-white font-bold py-4 rounded-lg hover:bg-primary-deep transition-all flex justify-center items-center gap-2 shadow-lg text-lg">
-                    <Save className="w-6 h-6" /> {rental ? 'Update Rental' : 'Create Rental'}
+                    <Save className="w-6 h-6" /> {rental ? 'อัพเดท' : 'สร้างรายการใหม่'}
                 </button>
             </div>
         </form>

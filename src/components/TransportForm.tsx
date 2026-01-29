@@ -23,66 +23,73 @@ export default function TransportForm({ transport }: TransportFormProps) {
 
     return (
         <form action={handleSubmit} className="space-y-6 max-w-2xl bg-white p-8 rounded-lg shadow border border-gray-100">
+            <div className="bg-orange-50 border-l-4 border-orange-400 p-4 mb-6">
+                <p className="text-sm text-orange-700 font-medium">
+                    ⚠️ ราคานี้เป็นค่าบริการรถนำเที่ยวพร้อมคนขับ **ไม่รวมค่าน้ำมันตามจริง**
+                </p>
+            </div>
+
             {/* Type */}
             <div>
-                <label className="block text-sm font-bold text-forest mb-2">ประเภทรถ (Type)</label>
+                <label className="block text-sm font-bold text-forest mb-2">ประเภทรถ (Vehicle Type)</label>
                 <input
                     type="text"
                     name="type"
                     defaultValue={transport?.type || ''}
-                    placeholder="เช่น VIP Van 9 ที่นั่ง, รถแดง 4WD"
+                    placeholder="เช่น รถตู้ VIP 9 ที่นั่ง, รถแดง 4WD"
                     className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary outline-none"
                     required
                 />
             </div>
 
-            {/* Route */}
-            <div>
-                <label className="block text-sm font-bold text-forest mb-2">เส้นทาง (Route)</label>
-                <input
-                    type="text"
-                    name="route"
-                    defaultValue={transport?.route || ''}
-                    placeholder="เช่น City - Doi Suthep, City - Doi Inthanon"
-                    className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary outline-none"
-                    required
-                />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* 1 Day Price */}
+                <div>
+                    <label className="block text-sm font-bold text-forest mb-2">ราคาเหมา 1 วัน (฿)</label>
+                    <input
+                        type="number"
+                        name="price1Day"
+                        defaultValue={transport?.price1Day || ''}
+                        placeholder="เช่น 2000"
+                        className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary outline-none"
+                        required
+                    />
+                </div>
+
+                {/* 2 Day Price */}
+                <div>
+                    <label className="block text-sm font-bold text-forest mb-2">ราคาเหมา 2 วัน (฿)</label>
+                    <input
+                        type="number"
+                        name="price2Day"
+                        defaultValue={transport?.price2Day || ''}
+                        placeholder="เช่น 4000"
+                        className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary outline-none"
+                        required
+                    />
+                </div>
             </div>
 
-            {/* Price */}
+            {/* Note */}
             <div>
-                <label className="block text-sm font-bold text-forest mb-2">ราคา (บาท)</label>
-                <input
-                    type="number"
-                    name="price"
-                    defaultValue={transport?.price || ''}
-                    placeholder="เช่น 1500"
+                <label className="block text-sm font-bold text-forest mb-2">หมายเหตุ / รายละเอียดเพิ่มเติม</label>
+                <textarea
+                    name="note"
+                    defaultValue={transport?.note || ''}
+                    placeholder="เช่น บริการ 10 ชม./วัน, ไม่พบค่าน้ำมัน"
+                    rows={3}
                     className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary outline-none"
-                    required
-                />
-            </div>
-
-            {/* Departure Time */}
-            <div>
-                <label className="block text-sm font-bold text-forest mb-2">เวลาออกเดินทาง</label>
-                <input
-                    type="text"
-                    name="departureTime"
-                    defaultValue={transport?.departureTime || ''}
-                    placeholder="เช่น 08:00, ตามนัดหมาย"
-                    className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary outline-none"
-                    required
                 />
             </div>
 
             {/* Image URL */}
             <div>
-                <label className="block text-sm font-bold text-forest mb-2">รูปภาพ (URL)</label>
+                <label className="block text-sm font-bold text-forest mb-2">รูปภาพประกอบ (URL)</label>
                 <input
                     type="url"
                     value={imageUrl}
                     onChange={(e) => setImageUrl(e.target.value)}
-                    placeholder="https://..."
+                    placeholder="https://images.unsplash.com/..."
                     className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary outline-none"
                 />
                 {imageUrl && (
@@ -98,7 +105,7 @@ export default function TransportForm({ transport }: TransportFormProps) {
                     type="submit"
                     className="w-full bg-primary text-white py-3 rounded-lg font-bold text-sm uppercase hover:bg-primary-deep transition-colors"
                 >
-                    {transport ? 'Update Transport' : 'Create Transport'}
+                    {transport ? 'อัพเดทข้อมูลรถ' : 'เพิ่มข้อมูลรถใหม่'}
                 </button>
             </div>
         </form>

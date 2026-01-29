@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { MapPin, Clock, Users, CheckCircle, Shield, AlertCircle, ChevronLeft } from 'lucide-react';
+import ImageLightbox from '@/components/ImageLightbox';
 
 export async function generateStaticParams() {
     const TRIPS = await getTrips();
@@ -46,7 +47,7 @@ export default async function TripDetailPage({
                     {/* Left Column: Main Content */}
                     <div className="lg:w-2/3">
                         {/* Hero Image */}
-                        <div className="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-2xl mb-8">
+                        <div className="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-2xl mb-4">
                             <Image
                                 src={trip.image}
                                 alt={trip.title}
@@ -63,6 +64,11 @@ export default async function TripDetailPage({
                                 </span>
                             </div>
                         </div>
+
+                        {/* Gallery Thumbnails with Lightbox - Below Hero */}
+                        {(trip.gallery && trip.gallery.length > 0) && (
+                            <ImageLightbox images={trip.gallery} mainImage={trip.image} />
+                        )}
 
                         {/* Title & Stats */}
                         <div className="mb-10">
@@ -102,20 +108,6 @@ export default async function TripDetailPage({
                                 ))}
                             </div>
                         </section>
-
-                        {/* Gallery */}
-                        {(trip.gallery && trip.gallery.length > 0) && (
-                            <section className="mb-12">
-                                <h2 className="text-2xl font-bold font-heading text-forest mb-4">Gallery</h2>
-                                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                    {trip.gallery.map((img, i) => (
-                                        <div key={i} className="relative h-48 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow group">
-                                            <Image src={img} alt={`${trip.title} gallery ${i + 1}`} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
-                                        </div>
-                                    ))}
-                                </div>
-                            </section>
-                        )}
 
                         {/* Itinerary */}
                         {itinerary.length > 0 && (

@@ -11,10 +11,10 @@ export async function createTransport(formData: FormData) {
     const transport: Transport = {
         id: crypto.randomUUID(),
         type: formData.get('type') as string,
-        route: formData.get('route') as string,
-        price: Number(formData.get('price')),
-        departureTime: formData.get('departureTime') as string,
+        price1Day: Number(formData.get('price1Day')),
+        price2Day: Number(formData.get('price2Day')),
         image: imageUrl || 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800',
+        note: formData.get('note') as string || '',
     };
 
     await dbSaveTransport(transport);
@@ -29,10 +29,10 @@ export async function updateTransport(id: string, formData: FormData) {
     const transport: Transport = {
         id: id,
         type: formData.get('type') as string,
-        route: formData.get('route') as string,
-        price: Number(formData.get('price')),
-        departureTime: formData.get('departureTime') as string,
+        price1Day: Number(formData.get('price1Day')),
+        price2Day: Number(formData.get('price2Day')),
         image: imageUrl || 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800',
+        note: formData.get('note') as string || '',
     };
 
     await dbSaveTransport(transport);

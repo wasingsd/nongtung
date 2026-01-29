@@ -1,8 +1,10 @@
 import Image from 'next/image';
-import { Search, AlertCircle, ShoppingCart } from 'lucide-react';
-import { RENTAL_GEAR } from '@/data/mock';
+import { Search, AlertCircle, ShoppingCart, Package } from 'lucide-react';
+import { getRentals } from '@/lib/firestore-db';
 
-export default function RentalPage() {
+export default async function RentalPage() {
+    const rentals = await getRentals();
+
     return (
         <div className="container mx-auto px-6 py-12 fade-in">
             <div className="flex flex-col md:flex-row items-center justify-between mb-12">
@@ -16,29 +18,52 @@ export default function RentalPage() {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {RENTAL_GEAR.map(g => (
-                    <div key={g.id} className="bg-white rounded-lg border border-gray-100 hover:shadow-lg transition-all group">
-                        <div className="relative h-48 bg-surface p-4">
-                            <Image
-                                src={g.image}
-                                alt={g.name}
-                                fill
-                                className="object-contain mix-blend-multiply group-hover:scale-105 transition-transform"
-                            />
-                            <div className="absolute top-2 right-2 text-xs bg-white/80 backdrop-blur px-2 py-1 rounded text-forest font-bold shadow-sm">Stock: {g.stock}</div>
-                        </div>
-                        <div className="p-4">
-                            <h3 className="font-bold text-forest mb-1 line-clamp-1">{g.name}</h3>
-                            <p className="text-xs text-gray-500 mb-4 h-8 overflow-hidden">{g.desc}</p>
-                            <div className="flex items-center justify-between">
-                                <div className="text-primary font-bold">฿{g.price} <span className="text-xs text-gray-400 font-normal">/{g.unit}</span></div>
-                                <button className="bg-surface text-forest hover:bg-primary hover:text-white p-2 rounded transition-colors"><ShoppingCart className="w-4 h-4" /></button>
+            {rentals.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {rentals.map(g => (
+                        <div key={g.id} className="bg-white rounded-lg border border-gray-100 hover:shadow-lg transition-all group">
+                            <div className="relative h-48 bg-surface p-4">
+                                {g.image ? (
+                                    <Image
+                                        src={g.image}
+                                        alt={g.name}
+                                        fill
+                                        className="object-contain mix-blend-multiply group-hover:scale-105 transition-transform"
+                                    />
+                                ) : (
+                                    <div className="w-full h-full flex items-center justify-center text-gray-300">
+                                        <Package className="w-16 h-16" />
+                                    </div>
+                                )}
+                                <div className={`absolute top-2 right-2 text-xs px-2 py-1 rounded font-bold shadow-sm ${(g.stock || 0) > 5 ? 'bg-green-100 text-green-700' :
+                                        (g.stock || 0) > 0 ? 'bg-orange-100 text-orange-700' :
+                                            'bg-red-100 text-red-700'
+                                    }`}>
+                                    Stock: {g.stock || 0}
+                                </div>
+                            </div>
+                            <div className="p-4">
+                                <h3 className="font-bold text-forest mb-1 line-clamp-1">{g.name}</h3>
+                                <p className="text-xs text-gray-500 mb-4 h-8 overflow-hidden">{g.description || '-'}</p>
+                                <div className="flex items-center justify-between">
+                                    <div className="text-primary font-bold">฿{(g.price || 0).toLocaleString()} <span className="text-xs text-gray-400 font-normal">/{g.unit || 'Day'}</span></div>
+                                    <button
+                                        className={`p-2 rounded transition-colors ${(g.stock || 0) > 0 ? 'bg-surface text-forest hover:bg-primary hover:text-white' : 'bg-gray-100 text-gray-300 cursor-not-allowed'}`}
+                                        disabled={(g.stock || 0) === 0}
+                                    >
+                                        <ShoppingCart className="w-4 h-4" />
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
+            ) : (
+                <div className="text-center py-20 text-gray-400">
+                    <Package className="w-16 h-16 mx-auto mb-4 opacity-50" />
+                    <p>ยังไม่มีอุปกรณ์ให้เช่า กรุณาเพิ่มข้อมูลในระบบหลังบ้าน</p>
+                </div>
+            )}
 
             {/* Rental Conditions */}
             <div className="mt-16 bg-surface p-8 rounded-lg">

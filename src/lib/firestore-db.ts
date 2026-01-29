@@ -113,10 +113,12 @@ export async function saveRental(rental: Rental): Promise<void> {
         await setDoc(docRef, {
             name: rental.name,
             type: rental.type,
-            pricePerDay: rental.pricePerDay,
+            price: rental.price,
+            unit: rental.unit,
+            stock: rental.stock,
             image: rental.image,
+            description: rental.description || '',
             features: rental.features || [],
-            capacity: rental.capacity,
         });
     } catch (error) {
         console.error('Error saving rental:', error);
@@ -165,10 +167,10 @@ export async function saveTransport(transport: Transport): Promise<void> {
         const docRef = doc(db, COLLECTIONS.TRANSPORT, transport.id);
         await setDoc(docRef, {
             type: transport.type,
-            route: transport.route,
-            price: transport.price,
-            departureTime: transport.departureTime,
+            price1Day: transport.price1Day,
+            price2Day: transport.price2Day,
             image: transport.image,
+            note: transport.note || '',
         });
     } catch (error) {
         console.error('Error saving transport:', error);

@@ -108,8 +108,10 @@ export default function TripForm({ trip }: TripFormProps) {
 
                 {/* Gallery URLs */}
                 <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Gallery Images</label>
-                    <div className="grid grid-cols-4 gap-4 mb-4">
+                    <div className="flex justify-between items-center mb-2">
+                        <label className="block text-sm font-bold text-gray-700">Gallery Images ({gallery.length}/10)</label>
+                    </div>
+                    <div className="grid grid-cols-5 gap-3 mb-4">
                         {gallery.map((url, i) => (
                             <div key={i} className="relative aspect-square rounded-lg overflow-hidden border border-gray-200 group">
                                 <Image src={url} alt={`Gallery ${i}`} fill className="object-cover" />
@@ -120,18 +122,23 @@ export default function TripForm({ trip }: TripFormProps) {
                         ))}
                     </div>
 
-                    <div className="flex gap-2">
-                        <input
-                            type="url"
-                            value={newGalleryUrl}
-                            onChange={(e) => setNewGalleryUrl(e.target.value)}
-                            placeholder="Paste image URL here..."
-                            className="flex-grow border border-gray-300 rounded p-2 text-sm"
-                        />
-                        <button type="button" onClick={addGalleryUrl} className="bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded flex items-center gap-2 text-sm font-bold">
-                            <Plus className="w-4 h-4" /> Add
-                        </button>
-                    </div>
+                    {gallery.length < 10 && (
+                        <div className="flex gap-2">
+                            <input
+                                type="url"
+                                value={newGalleryUrl}
+                                onChange={(e) => setNewGalleryUrl(e.target.value)}
+                                placeholder="Paste image URL here..."
+                                className="flex-grow border border-gray-300 rounded p-2 text-sm"
+                            />
+                            <button type="button" onClick={addGalleryUrl} className="bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded flex items-center gap-2 text-sm font-bold">
+                                <Plus className="w-4 h-4" /> Add
+                            </button>
+                        </div>
+                    )}
+                    {gallery.length >= 10 && (
+                        <p className="text-xs text-orange-500 font-medium">✓ ครบ 10 รูปแล้ว</p>
+                    )}
                 </div>
 
                 <div className="grid grid-cols-3 gap-6">

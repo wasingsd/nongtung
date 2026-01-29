@@ -20,20 +20,22 @@ export interface Trip {
 export interface Rental {
   id: string;
   name: string;
-  type: 'Car' | 'Bike' | 'Van';
-  pricePerDay: number;
+  type: 'Tent' | 'Chair' | 'Sleeping' | 'Kitchen' | 'Lighting' | 'Other';
+  price: number;       // ราคาต่อหน่วย
+  unit: string;        // หน่วย เช่น "Day", "Trip"
+  stock: number;       // จำนวนสต็อก
   image: string;
-  features: string[];
-  capacity: number;
+  description: string; // คำอธิบายสั้น
+  features: string[];  // คุณสมบัติพิเศษ
 }
 
 export interface Transport {
   id: string;
-  type: string;
-  route: string;
-  price: number;
-  departureTime: string;
+  type: string;      // ประเภทรถ (เช่น รถตู้ VIP, รถแดง)
+  price1Day: number; // ราคาสำหรับ 1 วัน
+  price2Day: number; // ราคาสำหรับ 2 วัน
   image: string;
+  note?: string;     // หมายเหตุเพิ่มเติม
 }
 
 export interface Article {

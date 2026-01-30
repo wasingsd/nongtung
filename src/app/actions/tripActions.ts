@@ -32,6 +32,7 @@ export async function createTrip(formData: FormData) {
     const trip: Trip = {
         id: slug,
         title: formData.get('title') as string,
+        subtitle: formData.get('subtitle') as string,
         price: Number(formData.get('price')),
         difficulty: formData.get('difficulty') as Trip['difficulty'],
         status: formData.get('status') as Trip['status'],
@@ -72,7 +73,8 @@ export async function updateTrip(originalId: string, formData: FormData) {
     const newId = slugInput ? slugify(slugInput) : originalId;
 
     // Validate Duplicate ID if ID changed
-    if (newId !== originalId) {
+    // ONLY throw if the newId is different from originalId AND different from slugified originalId
+    if (newId !== originalId && newId !== slugify(originalId)) {
         const existingTrip = await getTrip(newId);
         if (existingTrip) {
             throw new Error(`Trip ID "${newId}" นี้ถูกใช้งานไปแล้ว กรุณาใช้ชื่ออื่นเพื่อ SEO`);
@@ -82,6 +84,7 @@ export async function updateTrip(originalId: string, formData: FormData) {
     const trip: Trip = {
         id: newId,
         title: formData.get('title') as string,
+        subtitle: formData.get('subtitle') as string,
         price: Number(formData.get('price')),
         difficulty: formData.get('difficulty') as Trip['difficulty'],
         status: formData.get('status') as Trip['status'],

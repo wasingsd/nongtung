@@ -50,6 +50,7 @@ export async function saveTrip(trip: Trip): Promise<void> {
         const docRef = doc(db, COLLECTIONS.TRIPS, trip.id);
         await setDoc(docRef, {
             title: trip.title,
+            subtitle: trip.subtitle || '',
             price: trip.price,
             difficulty: trip.difficulty,
             status: trip.status,

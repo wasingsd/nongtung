@@ -23,14 +23,15 @@ export default function Navbar() {
     ];
 
     return (
-        <nav id="navbar" className="fixed w-full z-50 transition-all duration-300 py-4 glass-nav">
+        <nav id="navbar" className="fixed w-full z-50 transition-all duration-300 py-2 glass-nav">
             <div className="container mx-auto px-6 flex justify-between items-center">
                 {/* Logo */}
-                <Link href="/" className="text-2xl font-black font-heading tracking-tighter cursor-pointer flex items-center gap-2 z-50">
-                    <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white shadow-soft">
-                        <span className="text-xl">N</span>
-                    </div>
-                    <span id="nav-logo-text" className="text-forest">NONGTUNG</span>
+                <Link href="/" className="cursor-pointer flex items-center z-50">
+                    <img
+                        src="/images/typo_logo.svg"
+                        alt="NONGTUNG"
+                        className="h-11 md:h-15 w-auto transition-all"
+                    />
                 </Link>
 
                 {/* Desktop Menu */}

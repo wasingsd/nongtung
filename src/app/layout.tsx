@@ -17,8 +17,12 @@ const urbanist = Urbanist({
 });
 
 export const metadata: Metadata = {
-  title: "Nongtueng - Professional Adventure Services",
-  description: "Digital Platform for Adventure Tourism in Northern Thailand.",
+  title: "NONGTUNG - Premium Adventure Experiences",
+  description: "Bespoke northern Thailand travel curate for those who seek the extraordinary.",
+  icons: {
+    icon: '/images/favicon.svg',
+    apple: '/images/favicon.svg',
+  }
 };
 
 export default function RootLayout({

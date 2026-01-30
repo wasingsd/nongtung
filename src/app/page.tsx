@@ -1,11 +1,13 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { ShieldCheck, Gem, UserCheck, ChevronRight, MapPin, Users, Calendar, ArrowRight, Compass, Heart, Award } from 'lucide-react';
-import { getTrips } from '@/lib/firestore-db';
+import { getTrips, getTransport } from '@/lib/firestore-db';
 
 export default async function Home() {
   const trips = await getTrips();
   const featuredTrips = trips.slice(0, 6);
+  const transports = await getTransport();
+  const featuredFleet = transports.slice(0, 3);
 
   return (
     <div className="fade-in bg-[#fdfdfb]">
@@ -41,7 +43,7 @@ export default async function Home() {
       {/* Atmospheric Statistics */}
       <section className="relative z-30 -mt-16 pb-20">
         <div className="container mx-auto px-6">
-          <div className="bg-white rounded-[3rem] immersive-shadow p-10 md:p-16 border border-forest/5">
+          <div className="bg-white rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-10 md:p-14 border border-forest/10">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
               <div className="space-y-2">
                 <div className="text-4xl md:text-6xl font-black font-heading text-forest tracking-tighter">{trips.length}</div>
@@ -103,9 +105,14 @@ export default async function Home() {
                   </div>
                 </div>
                 <div className="px-2">
-                  <h3 className="text-base font-black text-forest font-heading group-hover:text-primary transition-colors line-clamp-3 min-h-[3.75rem] leading-tight break-words">
+                  <h3 className="text-base font-black text-forest font-heading group-hover:text-primary transition-colors leading-tight break-words">
                     {trip.title}
                   </h3>
+                  {trip.subtitle && (
+                    <p className="text-[11px] font-medium text-forest/40 mt-1 line-clamp-2">
+                      {trip.subtitle}
+                    </p>
+                  )}
                   <div className="flex flex-wrap gap-2 mt-2 mb-4">
                     {trip.tags?.slice(0, 3).map(tag => (
                       <span key={tag} className="text-[9px] font-black uppercase tracking-[0.2em] text-forest/40">
@@ -199,6 +206,50 @@ export default async function Home() {
                 Chat with Concierge
               </a>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Premium Fleet: Elevate Your Journey */}
+      <section className="py-24 bg-white relative z-30">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+            <div className="max-w-xl">
+              <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-3 block">Premium Rental Fleet</span>
+              <h2 className="text-4xl md:text-5xl font-black font-heading text-forest tracking-tighter uppercase">CHAUFFEUR DESIGNED</h2>
+            </div>
+            <Link href="/transport" className="text-[10px] font-black uppercase tracking-[0.2em] text-forest/40 hover:text-primary transition-colors flex items-center gap-2 group">
+              View All Transport <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            {featuredFleet.map((car) => (
+              <div key={car.id} className="group flex flex-col h-full bg-white rounded-[3rem] overflow-hidden immersive-shadow border border-forest/5 hover:-translate-y-2 transition-all duration-500">
+                <div className="relative h-64 overflow-hidden">
+                  <Image
+                    src={car.image}
+                    alt={car.type}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-forest/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                </div>
+                <div className="p-10 flex flex-col flex-grow">
+                  <h3 className="text-2xl font-black text-forest tracking-tighter mb-6">{car.type}</h3>
+                  <div className="flex items-center justify-between p-5 bg-surface rounded-[2rem] border border-forest/5 group-hover:bg-white group-hover:shadow-soft transition-all duration-500">
+                    <span className="font-bold text-forest/40 uppercase tracking-widest text-[9px]">Starting from</span>
+                    <span className="text-xl font-black text-forest tracking-tighter">฿{(car.price1Day || 0).toLocaleString()}</span>
+                  </div>
+                  <Link
+                    href="/transport"
+                    className="mt-8 block w-full bg-forest text-white py-4 rounded-full font-black text-[10px] tracking-[0.2em] text-center transition-all duration-300 shadow-lg hover:shadow-forest/30 uppercase group-hover:bg-primary"
+                  >
+                    Check Availability
+                  </Link>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>

@@ -91,6 +91,11 @@ export default function TripForm({ trip }: TripFormProps) {
                 </div>
 
                 <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2">Trip Subtitle</label>
+                    <input name="subtitle" defaultValue={trip?.subtitle} placeholder="e.g. Discovery the untamed nature" type="text" className="w-full border border-gray-300 rounded p-3 focus:ring-2 focus:ring-primary outline-none" />
+                </div>
+
+                <div>
                     <div className="flex justify-between items-center mb-2">
                         <label className="block text-sm font-bold text-gray-700">Trip ID / Slug (สำหรับ SEO)</label>
                         <button

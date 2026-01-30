@@ -8,15 +8,15 @@ export default function AdminLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="flex h-screen bg-gray-50">
+        <div className="flex bg-gray-50 min-h-[calc(100vh-5rem)]">
             {/* Sidebar */}
-            <aside className="w-64 bg-forest text-white hidden md:flex flex-col">
+            <aside className="w-64 bg-forest text-white hidden md:flex flex-col sticky top-20 self-start h-[calc(100vh-5rem)]">
                 <div className="p-6 border-b border-forest-light">
                     <h2 className="text-2xl font-bold font-heading">Admin Panel</h2>
                     <p className="text-xs text-gray-300 mt-1">Manage your website</p>
                 </div>
 
-                <nav className="flex-grow p-6 space-y-2">
+                <nav className="flex-grow p-6 space-y-2 overflow-y-auto custom-scrollbar">
                     <Link href="/adminnongtung/trips" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-colors text-sm font-bold">
                         <Ticket className="w-5 h-5" /> Trips
                     </Link>
@@ -50,17 +50,17 @@ export default function AdminLayout({
             </aside>
 
             {/* Mobile Header (visible only on small screens) */}
-            <div className="md:hidden fixed top-0 left-0 right-0 bg-forest text-white z-50 p-4 flex justify-between items-center">
+            <div className="md:hidden fixed top-20 left-0 right-0 bg-forest text-white z-50 p-4 flex justify-between items-center shadow-lg">
                 <span className="font-bold">Admin</span>
-                <div className="flex gap-4 text-sm">
-                    <Link href="/adminnongtung/trips">Trips</Link>
-                    <Link href="/adminnongtung/transport">Transport</Link>
-                    <Link href="/adminnongtung/rental">Rentals</Link>
+                <div className="flex gap-4 text-sm font-bold">
+                    <Link href="/adminnongtung/trips" className="hover:text-primary transition-colors">Trips</Link>
+                    <Link href="/adminnongtung/transport" className="hover:text-primary transition-colors">Transport</Link>
+                    <Link href="/adminnongtung/rental" className="hover:text-primary transition-colors">Rentals</Link>
                 </div>
             </div>
 
             {/* Main Content */}
-            <main className="flex-grow overflow-y-auto p-8 pt-20 md:pt-8">
+            <main className="flex-grow p-8 pt-24 md:pt-8">
                 {children}
             </main>
         </div>

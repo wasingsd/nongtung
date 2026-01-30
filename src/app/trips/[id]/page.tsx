@@ -15,7 +15,8 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
     const { id } = await params;
-    const trip = await getTrip(id);
+    const decodedId = decodeURIComponent(id);
+    const trip = await getTrip(decodedId);
 
     if (!trip) return { title: 'Trip Not Found | Nongtung' };
 
@@ -30,7 +31,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
         },
         keywords: [trip.location, trip.type, 'trekking chiang mai', 'adventure thailand', trip.title, ...trip.tags],
         alternates: {
-            canonical: `https://nongtung.com/trips/${trip.id}`
+            canonical: `https://nongtung.com/trips/${decodedId}`
         }
     };
 }
@@ -41,8 +42,9 @@ export default async function TripDetailPage({
     params: Promise<{ id: string }>;
 }) {
     const { id } = await params;
-    console.log('Fetching Public Trip Page for ID:', id);
-    const trip = await getTrip(id);
+    const decodedId = decodeURIComponent(id);
+    console.log('Fetching Public Trip Page for ID:', decodedId);
+    const trip = await getTrip(decodedId);
 
     if (!trip) {
         notFound();
@@ -66,7 +68,7 @@ export default async function TripDetailPage({
             price: trip.price,
             priceCurrency: 'THB',
             availability: trip.status === 'available' ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
-            url: `https://nongtung.com/trips/${id}`
+            url: `https://nongtung.com/trips/${decodedId}`
         },
         brand: {
             '@type': 'Brand',
@@ -115,6 +117,11 @@ export default async function TripDetailPage({
                             <h1 className="text-4xl md:text-7xl font-black font-heading text-white leading-[1.1] tracking-tighter drop-shadow-2xl">
                                 {trip.title}
                             </h1>
+                            {trip.subtitle && (
+                                <p className="text-xl md:text-2xl font-medium text-white/80 mt-4 tracking-tight drop-shadow-lg max-w-2xl">
+                                    {trip.subtitle}
+                                </p>
+                            )}
                         </div>
                     </div>
                 </div>

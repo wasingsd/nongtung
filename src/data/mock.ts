@@ -1,6 +1,7 @@
 export interface Trip {
     id: string;
     title: string;
+    subtitle: string;
     price: number;
     difficulty: 'Easy' | 'Moderate' | 'Hard';
     status: 'available' | 'limited' | 'sold-out';
@@ -11,11 +12,11 @@ export interface Trip {
 }
 
 export const TRIPS: Trip[] = [
-    { id: 't1', title: 'Doi Luang Chiang Dao 2D1N', price: 3500, difficulty: 'Hard', status: 'limited', image: 'https://images.unsplash.com/photo-1533240332313-0dbdd3199061?auto=format&fit=crop&q=80&w=800', tags: ['Join-in', 'Hiking'], duration: '2D1N', type: 'join' },
-    { id: 't2', title: 'Private Camp: Doi Pui Secret Spot', price: 4500, difficulty: 'Easy', status: 'available', image: 'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&q=80&w=800', tags: ['Private', 'Glamping'], duration: '2D1N', type: 'private' },
-    { id: 't3', title: 'Kiw Mae Pan Trail 1 Day', price: 1200, difficulty: 'Moderate', status: 'sold-out', image: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&q=80&w=800', tags: ['One Day', 'Nature'], duration: '1D', type: 'join' },
-    { id: 't4', title: 'Doi Mon Jong 2D1N', price: 2900, difficulty: 'Moderate', status: 'available', image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800', tags: ['Join-in', 'Hiking'], duration: '2D1N', type: 'join' },
-    { id: 't5', title: 'Mae Hong Son Loop 3D2N', price: 8500, difficulty: 'Easy', status: 'available', image: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80&w=800', tags: ['Private', 'Road Trip'], duration: '3D+', type: 'private' }
+    { id: 't1', title: 'Doi Luang Chiang Dao 2D1N', subtitle: 'Experience the ridge of the magic mountain', price: 3500, difficulty: 'Hard', status: 'limited', image: 'https://images.unsplash.com/photo-1533240332313-0dbdd3199061?auto=format&fit=crop&q=80&w=800', tags: ['Join-in', 'Hiking'], duration: '2D1N', type: 'join' },
+    { id: 't2', title: 'Private Camp: Doi Pui Secret Spot', subtitle: 'Luxury camping in the heart of the forest', price: 4500, difficulty: 'Easy', status: 'available', image: 'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&q=80&w=800', tags: ['Private', 'Glamping'], duration: '2D1N', type: 'private' },
+    { id: 't3', title: 'Kiw Mae Pan Trail 1 Day', subtitle: 'Nature walk above the clouds', price: 1200, difficulty: 'Moderate', status: 'sold-out', image: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&q=80&w=800', tags: ['One Day', 'Nature'], duration: '1D', type: 'join' },
+    { id: 't4', title: 'Doi Mon Jong 2D1N', subtitle: 'Golden fields and elephant mountain', price: 2900, difficulty: 'Moderate', status: 'available', image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800', tags: ['Join-in', 'Hiking'], duration: '2D1N', type: 'join' },
+    { id: 't5', title: 'Mae Hong Son Loop 3D2N', subtitle: 'The road of 1,864 curves', price: 8500, difficulty: 'Easy', status: 'available', image: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80&w=800', tags: ['Private', 'Road Trip'], duration: '3D+', type: 'private' }
 ];
 
 export interface RentalGear {

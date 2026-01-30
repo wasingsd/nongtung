@@ -1,6 +1,7 @@
 export interface Trip {
   id: string;
   title: string;
+  subtitle: string;
   price: number;
   difficulty: 'Easy' | 'Moderate' | 'Hard';
   status: 'available' | 'limited' | 'sold-out';

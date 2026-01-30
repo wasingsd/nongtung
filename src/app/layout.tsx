@@ -17,7 +17,7 @@ const urbanist = Urbanist({
 });
 
 export const metadata: Metadata = {
-  title: "NONGTUNG - Premium Adventure Experiences",
+  title: "NONGTUNG - Adventure Experiences",
   description: "Bespoke northern Thailand travel curate for those who seek the extraordinary.",
   icons: {
     icon: '/images/favicon.svg',

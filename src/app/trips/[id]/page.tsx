@@ -98,7 +98,7 @@ export default async function TripDetailPage({
                 {/* Back Link Overlay */}
                 <div className="absolute top-8 left-8 z-20">
                     <Link href="/trips" className="inline-flex items-center text-sm font-bold text-white/90 hover:text-white transition-all bg-black/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
-                        <ChevronLeft className="w-4 h-4 mr-1" /> All Adventures
+                        <ChevronLeft className="w-4 h-4 mr-1" /> Back to Trips
                     </Link>
                 </div>
 
@@ -108,17 +108,17 @@ export default async function TripDetailPage({
                         <div className="max-w-4xl">
                             <div className="flex gap-3 mb-6">
                                 <span className="bg-primary text-white font-black px-4 py-1.5 rounded-full text-[10px] uppercase tracking-[0.2em] shadow-xl">
-                                    {trip.duration} EXPLORATION
+                                    {trip.duration} TRIP
                                 </span>
                                 <span className="bg-white/20 backdrop-blur-md text-white font-black px-4 py-1.5 rounded-full text-[10px] uppercase tracking-[0.2em] border border-white/20">
                                     {trip.type} group
                                 </span>
                             </div>
-                            <h1 className="text-4xl md:text-7xl font-black font-heading text-white leading-[1.1] tracking-tighter drop-shadow-2xl">
+                            <h1 className="text-2xl md:text-7xl font-black font-heading text-white leading-[1.05] tracking-tighter drop-shadow-2xl uppercase italic">
                                 {trip.title}
                             </h1>
                             {trip.subtitle && (
-                                <p className="text-xl md:text-2xl font-medium text-white/80 mt-4 tracking-tight drop-shadow-lg max-w-2xl">
+                                <p className="text-lg md:text-2xl font-medium text-white/80 mt-4 tracking-tight drop-shadow-lg max-w-2xl">
                                     {trip.subtitle}
                                 </p>
                             )}
@@ -136,7 +136,7 @@ export default async function TripDetailPage({
                         {/* Highlights Row */}
                         <div className="flex flex-wrap gap-8 md:gap-12 mb-16 border-b border-forest/5 pb-10">
                             <div className="flex flex-col gap-1">
-                                <span className="text-[10px] font-black text-forest/30 uppercase tracking-widest">WHERE</span>
+                                <span className="text-[10px] font-black text-forest/30 uppercase tracking-widest">LOCATION</span>
                                 <span className="text-forest font-bold">{trip.location || 'Chiang Mai, TH'}</span>
                             </div>
                             <div className="flex flex-col gap-1">
@@ -144,24 +144,24 @@ export default async function TripDetailPage({
                                 <span className="text-forest font-bold">{trip.difficulty}</span>
                             </div>
                             <div className="flex flex-col gap-1">
-                                <span className="text-[10px] font-black text-forest/30 uppercase tracking-widest">PACE</span>
-                                <span className="text-forest font-bold">Standard Adventure</span>
+                                <span className="text-[9px] font-black text-forest/30 uppercase tracking-widest">PACE</span>
+                                <span className="text-forest font-bold text-xs md:text-base">Standard Adventure</span>
                             </div>
                         </div>
 
                         {/* Gallery Section */}
                         {(trip.gallery && trip.gallery.length > 0) && (
                             <section className="mb-20">
-                                <h2 className="text-3xl font-black font-heading text-forest mb-8 tracking-tighter">Capture the Moment</h2>
+                                <h2 className="text-3xl font-black font-heading text-forest mb-8 tracking-tighter">Photo Gallery</h2>
                                 <ImageLightbox images={trip.gallery} mainImage={trip.image} />
                             </section>
                         )}
 
                         {/* Story/Description */}
                         <section className="mb-20">
-                            <h2 className="text-3xl font-black font-heading text-forest mb-8 tracking-tighter">The Experience</h2>
+                            <h2 className="text-3xl font-black font-heading text-forest mb-8 tracking-tighter">Trip Details</h2>
                             <div className="prose prose-forest max-w-none">
-                                <p className="text-xl text-forest/70 leading-relaxed whitespace-pre-line font-medium italic mb-12 border-l-4 border-primary/20 pl-8">
+                                <p className="text-base md:text-xl text-forest/70 leading-relaxed whitespace-pre-line font-medium italic mb-10 border-l-4 border-primary/20 pl-5 md:pl-8">
                                     {trip.description || 'No description available.'}
                                 </p>
                             </div>
@@ -181,7 +181,7 @@ export default async function TripDetailPage({
                         {/* Journal Timeline (Itinerary) */}
                         {itinerary.length > 0 && (
                             <section className="mb-20">
-                                <h2 className="text-3xl font-black font-heading text-forest mb-12 tracking-tighter">Day by Day Journal</h2>
+                                <h2 className="text-3xl font-black font-heading text-forest mb-12 tracking-tighter">Plan for the Trip</h2>
                                 <div className="space-y-12 relative before:absolute before:left-5 before:top-2 before:bottom-0 before:w-px before:bg-forest/5">
                                     {itinerary.map((day, i) => (
                                         <div key={i} className="relative pl-16 group">
@@ -190,8 +190,8 @@ export default async function TripDetailPage({
                                             </div>
                                             <div className="bg-surface/30 p-8 rounded-3xl border border-forest/5 group-hover:bg-white group-hover:immersive-shadow transition-all duration-500">
                                                 <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-2 block">{day.day}</span>
-                                                <h3 className="text-2xl font-black text-forest mb-4 tracking-tighter">{day.title}</h3>
-                                                <p className="text-lg text-forest/50 leading-relaxed font-medium whitespace-pre-line">{day.desc}</p>
+                                                <h3 className="text-lg md:text-2xl font-black text-forest mb-3 tracking-tighter uppercase italic">{day.title}</h3>
+                                                <p className="text-sm md:text-lg text-forest/50 leading-relaxed font-medium whitespace-pre-line">{day.desc}</p>
                                             </div>
                                         </div>
                                     ))}
@@ -201,12 +201,12 @@ export default async function TripDetailPage({
 
                         {/* Inclusions */}
                         <section className="bg-forest text-white/90 rounded-[3rem] p-10 md:p-16">
-                            <h2 className="text-3xl font-black font-heading text-white mb-10 tracking-tighter">Essentials Included</h2>
+                            <h2 className="text-3xl font-black font-heading text-white mb-10 tracking-tighter">What's Included</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
                                 {whatsIncluded.map((item, i) => (
                                     <div key={i} className="flex items-center gap-4 text-white/70">
                                         <div className="w-2 h-2 rounded-full bg-primary shadow-glow"></div>
-                                        <span className="text-lg font-bold tracking-tight">{item}</span>
+                                        <span className="text-base md:text-lg font-bold tracking-tight">{item}</span>
                                     </div>
                                 ))}
                             </div>
@@ -231,14 +231,14 @@ export default async function TripDetailPage({
                         <div className="sticky top-28">
                             <div className="bg-white rounded-[2.5rem] immersive-shadow border border-forest/5 overflow-hidden p-8 md:p-10">
                                 <div className="text-center mb-10">
-                                    <span className="text-[10px] font-black text-forest/30 uppercase tracking-[0.3em] block mb-2">PRIVATE CONCIERGE BOOKING</span>
+                                    <span className="text-[10px] font-black text-forest/30 uppercase tracking-[0.3em] block mb-2">BOOKING</span>
                                     <div className="flex items-baseline justify-center gap-2">
                                         <span className="text-sm font-black text-forest/40">THB</span>
-                                        <span className="text-6xl font-black font-heading text-forest tracking-tighter">
+                                        <span className="text-3xl md:text-6xl font-black font-heading text-forest tracking-tighter">
                                             {trip.price.toLocaleString()}
                                         </span>
                                     </div>
-                                    <span className="text-xs font-bold text-forest/30 mt-2 block">Premium Experience Per Person</span>
+                                    <span className="text-xs font-bold text-forest/30 mt-2 block">Price per person</span>
                                 </div>
 
                                 <div className="space-y-4 mb-10 bg-surface/50 p-6 rounded-3xl border border-forest/5">
@@ -259,7 +259,7 @@ export default async function TripDetailPage({
                                         rel="noopener noreferrer"
                                         className="block w-full bg-primary hover:bg-forest text-white text-center font-black py-5 rounded-full uppercase text-xs tracking-[0.2em] shadow-xl hover:shadow-primary/20 transition-all transform hover:-translate-y-1"
                                     >
-                                        Initiate Booking
+                                        Booking
                                     </a>
 
                                     <a
@@ -268,12 +268,12 @@ export default async function TripDetailPage({
                                         rel="noopener noreferrer"
                                         className="block w-full bg-surface hover:bg-white text-forest text-center font-black py-4 rounded-full uppercase text-[10px] tracking-[0.2em] transition-all border border-forest/5 flex items-center justify-center gap-2"
                                     >
-                                        <MessageCircle className="w-4 h-4" /> Personal Question
+                                        <MessageCircle className="w-4 h-4" /> Message Us
                                     </a>
                                 </div>
 
                                 <div className="mt-8 flex items-center justify-center gap-2 text-[10px] font-black text-forest/20 uppercase tracking-[0.2em]">
-                                    <Shield className="w-3 h-3" /> SECURE COMMUNICATION
+                                    <Shield className="w-3 h-3" /> SAFE & DIRECT
                                 </div>
                             </div>
 
@@ -288,8 +288,8 @@ export default async function TripDetailPage({
                                     <MessageCircle className="w-7 h-7" />
                                 </div>
                                 <div>
-                                    <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em] mb-1">CRAFTED FOR YOU</p>
-                                    <p className="text-lg font-black text-white tracking-tighter">Expert Assistance</p>
+                                    <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em] mb-1">NEED HELP?</p>
+                                    <p className="text-lg font-black text-white tracking-tighter">Talk to our Team</p>
                                 </div>
                             </a>
                         </div>

@@ -18,12 +18,12 @@ export default function CorporatePage() {
                     priority
                 />
                 <div className="relative z-20 text-center text-white px-6 max-w-5xl">
-                    <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.5em] mb-6 block drop-shadow-lg text-primary">Elevate Your Team</span>
+                    <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.5em] mb-6 block drop-shadow-lg text-primary">Stronger Together</span>
                     <h1 className="text-5xl md:text-8xl font-black mb-8 font-heading leading-[0.9] tracking-tighter drop-shadow-2xl uppercase">
-                        CORPORATE<br /><span className="text-primary italic">RETEATS</span>
+                        COMPANY<br /><span className="text-primary italic">TRIPS</span>
                     </h1>
                     <p className="text-lg md:text-xl text-white/80 mb-12 max-w-2xl mx-auto font-medium drop-shadow-md">
-                        Tailor-made outdoor experiences designed to foster connection, leadership, and team spirit in the heart of Northern Thailand.
+                        Custom outdoor trips designed to help your team connect, lead, and grow together in Northern Thailand.
                     </p>
                 </div>
             </div>
@@ -37,14 +37,14 @@ export default function CorporatePage() {
                                 <div className="w-16 h-16 bg-surface rounded-2xl flex items-center justify-center text-primary mb-6 shadow-sm border border-forest/5">
                                     <Users2 className="w-8 h-8" />
                                 </div>
-                                <h3 className="text-xl font-black font-heading text-forest mb-3 tracking-tighter uppercase">Team Synergy</h3>
+                                <h3 className="text-xl font-black font-heading text-forest mb-3 tracking-tighter uppercase">Team Building</h3>
                                 <p className="text-sm font-medium text-forest/40 leading-relaxed">กิจกรรมละลายพฤติกรรมที่ออกแบบมาเพื่อดึงศักยภาพของทีมออกมาได้สูงสุดในบรรยากาศผ่อนคลาย</p>
                             </div>
                             <div className="flex flex-col items-center text-center">
                                 <div className="w-16 h-16 bg-surface rounded-2xl flex items-center justify-center text-primary mb-6 shadow-sm border border-forest/5">
                                     <Compass className="w-8 h-8" />
                                 </div>
-                                <h3 className="text-xl font-black font-heading text-forest mb-3 tracking-tighter uppercase">Custom Itinerary</h3>
+                                <h3 className="text-xl font-black font-heading text-forest mb-3 tracking-tighter uppercase">Flexible Plans</h3>
                                 <p className="text-sm font-medium text-forest/40 leading-relaxed">เลือกความยาก เส้นทาง และระดับความหรูหราของที่พักและอาหารได้ตามงบประมาณองค์กร</p>
                             </div>
                             <div className="flex flex-col items-center text-center">
@@ -64,8 +64,8 @@ export default function CorporatePage() {
                 <div className="container mx-auto px-6">
                     <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
                         <div className="max-w-xl">
-                            <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-3 block">Corporate Solutions</span>
-                            <h2 className="text-4xl md:text-5xl font-black font-heading text-forest tracking-tighter">OUR SPECIALTIES</h2>
+                            <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-3 block">Corporate Trips</span>
+                            <h2 className="text-4xl md:text-5xl font-black font-heading text-forest tracking-tighter">WHAT WE DO</h2>
                         </div>
                     </div>
 
@@ -79,7 +79,7 @@ export default function CorporatePage() {
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                             <div className="absolute bottom-10 left-10 right-10">
-                                <h4 className="text-2xl font-black text-white font-heading tracking-tighter mb-2 uppercase italic">Executive Retreats</h4>
+                                <h4 className="text-2xl font-black text-white font-heading tracking-tighter mb-2 uppercase italic">Executive Trips</h4>
                                 <p className="text-sm text-white/60 font-medium">ทริปพักผ่อนระดับผู้บริหาร เน้นความเป็นส่วนตัวและความพรีเมียมสูงสุด</p>
                             </div>
                         </div>
@@ -92,7 +92,7 @@ export default function CorporatePage() {
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                             <div className="absolute bottom-10 left-10 right-10">
-                                <h4 className="text-2xl font-black text-white font-heading tracking-tighter mb-2 uppercase italic">Team Building Adventures</h4>
+                                <h4 className="text-2xl font-black text-white font-heading tracking-tighter mb-2 uppercase italic">Building Teamwork</h4>
                                 <p className="text-sm text-white/60 font-medium">ผจญภัยท่ามกลางธรรมชาติเพื่อสร้างความไว้วางใจและการสื่อสารในทีม</p>
                             </div>
                         </div>
@@ -105,9 +105,9 @@ export default function CorporatePage() {
                 <div className="container mx-auto px-6">
                     <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-16">
                         <div className="lg:w-5/12">
-                            <span className="text-[10px] font-black text-forest/20 uppercase tracking-[0.4em] mb-4 block">Request a Quote</span>
+                            <span className="text-[10px] font-black text-forest/20 uppercase tracking-[0.4em] mb-4 block">Get a Quote</span>
                             <h2 className="text-4xl md:text-5xl font-black font-heading text-forest tracking-tighter mb-8 uppercase italic leading-tight">
-                                LET US DESIGN<br />YOUR NEXT<br /><span className="text-primary italic">ADVENTURE</span>
+                                LET US PLAN<br />YOUR NEXT<br /><span className="text-primary italic">TRIP</span>
                             </h2>
                             <p className="text-forest/60 font-medium leading-relaxed mb-10">
                                 แจ้งรายละเอียดทีมของคุณ เพื่อให้ทีมงานผู้เชี่ยวชาญของเราออกแบบโปรแกรมที่ตอบโจทย์ที่สุด และคุ้มค่าที่สุดสำหรับงบประมาณของบริษัท
@@ -115,13 +115,13 @@ export default function CorporatePage() {
 
                             <div className="space-y-4">
                                 <li className="flex items-center gap-4 text-forest/40 font-bold text-sm">
-                                    <CheckCircle2 className="w-5 h-5 text-primary" /> Personalized Itinerary
+                                    <CheckCircle2 className="w-5 h-5 text-primary" /> Custom Plans
                                 </li>
                                 <li className="flex items-center gap-4 text-forest/40 font-bold text-sm">
-                                    <CheckCircle2 className="w-5 h-5 text-primary" /> Flexible Budgeting
+                                    <CheckCircle2 className="w-5 h-5 text-primary" /> Flexible Budget
                                 </li>
                                 <li className="flex items-center gap-4 text-forest/40 font-bold text-sm">
-                                    <CheckCircle2 className="w-5 h-5 text-primary" /> Full Professional Support
+                                    <CheckCircle2 className="w-5 h-5 text-primary" /> Full Team Support
                                 </li>
                             </div>
                         </div>
@@ -159,7 +159,7 @@ export default function CorporatePage() {
                                     </div>
                                     <div className="col-span-2 pt-4">
                                         <button className="w-full bg-primary hover:bg-forest text-white py-5 rounded-full font-black uppercase text-[10px] tracking-[0.2em] transition-all shadow-xl hover:shadow-primary/20 transform hover:-translate-y-1 flex items-center justify-center gap-3 group">
-                                            Send Proposal Request <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                            Ask for a Quote <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                                         </button>
                                     </div>
                                 </form>

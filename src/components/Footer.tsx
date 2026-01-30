@@ -15,8 +15,8 @@ export default function Footer() {
                             />
                         </Link>
                         <p className="text-white/40 mb-8 text-sm font-medium leading-[1.8]">
-                            Crafting immersive adventure experiences in Northern Thailand since 2024.
-                            <br />Authenticity • Connection • Adventure
+                            Amazing outdoor trips in Northern Thailand since 2024.
+                            <br />Nature • Connection • Adventure
                         </p>
                         <div className="flex gap-3">
                             <a
@@ -72,7 +72,7 @@ export default function Footer() {
                     </div>
                     <div>
                         <h4 className="text-xs font-black mb-8 uppercase tracking-[0.3em] text-primary">Newsletter</h4>
-                        <p className="text-xs font-medium text-white/30 mb-6 leading-relaxed">Join our inner circle for exclusive adventure insights.</p>
+                        <p className="text-xs font-medium text-white/30 mb-6 leading-relaxed">Sign up for trip updates and new adventure news.</p>
                         <div className="flex bg-white/5 border border-white/10 rounded-full p-1 group focus-within:border-primary/50 transition-all">
                             <input type="email" placeholder="Your Email"
                                 className="bg-transparent text-white px-5 py-2 text-xs w-full focus:outline-none placeholder-white/20 font-bold" />

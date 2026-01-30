@@ -22,19 +22,19 @@ export default async function Home() {
           priority
         />
         <div className="relative z-20 text-center text-white px-6 max-w-5xl">
-          <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.5em] mb-6 block drop-shadow-lg">Discover the Untamed North</span>
+          <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.5em] mb-6 block drop-shadow-lg">Explore Northern Thailand</span>
           <h1 className="text-5xl md:text-8xl font-black mb-8 font-heading leading-[0.9] tracking-tighter drop-shadow-2xl">
-            EXPLORE THE<br /><span className="text-primary italic">ADVENTURE</span>
+            START YOUR<br /><span className="text-primary italic">ADVENTURE</span>
           </h1>
           <p className="text-lg md:text-xl text-white/80 mb-12 max-w-2xl mx-auto font-medium drop-shadow-md">
-            Premium travel & adventure experiences curated for those who seek the extraordinary in Northern Thailand.
+            Quality camping and trekking trips in Chiang Mai designed for everyone who loves nature.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Link href="/trips" className="bg-primary hover:bg-forest text-white px-10 py-4 rounded-full font-black uppercase text-[10px] tracking-[0.2em] transition-all shadow-xl hover:shadow-primary/20 transform hover:-translate-y-1">
-              Start Journey
+              Book a Trip
             </Link>
             <Link href="/transport" className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white hover:text-forest text-white px-10 py-4 rounded-full font-black uppercase text-[10px] tracking-[0.2em] transition-all shadow-xl">
-              Private Transit
+              Rent a Van Now
             </Link>
           </div>
         </div>
@@ -51,15 +51,15 @@ export default async function Home() {
               </div>
               <div className="space-y-2">
                 <div className="text-4xl md:text-6xl font-black font-heading text-forest tracking-tighter">500+</div>
-                <div className="text-[9px] font-black uppercase tracking-[0.3em] text-forest/30">Explorers</div>
+                <div className="text-[9px] font-black uppercase tracking-[0.3em] text-forest/30">Happy Travelers</div>
               </div>
               <div className="space-y-2">
                 <div className="text-4xl md:text-6xl font-black font-heading text-forest tracking-tighter">24/7</div>
-                <div className="text-[9px] font-black uppercase tracking-[0.3em] text-forest/30">Concierge</div>
+                <div className="text-[9px] font-black uppercase tracking-[0.3em] text-forest/30">Support</div>
               </div>
               <div className="space-y-2">
                 <div className="text-4xl md:text-6xl font-black font-heading text-primary tracking-tighter">100%</div>
-                <div className="text-[9px] font-black uppercase tracking-[0.3em] text-primary/40 text-primary">Safety Record</div>
+                <div className="text-[9px] font-black uppercase tracking-[0.3em] text-primary/40 text-primary">Safe & Certified</div>
               </div>
             </div>
           </div>
@@ -71,11 +71,11 @@ export default async function Home() {
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
             <div className="max-w-xl">
-              <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-3 block">Handpicked for You</span>
-              <h2 className="text-4xl md:text-5xl font-black font-heading text-forest tracking-tighter">FEATURED TRIPS</h2>
+              <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-3 block">Recommended for You</span>
+              <h2 className="text-4xl md:text-5xl font-black font-heading text-forest tracking-tighter">POPULAR TRIPS</h2>
             </div>
             <Link href="/trips" className="text-[10px] font-black uppercase tracking-[0.2em] text-forest/40 hover:text-primary transition-colors flex items-center gap-2 group">
-              View Collection <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              See All Trips <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
 
@@ -136,9 +136,9 @@ export default async function Home() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {[
-              { icon: Compass, title: 'Safe Exploration', desc: 'Expertly trained guides and 100% safety record on every trail.' },
-              { icon: Heart, title: 'Bespoke Experience', desc: 'Curated premium equipment and VIP transport for ultimate comfort.' },
-              { icon: Award, title: 'Local Expertise', desc: 'Deep-rooted connections with northern communities and hidden gems.' }
+              { icon: Compass, title: 'Safe Trips', desc: 'Our guides are trained for safety on every trail.' },
+              { icon: Heart, title: 'Personal Service', desc: 'Good equipment and comfortable vans for your trip.' },
+              { icon: Award, title: 'Local Guides', desc: 'We know the best hidden spots in Northern Thailand.' }
             ].map((item, i) => (
               <div key={i} className="bg-white p-12 rounded-[3rem] immersive-shadow border border-forest/5 hover:-translate-y-2 transition-all duration-500 group">
                 <div className="w-16 h-16 bg-surface rounded-2xl flex items-center justify-center text-primary mb-8 group-hover:bg-primary group-hover:text-white transition-all shadow-soft overflow-hidden">
@@ -156,15 +156,15 @@ export default async function Home() {
       <section className="py-24 bg-white">
         <div className="container mx-auto px-6">
           <div className="text-center mb-20">
-            <span className="text-[10px] font-black text-forest/20 uppercase tracking-[0.4em] mb-4 block">Seamless Planning</span>
+            <span className="text-[10px] font-black text-forest/20 uppercase tracking-[0.4em] mb-4 block">Easy Planning</span>
             <h2 className="text-4xl md:text-5xl font-black font-heading text-forest tracking-tighter">HOW IT WORKS</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
             {[
-              { title: 'Curate Adventure', desc: 'Browse our collection of handpicked northern experiences.' },
-              { title: 'Messenger Concierge', desc: 'Secure your booking instantly via our dedicated chat service.' },
-              { title: 'Expert Prep', desc: 'Receive tailored equipment lists and itineraries for your trip.' },
-              { title: 'Immersive Journey', desc: 'Step out and lose yourself in the magic of the mountains.' }
+              { title: 'Choose a Trip', desc: 'Browse our collection of handpicked outdoor trips.' },
+              { title: 'Chat to Book', desc: 'Send us a message to book your trip instantly.' },
+              { title: 'Get Ready', desc: 'We will send you a list of items to bring and your plan.' },
+              { title: 'Enjoy Nature', desc: 'Meet our team and have an amazing time in the mountains.' }
             ].map((step, i) => (
               <div key={i} className="relative group">
                 <div className="text-[8rem] font-black text-forest/[0.03] absolute -top-16 -left-4 z-0 pointer-events-none group-hover:text-primary/5 transition-colors">0{i + 1}</div>
@@ -191,19 +191,19 @@ export default async function Home() {
         <div className="absolute inset-0 bg-gradient-to-t from-forest via-forest/40 to-transparent"></div>
         <div className="container mx-auto px-6 relative z-10">
           <div className="text-center text-white max-w-4xl mx-auto">
-            <span className="text-[10px] font-black uppercase tracking-[0.5em] mb-8 block text-primary shadow-glow">Final Call to Adventure</span>
+            <span className="text-[10px] font-black uppercase tracking-[0.5em] mb-8 block text-primary shadow-glow">Start Your Journey Today</span>
             <h2 className="text-5xl md:text-8xl font-black font-heading mb-10 tracking-tighter leading-[0.9]">
-              READY TO<br /><span className="italic">DISAPPEAR?</span>
+              READY FOR THE<br /><span className="italic">MOUNTAINS?</span>
             </h2>
             <p className="text-xl text-white/60 mb-12 max-w-2xl mx-auto font-medium">
-              Join us for a journey that transcends ordinary travel. Your northern story begins with a single conversation.
+              Join us for a trip you will never forget. Just send us a message and we will handle the rest.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link href="/trips" className="bg-primary hover:bg-white hover:text-forest text-white px-12 py-5 rounded-full font-black uppercase text-[10px] tracking-[0.2em] transition-all shadow-2xl transform hover:-translate-y-1">
-                Explore All Trips
+                Browse All Trips
               </Link>
               <a href="https://m.me/Venturevibecnx" target="_blank" rel="noopener noreferrer" className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white hover:text-forest text-white px-12 py-5 rounded-full font-black uppercase text-[10px] tracking-[0.2em] transition-all shadow-xl">
-                Chat with Concierge
+                Chat with our Team
               </a>
             </div>
           </div>
@@ -215,11 +215,11 @@ export default async function Home() {
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
             <div className="max-w-xl">
-              <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-3 block">Premium Rental Fleet</span>
-              <h2 className="text-4xl md:text-5xl font-black font-heading text-forest tracking-tighter uppercase">CHAUFFEUR DESIGNED</h2>
+              <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-3 block">Cars & Vans</span>
+              <h2 className="text-4xl md:text-5xl font-black font-heading text-forest tracking-tighter uppercase">COMFORTABLE RENTALS</h2>
             </div>
             <Link href="/transport" className="text-[10px] font-black uppercase tracking-[0.2em] text-forest/40 hover:text-primary transition-colors flex items-center gap-2 group">
-              View All Transport <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              See All Transport <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
 
@@ -245,7 +245,7 @@ export default async function Home() {
                     href="/transport"
                     className="mt-8 block w-full bg-forest text-white py-4 rounded-full font-black text-[10px] tracking-[0.2em] text-center transition-all duration-300 shadow-lg hover:shadow-forest/30 uppercase group-hover:bg-primary"
                   >
-                    Check Availability
+                    Select This Van
                   </Link>
                 </div>
               </div>

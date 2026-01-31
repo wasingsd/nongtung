@@ -16,8 +16,21 @@ import { Trip, Rental, Transport } from '../types/types';
 const COLLECTIONS = {
     TRIPS: 'trips',
     RENTALS: 'rentals',
-    TRANSPORT: 'transport'
+    TRANSPORT: 'transport',
+    QUOTES: 'quotes'
 } as const;
+
+export interface Quote {
+    id: string;
+    companyName: string;
+    contactPerson: string;
+    phone: string;
+    groupSize: string;
+    expectedDate: string | null; // Saved as ISO string or timestamp
+    requirements?: string;
+    status: 'pending' | 'done';
+    createdAt: string; // ISO string
+}
 
 // --- TRIPS ---
 export async function getTrips(): Promise<Trip[]> {
@@ -179,12 +192,49 @@ export async function saveTransport(transport: Transport): Promise<void> {
     }
 }
 
-export async function deleteTransport(id: string): Promise<void> {
+// --- QUOTES (Corporate Inquiries) ---
+export async function getQuotes(): Promise<Quote[]> {
     try {
-        const docRef = doc(db, COLLECTIONS.TRANSPORT, id);
-        await deleteDoc(docRef);
+        const q = query(collection(db, COLLECTIONS.QUOTES), orderBy('createdAt', 'desc'));
+        const snapshot = await getDocs(q);
+        return snapshot.docs.map(doc => {
+            const data = doc.data();
+            return {
+                id: doc.id,
+                ...data,
+                // Ensure date fields are handled safely if they come back as Timestamps
+                createdAt: data.createdAt?.toDate?.() ? data.createdAt.toDate().toISOString() : data.createdAt,
+                expectedDate: data.expectedDate?.toDate?.() ? data.expectedDate.toDate().toISOString() : data.expectedDate
+            } as Quote;
+        });
     } catch (error) {
-        console.error('Error deleting transport:', error);
+        console.error('Error fetching quotes:', error);
+        return [];
+    }
+}
+
+export async function saveQuote(quote: Omit<Quote, 'id' | 'createdAt' | 'status'>): Promise<string> {
+    try {
+        const docRef = doc(collection(db, COLLECTIONS.QUOTES));
+        const now = new Date().toISOString();
+        await setDoc(docRef, {
+            ...quote,
+            status: 'pending',
+            createdAt: now,
+        });
+        return docRef.id;
+    } catch (error) {
+        console.error('Error saving quote:', error);
+        throw error;
+    }
+}
+
+export async function updateQuoteStatus(id: string, status: 'pending' | 'done'): Promise<void> {
+    try {
+        const docRef = doc(db, COLLECTIONS.QUOTES, id);
+        await setDoc(docRef, { status }, { merge: true });
+    } catch (error) {
+        console.error('Error updating quote status:', error);
         throw error;
     }
 }

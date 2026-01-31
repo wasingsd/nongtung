@@ -128,13 +128,13 @@ export default async function TripDetailPage({
             </div>
 
             <div className="container mx-auto px-6 -mt-10 relative z-20">
-                <div className="flex flex-col lg:flex-row gap-12">
+                <div className="flex flex-col lg:flex-row gap-8 md:gap-12">
 
                     {/* Left Column: The Journal Content */}
-                    <div className="lg:w-2/3 bg-white p-8 md:p-16 rounded-[3rem] immersive-shadow border border-forest/5">
+                    <div className="lg:w-2/3 bg-white p-6 md:p-16 rounded-[2rem] md:rounded-[3rem] immersive-shadow border border-forest/5">
 
                         {/* Highlights Row */}
-                        <div className="flex flex-wrap gap-8 md:gap-12 mb-16 border-b border-forest/5 pb-10">
+                        <div className="flex flex-wrap gap-6 md:gap-12 mb-8 md:mb-16 border-b border-forest/5 pb-6 md:pb-10">
                             <div className="flex flex-col gap-1">
                                 <span className="text-[10px] font-black text-forest/30 uppercase tracking-widest">LOCATION</span>
                                 <span className="text-forest font-bold">{trip.location || 'Chiang Mai, TH'}</span>
@@ -151,47 +151,47 @@ export default async function TripDetailPage({
 
                         {/* Gallery Section */}
                         {(trip.gallery && trip.gallery.length > 0) && (
-                            <section className="mb-20">
-                                <h2 className="text-3xl font-black font-heading text-forest mb-8 tracking-tighter">Photo Gallery</h2>
+                            <section className="mb-10 md:mb-20">
+                                <h2 className="text-2xl md:text-3xl font-black font-heading text-forest mb-6 md:mb-8 tracking-tighter">Photo Gallery</h2>
                                 <ImageLightbox images={trip.gallery} mainImage={trip.image} />
                             </section>
                         )}
 
                         {/* Story/Description */}
-                        <section className="mb-20">
-                            <h2 className="text-3xl font-black font-heading text-forest mb-8 tracking-tighter">Trip Details</h2>
+                        <section className="mb-10 md:mb-20">
+                            <h2 className="text-2xl md:text-3xl font-black font-heading text-forest mb-6 md:mb-8 tracking-tighter">Trip Details</h2>
                             <div className="prose prose-forest max-w-none">
-                                <p className="text-base md:text-xl text-forest/70 leading-relaxed whitespace-pre-line font-medium italic mb-10 border-l-4 border-primary/20 pl-5 md:pl-8">
+                                <p className="text-sm md:text-xl text-forest/70 leading-relaxed whitespace-pre-line font-medium italic mb-6 md:mb-10 border-l-4 border-primary/20 pl-5 md:pl-8">
                                     {trip.description || 'No description available.'}
                                 </p>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-8 md:mt-12">
                                 {highlights.map((item, i) => (
-                                    <div key={i} className="flex items-start gap-4 p-6 rounded-2xl bg-surface/50 border border-forest/5 hover:border-primary/20 transition-all group">
+                                    <div key={i} className="flex items-start gap-4 p-4 md:p-6 rounded-2xl bg-surface/50 border border-forest/5 hover:border-primary/20 transition-all group">
                                         <div className="bg-white p-2 rounded-xl shadow-sm text-primary group-hover:scale-110 transition-transform">
                                             <CheckCircle className="w-5 h-5" />
                                         </div>
-                                        <span className="text-sm text-forest-light font-bold leading-tight mt-1">{item}</span>
+                                        <span className="text-xs md:text-sm text-forest-light font-bold leading-tight mt-1">{item}</span>
                                     </div>
                                 ))}
                             </div>
                         </section>
 
-                        {/* Journal Timeline (Itinerary) */}
+                        {/* Journal Timeline (Itinerary) - Optimized for Mobile */}
                         {itinerary.length > 0 && (
-                            <section className="mb-20">
-                                <h2 className="text-3xl font-black font-heading text-forest mb-12 tracking-tighter">Plan for the Trip</h2>
-                                <div className="space-y-12 relative before:absolute before:left-5 before:top-2 before:bottom-0 before:w-px before:bg-forest/5">
+                            <section className="mb-10 md:mb-20">
+                                <h2 className="text-2xl md:text-3xl font-black font-heading text-forest mb-8 md:mb-12 tracking-tighter">Plan for the Trip</h2>
+                                <div className="space-y-6 md:space-y-12 relative before:absolute before:left-4 md:before:left-5 before:top-2 before:bottom-0 before:w-px before:bg-forest/5">
                                     {itinerary.map((day, i) => (
-                                        <div key={i} className="relative pl-16 group">
-                                            <div className="absolute left-0 top-0 w-10 h-10 rounded-full bg-white border-4 border-surface text-forest flex items-center justify-center font-black text-xs shadow-soft z-10 group-hover:border-primary group-hover:text-primary transition-all">
+                                        <div key={i} className="relative pl-12 md:pl-16 group">
+                                            <div className="absolute left-0 top-0 w-8 h-8 md:w-10 md:h-10 rounded-full bg-white border-4 border-surface text-forest flex items-center justify-center font-black text-[10px] md:text-xs shadow-soft z-10 group-hover:border-primary group-hover:text-primary transition-all">
                                                 {i + 1}
                                             </div>
-                                            <div className="bg-surface/30 p-8 rounded-3xl border border-forest/5 group-hover:bg-white group-hover:immersive-shadow transition-all duration-500">
-                                                <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-2 block">{day.day}</span>
-                                                <h3 className="text-lg md:text-2xl font-black text-forest mb-3 tracking-tighter uppercase italic">{day.title}</h3>
-                                                <p className="text-sm md:text-lg text-forest/50 leading-relaxed font-medium whitespace-pre-line">{day.desc}</p>
+                                            <div className="bg-surface/30 p-5 md:p-8 rounded-2xl md:rounded-3xl border border-forest/5 group-hover:bg-white group-hover:immersive-shadow transition-all duration-500">
+                                                <span className="text-[9px] md:text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-1 md:mb-2 block">{day.day}</span>
+                                                <h3 className="text-base md:text-2xl font-black text-forest mb-2 md:mb-3 tracking-tighter uppercase italic">{day.title}</h3>
+                                                <p className="text-xs md:text-lg text-forest/50 leading-relaxed font-medium whitespace-pre-line">{day.desc}</p>
                                             </div>
                                         </div>
                                     ))}
@@ -200,23 +200,23 @@ export default async function TripDetailPage({
                         )}
 
                         {/* Inclusions */}
-                        <section className="bg-forest text-white/90 rounded-[3rem] p-10 md:p-16">
-                            <h2 className="text-3xl font-black font-heading text-white mb-10 tracking-tighter">What's Included</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
+                        <section className="bg-forest text-white/90 rounded-[2rem] md:rounded-[3rem] p-8 md:p-16">
+                            <h2 className="text-2xl md:text-3xl font-black font-heading text-white mb-6 md:mb-10 tracking-tighter">What's Included</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-3 md:gap-y-4">
                                 {whatsIncluded.map((item, i) => (
-                                    <div key={i} className="flex items-center gap-4 text-white/70">
-                                        <div className="w-2 h-2 rounded-full bg-primary shadow-glow"></div>
-                                        <span className="text-base md:text-lg font-bold tracking-tight">{item}</span>
+                                    <div key={i} className="flex items-center gap-3 md:gap-4 text-white/70">
+                                        <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-primary shadow-glow"></div>
+                                        <span className="text-sm md:text-lg font-bold tracking-tight">{item}</span>
                                     </div>
                                 ))}
                             </div>
 
                             {notIncluded.length > 0 && (
-                                <div className="mt-16 pt-10 border-t border-white/5">
-                                    <p className="text-xs font-black text-white/30 uppercase tracking-widest mb-6">NOT INCLUDED</p>
-                                    <div className="flex flex-wrap gap-4">
+                                <div className="mt-10 md:mt-16 pt-8 md:pt-10 border-t border-white/5">
+                                    <p className="text-xs font-black text-white/30 uppercase tracking-widest mb-4 md:mb-6">NOT INCLUDED</p>
+                                    <div className="flex flex-wrap gap-3 md:gap-4">
                                         {notIncluded.map((item, i) => (
-                                            <span key={i} className="bg-white/5 border border-white/10 px-4 py-2 rounded-full text-sm font-bold text-white/50">
+                                            <span key={i} className="bg-white/5 border border-white/10 px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-bold text-white/50">
                                                 × {item}
                                             </span>
                                         ))}

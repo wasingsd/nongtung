@@ -75,24 +75,24 @@ export default function Navbar() {
                 className={`fixed inset-0 bg-white z-[80] lg:hidden transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isMenuOpen ? 'translate-y-0' : '-translate-y-full'
                     }`}
             >
-                <div className="h-full w-full flex flex-col items-center justify-center gap-8 md:gap-10 px-6 pt-24">
-                    <Link href="/" className={`text-4xl font-black font-heading tracking-tighter uppercase italic transition-all ${pathname === '/' ? 'text-primary' : 'text-forest'}`}>
+                <div className="h-full w-full flex flex-col items-center justify-center gap-6 md:gap-10 px-6 pt-20 pb-10">
+                    <Link href="/" className={`text-2xl md:text-4xl font-black font-heading tracking-tighter uppercase italic transition-all ${pathname === '/' ? 'text-primary' : 'text-forest'}`}>
                         HOME
                     </Link>
                     {navLinks.map((link) => (
                         <Link
                             key={link.id}
                             href={link.href}
-                            className={`text-4xl font-black font-heading tracking-tighter uppercase italic transition-all ${pathname === link.href ? 'text-primary' : 'text-forest'}`}
+                            className={`text-2xl md:text-4xl font-black font-heading tracking-tighter uppercase italic transition-all ${pathname === link.href ? 'text-primary' : 'text-forest'}`}
                         >
                             {link.label}
                         </Link>
                     ))}
-                    <button className="mt-8 bg-primary text-white px-14 py-5 rounded-full font-black uppercase text-xs tracking-widest shadow-2xl active:scale-95 transition-all">
+                    <button className="mt-8 bg-primary text-white px-10 py-4 md:px-14 md:py-5 rounded-full font-black uppercase text-[10px] md:text-xs tracking-widest shadow-2xl active:scale-95 transition-all">
                         Contact Us
                     </button>
 
-                    <div className="mt-12 text-[10px] font-black uppercase tracking-[0.3em] text-forest/20">
+                    <div className="mt-8 md:mt-12 text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] text-forest/20">
                         Nongtung Adventure • 2026
                     </div>
                 </div>

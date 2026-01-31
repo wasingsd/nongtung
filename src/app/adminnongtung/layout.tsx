@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { LayoutDashboard, Ticket, Car, Truck, LogOut, Database, Gem } from 'lucide-react';
+import { LayoutDashboard, Ticket, Car, Truck, LogOut, Database, Gem, Building2 } from 'lucide-react';
 import { logoutAction } from '@/app/actions/authActions';
 
 export default function AdminLayout({
@@ -25,6 +25,9 @@ export default function AdminLayout({
                     </Link>
                     <Link href="/adminnongtung/rental" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-colors text-sm font-bold">
                         <Truck className="w-5 h-5" /> Rental Gear
+                    </Link>
+                    <Link href="/adminnongtung/corporate" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-colors text-sm font-bold">
+                        <Building2 className="w-5 h-5" /> Corporate Inquiries
                     </Link>
                     <div className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold text-gray-500 cursor-not-allowed opacity-50">
                         <Gem className="w-5 h-5" /> Shop <span className="ml-auto text-xs bg-gray-600 px-2 py-0.5 rounded">Coming Soon</span>
@@ -52,10 +55,11 @@ export default function AdminLayout({
             {/* Mobile Header (visible only on small screens) */}
             <div className="md:hidden fixed top-20 left-0 right-0 bg-forest text-white z-50 p-4 flex justify-between items-center shadow-lg">
                 <span className="font-bold">Admin</span>
-                <div className="flex gap-4 text-sm font-bold">
-                    <Link href="/adminnongtung/trips" className="hover:text-primary transition-colors">Trips</Link>
-                    <Link href="/adminnongtung/transport" className="hover:text-primary transition-colors">Transport</Link>
-                    <Link href="/adminnongtung/rental" className="hover:text-primary transition-colors">Rentals</Link>
+                <div className="flex gap-4 text-sm font-bold overflow-x-auto no-scrollbar">
+                    <Link href="/adminnongtung/trips" className="hover:text-primary transition-colors whitespace-nowrap">Trips</Link>
+                    <Link href="/adminnongtung/transport" className="hover:text-primary transition-colors whitespace-nowrap">Transport</Link>
+                    <Link href="/adminnongtung/rental" className="hover:text-primary transition-colors whitespace-nowrap">Rentals</Link>
+                    <Link href="/adminnongtung/corporate" className="hover:text-primary transition-colors whitespace-nowrap">Corporate</Link>
                 </div>
             </div>
 

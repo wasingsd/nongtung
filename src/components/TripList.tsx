@@ -104,11 +104,11 @@ export default function TripList({ trips }: { trips: Trip[] }) {
             </div>
 
             {/* Trip Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10 mt-8 md:mt-12">
                 {filteredTrips.map(t => (
                     <div key={t.id} className="group flex flex-col h-full bg-white rounded-[2rem] overflow-hidden immersive-shadow border border-forest/5 hover:-translate-y-2 transition-all duration-500">
                         {/* Image Container */}
-                        <div className="relative h-72 overflow-hidden">
+                        <div className="relative h-60 md:h-72 overflow-hidden">
                             <Image
                                 src={t.image}
                                 alt={t.title}
@@ -116,15 +116,15 @@ export default function TripList({ trips }: { trips: Trip[] }) {
                                 className="object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
                             />
                             {/* Tags on Image Overlay */}
-                            <div className="absolute top-5 left-5 z-10 flex flex-wrap gap-2">
-                                <span className="bg-white/95 backdrop-blur-md text-forest font-black px-3 py-1.5 rounded-xl text-[10px] uppercase tracking-widest shadow-sm">
+                            <div className="absolute top-4 md:top-5 left-4 md:left-5 z-10 flex flex-wrap gap-2">
+                                <span className="bg-white/95 backdrop-blur-md text-forest font-black px-3 py-1.5 rounded-xl text-[9px] md:text-[10px] uppercase tracking-widest shadow-sm">
                                     {t.duration}
                                 </span>
                             </div>
                             {/* Price Label */}
-                            <div className="absolute bottom-5 left-5 z-10">
-                                <span className="bg-primary text-white px-4 py-2 rounded-xl text-lg font-black shadow-xl flex items-center gap-1">
-                                    <span className="text-[10px] font-medium opacity-80 mt-1">THB</span>
+                            <div className="absolute bottom-4 md:bottom-5 left-4 md:left-5 z-10">
+                                <span className="bg-primary text-white px-3 py-1.5 md:px-4 md:py-2 rounded-xl text-base md:text-lg font-black shadow-xl flex items-center gap-1">
+                                    <span className="text-[9px] md:text-[10px] font-medium opacity-80 mt-1">THB</span>
                                     {t.price.toLocaleString()}
                                 </span>
                             </div>
@@ -132,17 +132,17 @@ export default function TripList({ trips }: { trips: Trip[] }) {
                         </div>
 
                         {/* Content */}
-                        <div className="p-8 flex flex-col flex-grow">
+                        <div className="p-5 md:p-8 flex flex-col flex-grow">
                             <h3 className="text-base font-black text-forest font-heading group-hover:text-primary transition-colors duration-300 leading-tight break-words">
                                 {t.title}
                             </h3>
                             {t.subtitle && (
-                                <p className="text-[11px] font-medium text-forest/40 mt-1 line-clamp-2">
+                                <p className="text-[10px] md:text-[11px] font-medium text-forest/40 mt-1 line-clamp-2">
                                     {t.subtitle}
                                 </p>
                             )}
 
-                            <div className="flex flex-wrap gap-2 mt-2 mb-6">
+                            <div className="flex flex-wrap gap-2 mt-2 mb-4 md:mb-6">
                                 {t.tags.slice(0, 3).map(tag => (
                                     <span key={tag} className="text-[9px] font-black uppercase tracking-[0.2em] text-forest/40">
                                         • {tag}
@@ -150,25 +150,25 @@ export default function TripList({ trips }: { trips: Trip[] }) {
                                 ))}
                             </div>
 
-                            <div className="space-y-3 mb-8 text-forest-light/70 font-medium">
+                            <div className="space-y-2 md:space-y-3 mb-6 md:mb-8 text-forest-light/70 font-medium">
                                 <div className="flex items-center gap-3">
-                                    <div className="bg-surface p-2 rounded-lg">
-                                        <Map className="w-3.5 h-3.5" />
+                                    <div className="bg-surface p-1.5 md:p-2 rounded-lg">
+                                        <Map className="w-3 h-3 md:w-3.5 md:h-3.5" />
                                     </div>
                                     <span className="text-xs">{t.location || 'เชียงใหม่, ไทย'}</span>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                    <div className="bg-surface p-2 rounded-lg">
-                                        <BarChart className="w-3.5 h-3.5" />
+                                    <div className="bg-surface p-1.5 md:p-2 rounded-lg">
+                                        <BarChart className="w-3 h-3 md:w-3.5 md:h-3.5" />
                                     </div>
                                     <span className="text-xs">ระดับ: {t.difficulty}</span>
                                 </div>
                             </div>
 
-                            <div className="mt-auto pt-6 border-t border-forest/5">
+                            <div className="mt-auto pt-4 md:pt-6 border-t border-forest/5">
                                 <Link
                                     href={`/trips/${t.id}`}
-                                    className="block w-full bg-forest text-white hover:bg-primary py-4 rounded-full font-black text-[10px] tracking-[0.2em] text-center transition-all duration-300 shadow-lg hover:shadow-primary/30 uppercase"
+                                    className="block w-full bg-forest text-white hover:bg-primary py-3 md:py-4 rounded-full font-black text-[9px] md:text-[10px] tracking-[0.2em] text-center transition-all duration-300 shadow-lg hover:shadow-primary/30 uppercase"
                                 >
                                     Discover Experience
                                 </Link>

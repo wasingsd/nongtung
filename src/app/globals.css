@@ -67,3 +67,12 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 .btn-pill {
     @apply rounded-full px-8 py-3 font-bold transition-all duration-300;
 }
+
+/* Utility to hide scrollbar but keep functionality */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { MapPin, Clock, Users, CheckCircle, MessageCircle, BarChart, AlertCircle, ChevronLeft, Shield } from 'lucide-react';
 import ImageLightbox from '@/components/ImageLightbox';
+import ItineraryAccordion from '@/components/visual/ItineraryAccordion';
 import { Metadata } from 'next';
 
 export async function generateStaticParams() {
@@ -134,7 +135,7 @@ export default async function TripDetailPage({
                     <div className="lg:w-2/3 bg-white p-6 md:p-16 rounded-[2rem] md:rounded-[3rem] immersive-shadow border border-forest/5">
 
                         {/* Highlights Row */}
-                        <div className="flex flex-wrap gap-6 md:gap-12 mb-8 md:mb-16 border-b border-forest/5 pb-6 md:pb-10">
+                        <div className="flex flex-wrap gap-6 md:gap-12 mb-8 md:mb-16 border-b border-forest/5 pb-6 md:pb-10 items-end">
                             <div className="flex flex-col gap-1">
                                 <span className="text-[10px] font-black text-forest/30 uppercase tracking-widest">LOCATION</span>
                                 <span className="text-forest font-bold">{trip.location || 'Chiang Mai, TH'}</span>
@@ -146,6 +147,16 @@ export default async function TripDetailPage({
                             <div className="flex flex-col gap-1">
                                 <span className="text-[9px] font-black text-forest/30 uppercase tracking-widest">PACE</span>
                                 <span className="text-forest font-bold text-xs md:text-base">Standard Adventure</span>
+                            </div>
+                            <div className="flex-grow ml-auto md:hidden">
+                                <a
+                                    href={`https://m.me/Venturevibecnx?text=${encodeURIComponent(`สวัสดีครับ สนใจจองทริป: ${trip.title}`)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-block bg-primary hover:bg-forest text-white font-black px-6 py-3 rounded-full uppercase text-[10px] tracking-[0.2em] shadow-lg hover:shadow-primary/20 transition-all transform hover:-translate-y-1"
+                                >
+                                    Book Now
+                                </a>
                             </div>
                         </div>
 
@@ -182,20 +193,7 @@ export default async function TripDetailPage({
                         {itinerary.length > 0 && (
                             <section className="mb-10 md:mb-20">
                                 <h2 className="text-2xl md:text-3xl font-black font-heading text-forest mb-8 md:mb-12 tracking-tighter">Plan for the Trip</h2>
-                                <div className="space-y-6 md:space-y-12 relative before:absolute before:left-4 md:before:left-5 before:top-2 before:bottom-0 before:w-px before:bg-forest/5">
-                                    {itinerary.map((day, i) => (
-                                        <div key={i} className="relative pl-12 md:pl-16 group">
-                                            <div className="absolute left-0 top-0 w-8 h-8 md:w-10 md:h-10 rounded-full bg-white border-4 border-surface text-forest flex items-center justify-center font-black text-[10px] md:text-xs shadow-soft z-10 group-hover:border-primary group-hover:text-primary transition-all">
-                                                {i + 1}
-                                            </div>
-                                            <div className="bg-surface/30 p-5 md:p-8 rounded-2xl md:rounded-3xl border border-forest/5 group-hover:bg-white group-hover:immersive-shadow transition-all duration-500">
-                                                <span className="text-[9px] md:text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-1 md:mb-2 block">{day.day}</span>
-                                                <h3 className="text-base md:text-2xl font-black text-forest mb-2 md:mb-3 tracking-tighter uppercase italic">{day.title}</h3>
-                                                <p className="text-xs md:text-lg text-forest/50 leading-relaxed font-medium whitespace-pre-line">{day.desc}</p>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
+                                <ItineraryAccordion itinerary={itinerary} />
                             </section>
                         )}
 

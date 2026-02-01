@@ -1,0 +1,24 @@
+
+> temp_app@0.1.0 build
+> next build
+
+▲ Next.js 16.1.1 (Turbopack)
+- Environments: .env
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+✓ Compiled successfully in 5.2s
+  Running TypeScript ...
+  Collecting page data using 17 workers ...
+  Generating static pages using 17 workers (0/34) ...
+  Generating static pages using 17 workers (8/34) 
+Error occurred prerendering page "/adminnongtung/articles". Read more: https://nextjs.org/docs/messages/prerender-error
+Error: Event handlers cannot be passed to Client Component props.
+  {action: ..., className: ..., onSubmit: function onSubmit, children: ...}
+                                          ^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>) {
+  digest: '2940632987'
+}
+Export encountered an error on /adminnongtung/articles/page: /adminnongtung/articles, exiting the build.
+⨯ Next.js build worker exited with code: 1 and signal: null

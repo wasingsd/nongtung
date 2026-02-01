@@ -1,6 +1,8 @@
 'use client';
 
-// Map temporarily disabled - react-leaflet not installed
+// Temporarily disabled - requires react-leaflet which is not installed
+// Once npm install works, restore from git history
+
 type Coordinate = [number, number];
 
 interface Props {
@@ -12,12 +14,13 @@ interface Props {
 }
 
 export default function TrekkingMap({ height = "400px" }: Props) {
+    // Placeholder - map disabled until dependencies installed
     return (
         <div
-            className="bg-gray-200 rounded-xl w-full flex items-center justify-center text-gray-500"
+            className="bg-gray-100 dark:bg-gray-800 rounded-xl w-full flex items-center justify-center text-gray-500"
             style={{ height }}
         >
-            🗺️ Interactive Map
+            🗺️ Interactive Map (Coming Soon)
         </div>
     );
 }

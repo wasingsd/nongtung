@@ -1,12 +1,10 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import dynamic from 'next/dynamic';
 import { notFound } from 'next/navigation';
 import { getArticle, getArticles } from '@/lib/firestore-db';
 import { Metadata } from 'next';
 import { Calendar, User, Clock, ChevronLeft, Share2, Tag, ArrowRight } from 'lucide-react';
-
-const TrekkingMap = dynamic(() => import('@/components/TrekkingMap'), { ssr: false });
+import TrekkingMap from '@/components/TrekkingMapSafe';
 
 // Static Params for SSG
 export async function generateStaticParams() {

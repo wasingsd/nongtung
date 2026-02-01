@@ -2,7 +2,11 @@
 
 import React from 'react';
 
-// Theme provider temporarily disabled - next-themes not installed
+// Temporarily disabled next-themes due to dependency installation issues
+// Once npm install works, restore the ThemeProvider from git history
+
 export function Providers({ children }: { children: React.ReactNode }) {
-    return <>{children}</>;
+    return (
+        <>{children}</>
+    );
 }

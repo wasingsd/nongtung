@@ -81,20 +81,20 @@ export default async function Home() {
           <div className="bg-white rounded-[2rem] md:rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-8 md:p-14 border border-forest/10">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 text-center">
               <div className="space-y-2">
-                <div className="text-3xl md:text-6xl font-black font-heading text-forest tracking-tighter">{trips.length}</div>
-                <div className="text-[9px] font-black uppercase tracking-[0.3em] text-forest/30">Adventures</div>
+                <div className="text-2xl md:text-4xl font-black font-heading text-forest tracking-tighter uppercase">Authentic</div>
+                <div className="text-[9px] font-black uppercase tracking-[0.3em] text-forest/30">Real Adventure</div>
               </div>
               <div className="space-y-2">
-                <div className="text-3xl md:text-6xl font-black font-heading text-forest tracking-tighter">500+</div>
-                <div className="text-[9px] font-black uppercase tracking-[0.3em] text-forest/30">Happy Travelers</div>
+                <div className="text-2xl md:text-4xl font-black font-heading text-forest tracking-tighter uppercase">Local</div>
+                <div className="text-[9px] font-black uppercase tracking-[0.3em] text-forest/30">Expert Guides</div>
               </div>
               <div className="space-y-2">
-                <div className="text-3xl md:text-6xl font-black font-heading text-forest tracking-tighter">24/7</div>
-                <div className="text-[9px] font-black uppercase tracking-[0.3em] text-forest/30">Support</div>
+                <div className="text-2xl md:text-4xl font-black font-heading text-forest tracking-tighter uppercase">Clean</div>
+                <div className="text-[9px] font-black uppercase tracking-[0.3em] text-forest/30">Quality Gear</div>
               </div>
               <div className="space-y-2">
-                <div className="text-3xl md:text-6xl font-black font-heading text-primary tracking-tighter">100%</div>
-                <div className="text-[9px] font-black uppercase tracking-[0.3em] text-primary/40 text-primary">Safe & Certified</div>
+                <div className="text-2xl md:text-4xl font-black font-heading text-primary tracking-tighter uppercase">Trusted</div>
+                <div className="text-[9px] font-black uppercase tracking-[0.3em] text-primary/50">Safety Certified</div>
               </div>
             </div>
           </div>

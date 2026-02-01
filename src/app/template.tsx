@@ -1,6 +1,12 @@
 'use client';
 
-// Animation temporarily disabled - framer-motion not installed
+// Temporarily disabled framer-motion animation due to dependency installation issues
+// Once npm install works, restore the framer-motion version from git history
+
 export default function Template({ children }: { children: React.ReactNode }) {
-    return <>{children}</>;
+    return (
+        <div className="fade-in">
+            {children}
+        </div>
+    );
 }

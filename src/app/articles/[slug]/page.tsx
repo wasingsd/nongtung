@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { getArticle, getArticles } from '@/lib/firestore-db';
 import { Metadata } from 'next';
 import { Calendar, User, Clock, ChevronLeft, Share2, Tag, ArrowRight } from 'lucide-react';
-import TrekkingMap from '@/components/TrekkingMap';
+import TrekkingMap from '@/components/TrekkingMapSafe';
 
 // Static Params for SSG
 export async function generateStaticParams() {

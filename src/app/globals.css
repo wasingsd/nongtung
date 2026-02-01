@@ -14,13 +14,27 @@
     --font-body: var(--font-kanit), sans-serif;
 }
 
+/* Custom properties for theme colors */
+:root {
+    --background: #fdfdfb;
+    --foreground: #2e3022;
+    --card-bg: #ffffff;
+}
+
+.dark {
+    --background: #1a1b16;
+    /* Deep forest dark */
+    --foreground: #f9f9f5;
+    --card-bg: #2e3022;
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
     width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-    background: var(--color-surface);
+    background: var(--background);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -30,19 +44,26 @@
 
 body {
     font-family: var(--font-body);
-    color: var(--color-forest);
-    background: #fdfdfb;
+    color: var(--foreground);
+    background: var(--background);
     line-height: 1.65;
     -webkit-font-smoothing: antialiased;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-h1, h2, h3, h4, h5, h6, .font-heading {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-heading {
     font-family: var(--font-heading);
     letter-spacing: -0.02em;
 }
 
 .glass-nav {
-    @apply bg-white/80 backdrop-blur-md border-b border-white/20;
+    @apply bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-white/20 dark:border-white/10;
 }
 
 .fade-in {
@@ -54,6 +75,7 @@ h1, h2, h3, h4, h5, h6, .font-heading {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -72,6 +94,7 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 .no-scrollbar::-webkit-scrollbar {
     display: none;
 }
+
 .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;

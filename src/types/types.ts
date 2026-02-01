@@ -53,4 +53,9 @@ export interface Article {
   keywords: string[]; // For SEO
   relatedTripId?: string;
   relatedRentalId?: string;
+  mapCoordinates?: {
+    start: [number, number];
+    end?: [number, number];
+    zoom?: number;
+  };
 }

@@ -1,9 +1,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 import { notFound } from 'next/navigation';
 import { getArticle, getArticles } from '@/lib/firestore-db';
 import { Metadata } from 'next';
 import { Calendar, User, Clock, ChevronLeft, Share2, Tag, ArrowRight } from 'lucide-react';
+
+const TrekkingMap = dynamic(() => import('@/components/TrekkingMap'), { ssr: false });
 
 // Static Params for SSG
 export async function generateStaticParams() {
@@ -134,6 +137,18 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                                     <Share2 className="w-5 h-5" />
                                 </button>
                             </div>
+
+                            {/* Map Integration */}
+                            {article.mapCoordinates && (
+                                <div className="mb-10 rounded-3xl overflow-hidden shadow-lg border border-forest/5 z-0 relative">
+                                    <TrekkingMap
+                                        start={article.mapCoordinates.start}
+                                        end={article.mapCoordinates.end}
+                                        route={article.mapCoordinates.end ? [article.mapCoordinates.start, article.mapCoordinates.end] : undefined}
+                                        zoom={article.mapCoordinates.zoom}
+                                    />
+                                </div>
+                            )}
 
                             {/* Article Body */}
                             <article

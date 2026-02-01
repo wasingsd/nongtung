@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
 import "./globals.css";
+import { Providers } from "@/app/providers";
 
 const kanit = Kanit({
   weight: ['300', '400', '500', '600'],
@@ -144,11 +145,13 @@ export default function RootLayout({
             style={{ display: 'none', visibility: 'hidden' }}
           ></iframe>
         </noscript>
-        <Navbar />
-        <main className="flex-grow pt-20">
-          {children}
-        </main>
-        <Footer />
+        <Providers>
+          <Navbar />
+          <main className="flex-grow pt-20">
+            {children}
+          </main>
+          <Footer />
+        </Providers>
         <JsonLd
           data={{
             "@context": "https://schema.org",

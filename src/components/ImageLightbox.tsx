@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -16,15 +16,26 @@ export default function ImageLightbox({ images, mainImage }: ImageLightboxProps)
     // Combine main image with gallery
     const allImages = mainImage ? [mainImage, ...images] : images;
 
+    // Handle body scroll lock with cleanup
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isOpen]);
+
     const openLightbox = (index: number) => {
         setCurrentIndex(index);
         setIsOpen(true);
-        document.body.style.overflow = 'hidden';
     };
 
     const closeLightbox = () => {
         setIsOpen(false);
-        document.body.style.overflow = 'unset';
     };
 
     const goNext = () => {
@@ -77,12 +88,13 @@ export default function ImageLightbox({ images, mainImage }: ImageLightboxProps)
                     onKeyDown={handleKeyDown}
                     tabIndex={0}
                 >
-                    {/* Close Button */}
+                    {/* Close Button - Optimized for Mobile */}
                     <button
                         onClick={closeLightbox}
-                        className="absolute top-4 right-4 text-white/70 hover:text-white p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors z-10"
+                        className="absolute top-5 right-5 md:top-8 md:right-8 text-white hover:text-white/80 p-3 rounded-full bg-black/50 hover:bg-black/70 transition-all z-[60] backdrop-blur-sm"
+                        aria-label="Close Gallery"
                     >
-                        <X className="w-6 h-6" />
+                        <X className="w-8 h-8" />
                     </button>
 
                     {/* Navigation Arrows */}
@@ -90,15 +102,15 @@ export default function ImageLightbox({ images, mainImage }: ImageLightboxProps)
                         <>
                             <button
                                 onClick={(e) => { e.stopPropagation(); goPrev(); }}
-                                className="absolute left-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white p-3 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                                className="absolute left-2 md:left-8 top-1/2 -translate-y-1/2 text-white/70 hover:text-white p-2 md:p-4 rounded-full bg-black/30 hover:bg-black/50 transition-colors z-[55] backdrop-blur-sm"
                             >
-                                <ChevronLeft className="w-8 h-8" />
+                                <ChevronLeft className="w-8 h-8 md:w-10 md:h-10" />
                             </button>
                             <button
                                 onClick={(e) => { e.stopPropagation(); goNext(); }}
-                                className="absolute right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white p-3 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                                className="absolute right-2 md:right-8 top-1/2 -translate-y-1/2 text-white/70 hover:text-white p-2 md:p-4 rounded-full bg-black/30 hover:bg-black/50 transition-colors z-[55] backdrop-blur-sm"
                             >
-                                <ChevronRight className="w-8 h-8" />
+                                <ChevronRight className="w-8 h-8 md:w-10 md:h-10" />
                             </button>
                         </>
                     )}

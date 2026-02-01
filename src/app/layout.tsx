@@ -22,12 +22,21 @@ const FACEBOOK_PIXEL_ID = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID;
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://nongtung.com"),
+  applicationName: "NONGTUNG",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "NONGTUNG",
+  },
+  formatDetection: {
+    telephone: false,
+  },
   title: {
     default: "NONGTUNG - Bespoke Northern Thailand Adventure Experiences",
     template: "%s | NONGTUNG"
   },
   description: "Experience unique Northern Thailand adventures curated for international travelers. Bespoke travel, local culture, and breathtaking landscapes in Chiang Mai and beyond.",
-  keywords: ["Nongtung", "Northern Thailand Travel", "Adventure Experiences", "Thailand Tours", "Chiang Mai Travel", "Bespoke Travel", "Nature Tours", "Cultural Experiences"],
+  keywords: ["Nongtung", "Northern Thailand Travel", "Adventure Experiences", "Thailand Tours", "Chiang Mai Travel", "Bespoke Travel", "Nature Tours", "Cultural Experiences", "Chiang Mai Trekking", "Camping Chiang Mai", "Private Van Rental Chiang Mai", "Hiking Northern Thailand", "Pai Adventure", "Doi Inthanon Tours"],
   authors: [{ name: "NONGTUNG Team" }],
   creator: "NONGTUNG",
   publisher: "NONGTUNG",
@@ -68,7 +77,10 @@ export const metadata: Metadata = {
     canonical: "https://nongtung.com",
   },
   icons: {
-    icon: "/images/favicon.png",
+    icon: [
+      { url: "/images/favicon.png" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
     shortcut: "/images/favicon.png",
     apple: "/images/favicon.png",
   },
@@ -171,20 +183,99 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              document.addEventListener('click', function(e) {
-                var target = e.target.closest('a');
-                if (target && target.href.includes('facebook.com')) {
-                  if (window.gtag) {
-                    gtag('event', 'click_facebook', {
-                      'event_category': 'outbound',
-                      'event_label': target.href
-                    });
-                  }
-                  if (window.fbq) {
-                    fbq('trackCustom', 'ClickFacebook', { url: target.href });
+              // Initialize dataLayer
+              window.dataLayer = window.dataLayer || [];
+
+              // Version Tracking
+              console.log('✅ [Nongtung Tracking v1.2] Active');
+
+              // Global tracking helper
+              window.trackEvent = function(eventName, params) {
+                params = params || {};
+                console.log('🚀 [Nongtung Event Log]:', eventName, params);
+                
+                // 1. Google Analytics
+                if (window.gtag) {
+                  gtag('event', eventName, params);
+                }
+                
+                // 2. Facebook Pixel Standard Mapping
+                if (window.fbq) {
+                  if (eventName === 'generate_lead') {
+                    fbq('track', 'Lead', { content_name: params.text, ...params });
+                  } else if (eventName === 'booking_intent') {
+                    fbq('track', 'InitiateCheckout', { content_name: params.text, content_category: params.type, ...params });
+                  } else {
+                    fbq('trackCustom', eventName, params);
                   }
                 }
-              });
+                
+                // 3. GTM DataLayer
+                window.dataLayer.push({
+                  event: eventName,
+                  event_data: params
+                });
+              };
+
+              // Optimized Click Listener
+              document.addEventListener('click', function(e) {
+                var target = e.target.closest('a, button');
+                if (!target) return;
+
+                var text = (target.innerText || target.ariaLabel || "").trim().toLowerCase();
+                var href = (target.getAttribute('href') || "").toLowerCase();
+
+                // 🎯 Debug point: console.log('🖱️ Click on:', text, '| href:', href);
+
+                // A. Social Links
+                if (href.includes('facebook.com') || href.includes('fb.me')) {
+                  window.trackEvent('click_social', { platform: 'facebook', url: href });
+                } else if (href.includes('instagram.com')) {
+                  window.trackEvent('click_social', { platform: 'instagram', url: href });
+                } else if (href.includes('tiktok.com')) {
+                  window.trackEvent('click_social', { platform: 'tiktok', url: href });
+                }
+
+                // B. Lead & Contact (Added more triggers)
+                var leadTriggers = ['contact', 'chat', 'ติดต่อ', 'inquire', 'สอบถาม', 'message', 'talk to', 'availability', 'concierge'];
+                var isLead = leadTriggers.some(function(word) { return text.includes(word); }) || 
+                             href.startsWith('mailto:') || 
+                             href.startsWith('tel:') ||
+                             href.includes('m.me');
+                
+                if (isLead) {
+                  var method = 'button';
+                  if (href.startsWith('mailto:')) method = 'email';
+                  else if (href.startsWith('tel:')) method = 'phone';
+                  else if (href.includes('m.me')) method = 'messenger';
+
+                  window.trackEvent('generate_lead', { 
+                    method: method, 
+                    text: text,
+                    destination: href 
+                  });
+                }
+
+                // C. Booking Intent (Added more specific transport/trip triggers)
+                var bookingTriggers = ['book', 'rent', 'select', 'จอง', 'เลือก', 'discover', 'experience', 'booking', 'now'];
+                var isBooking = bookingTriggers.some(function(word) { return text.includes(word); });
+
+                if (isBooking) {
+                  // Intelligence for type
+                  var transportWords = ['van', 'transport', 'car', 'รถ', 'fleet', 'chauffeur'];
+                  var isTransport = transportWords.some(function(word) { return text.includes(word) || href.includes('transport'); });
+
+                  window.trackEvent('booking_intent', { 
+                    type: isTransport ? 'transport' : 'trip', 
+                    text: text 
+                  });
+                }
+
+                // D. Newsletter
+                if (text === 'go' || text.includes('sign up') || text.includes('subscription')) {
+                  window.trackEvent('newsletter_signup', { location: 'footer' });
+                }
+              }, true); // Use capture mode to bypass some stopPropagation cases
             `,
           }}
         />

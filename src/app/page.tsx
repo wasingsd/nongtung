@@ -62,7 +62,7 @@ export default async function Home() {
             NORTHERN THAILAND<br /><span className="text-primary italic">ADVENTURES</span>
           </h1>
           <p className="text-base md:text-xl text-white/80 mb-8 md:mb-12 max-w-2xl mx-auto font-medium drop-shadow-md">
-            Quality camping and trekking trips in Chiang Mai designed for everyone who loves nature.
+            Bespoke camping, trekking, and corporate teambuilding trips in Chiang Mai designed for those who seek authentic experiences.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center">
             <Link href="/trips" className="bg-primary hover:bg-forest text-white px-8 md:px-10 py-3 md:py-4 rounded-full font-black uppercase text-[10px] tracking-[0.2em] transition-all shadow-xl hover:shadow-primary/20 transform hover:-translate-y-1">
@@ -172,7 +172,7 @@ export default async function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
             {[
               { icon: Compass, title: 'Safe Trips', desc: 'Our guides are trained for safety on every trail.' },
-              { icon: Heart, title: 'Personal Service', desc: 'Good equipment and comfortable vans for your trip.' },
+              { icon: Heart, title: 'Bespoke Service', desc: 'Customized private trips and teambuilding for your needs.' },
               { icon: Award, title: 'Local Guides', desc: 'We know the best hidden spots in Northern Thailand.' }
             ].map((item, i) => (
               <div key={i} className="bg-white p-8 md:p-12 rounded-[2rem] md:rounded-[3rem] immersive-shadow border border-forest/5 hover:-translate-y-2 transition-all duration-500 group">

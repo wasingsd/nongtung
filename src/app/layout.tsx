@@ -32,10 +32,10 @@ export const metadata: Metadata = {
     telephone: false,
   },
   title: {
-    default: "NONGTUNG - Bespoke Northern Thailand Adventure Experiences",
+    default: "NONGTUNG - Bespoke Northern Thailand Adventure & Trekking Experiences",
     template: "%s | NONGTUNG"
   },
-  description: "Experience unique Northern Thailand adventures curated for international travelers. Bespoke travel, local culture, and breathtaking landscapes in Chiang Mai and beyond.",
+  description: "Experience unique Northern Thailand adventures, trekking, and camping curated for international travelers. Bespoke travel, local culture, and breathtaking landscapes in Chiang Mai and Pai.",
   keywords: ["Nongtung", "Northern Thailand Travel", "Adventure Experiences", "Thailand Tours", "Chiang Mai Travel", "Bespoke Travel", "Nature Tours", "Cultural Experiences", "Chiang Mai Trekking", "Camping Chiang Mai", "Private Van Rental Chiang Mai", "Hiking Northern Thailand", "Pai Adventure", "Doi Inthanon Tours"],
   authors: [{ name: "NONGTUNG Team" }],
   creator: "NONGTUNG",
@@ -52,15 +52,15 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "NONGTUNG - Adventure Experiences",
-    description: "Bespoke northern Thailand travel curated for those who seek the extraordinary.",
+    title: "NONGTUNG - Private Northern Thailand Adventures",
+    description: "Bespoke northern Thailand travel curated for those who seek the extraordinary. Trekking, camping, and premium van services.",
     url: "https://nongtung.com",
     siteName: "NONGTUNG",
     locale: "en_US",
     type: "website",
     images: [
       {
-        url: "/images/og-image.jpg", // Ensure this image exists or change path
+        url: "https://images.unsplash.com/photo-1510312305653-8ed496efae75?q=80&w=1200&h=630&fit=crop",
         width: 1200,
         height: 630,
         alt: "NONGTUNG Adventure",
@@ -69,20 +69,22 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "NONGTUNG - Adventure Experiences",
+    title: "NONGTUNG - Northern Thailand Adventure Experiences",
     description: "Bespoke northern Thailand travel curated for those who seek the extraordinary.",
-    images: ["/images/og-image.jpg"], // Ensure this image exists
+    images: ["https://images.unsplash.com/photo-1510312305653-8ed496efae75?q=80&w=1200&h=630&fit=crop"],
   },
   alternates: {
     canonical: "https://nongtung.com",
   },
   icons: {
     icon: [
-      { url: "/images/favicon.png" },
       { url: "/favicon.ico", sizes: "any" },
+      { url: "/images/favicon.png", type: "image/png", sizes: "32x32" },
     ],
-    shortcut: "/images/favicon.png",
-    apple: "/images/favicon.png",
+    apple: [
+      { url: "/images/favicon.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: ["/favicon.ico"],
   },
 };
 
@@ -161,7 +163,7 @@ export default function RootLayout({
             url: "https://nongtung.com",
             logo: "https://nongtung.com/images/favicon.png",
             sameAs: [
-              "https://www.facebook.com/nongtung",
+              "https://www.facebook.com/Venturevibecnx",
               "https://www.instagram.com/nongtung"
             ],
             contactPoint: {
@@ -174,7 +176,8 @@ export default function RootLayout({
             address: {
               "@type": "PostalAddress",
               addressLocality: "Chiang Mai",
-              addressCountry: "TH"
+              addressCountry: "TH",
+              addressRegion: "Chiang Mai"
             },
             priceRange: "$$"
           }}

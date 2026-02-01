@@ -57,13 +57,14 @@ export default async function TripDetailPage({
     const whatsIncluded = trip.whatsIncluded || [];
     const notIncluded = trip.notIncluded || [];
 
-    // JSON-LD for SEO
-    const jsonLd = {
+    // structured data for SEO
+    const productJsonLd = {
         '@context': 'https://schema.org',
         '@type': 'Product',
         name: trip.title,
         description: trip.description,
         image: trip.image,
+        category: 'Travel/Adventure',
         offers: {
             '@type': 'Offer',
             price: trip.price,
@@ -77,12 +78,41 @@ export default async function TripDetailPage({
         }
     };
 
+    const breadcrumbJsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+            {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Home',
+                item: 'https://nongtung.com'
+            },
+            {
+                '@type': 'ListItem',
+                position: 2,
+                name: 'Trips',
+                item: 'https://nongtung.com/trips'
+            },
+            {
+                '@type': 'ListItem',
+                position: 3,
+                name: trip.title,
+                item: `https://nongtung.com/trips/${decodedId}`
+            }
+        ]
+    };
+
     return (
         <div className="fade-in pb-32 bg-[#fdfdfb]">
             {/* Structured Data */}
             <script
                 type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+            />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
             />
 
             {/* Immersive Hero Section */}

@@ -47,11 +47,34 @@ export default async function TransportPage() {
         }
     };
 
+    const breadcrumbJsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+            {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Home',
+                item: 'https://nongtung.com'
+            },
+            {
+                '@type': 'ListItem',
+                position: 2,
+                name: 'Transport Services',
+                item: 'https://nongtung.com/transport'
+            }
+        ]
+    };
+
     return (
         <div className="fade-in pb-32 bg-[#fdfdfb]">
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
             />
             {/* Immersive Hero Section */}
             <div className="relative h-[60vh] md:h-[70vh] w-full overflow-hidden bg-forest">

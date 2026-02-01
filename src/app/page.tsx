@@ -9,8 +9,43 @@ export default async function Home() {
   const transports = await getTransport();
   const featuredFleet = transports.slice(0, 3);
 
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'What kind of trips does Nongtung offer?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Nongtung offers bespoke adventure experiences in Northern Thailand, including trekking, camping, and private van rentals with expert local guides.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'Is it safe to travel with Nongtung?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes, safety is our priority. All our guides are professionally trained, and we use high-quality equipment for all our trekking and camping trips.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'Can I rent a private van for my own group?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Absolutely. We provide a premium fleet of comfortable 9-seater vans with professional drivers who have expert knowledge of Northern Thailand mountain roads.'
+        }
+      }
+    ]
+  };
+
   return (
     <div className="fade-in bg-[#fdfdfb]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       {/* Immersive Hero Section */}
       <div className="relative h-[80vh] md:h-[90vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60 z-10"></div>
@@ -18,13 +53,13 @@ export default async function Home() {
           src="https://images.unsplash.com/photo-1510312305653-8ed496efae75?auto=format&fit=crop&q=80&w=1600"
           fill
           className="absolute inset-0 w-full h-full object-cover z-0"
-          alt="Hero"
+          alt="Adventurers exploring Northern Thailand mountains"
           priority
         />
         <div className="relative z-20 text-center text-white px-6 max-w-5xl">
           <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.5em] mb-4 md:mb-6 block drop-shadow-lg">Explore Northern Thailand</span>
           <h1 className="text-4xl md:text-8xl font-black mb-6 md:mb-8 font-heading leading-[0.9] tracking-tighter drop-shadow-2xl">
-            START YOUR<br /><span className="text-primary italic">ADVENTURE</span>
+            NORTHERN THAILAND<br /><span className="text-primary italic">ADVENTURES</span>
           </h1>
           <p className="text-base md:text-xl text-white/80 mb-8 md:mb-12 max-w-2xl mx-auto font-medium drop-shadow-md">
             Quality camping and trekking trips in Chiang Mai designed for everyone who loves nature.
@@ -72,7 +107,7 @@ export default async function Home() {
           <div className="flex flex-col md:flex-row justify-between items-end mb-10 md:mb-16 gap-4 md:gap-6">
             <div className="max-w-xl">
               <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-2 md:mb-3 block">Recommended for You</span>
-              <h2 className="text-3xl md:text-5xl font-black font-heading text-forest tracking-tighter">POPULAR TRIPS</h2>
+              <h2 className="text-3xl md:text-5xl font-black font-heading text-forest tracking-tighter uppercase">POPULAR ADVENTURES</h2>
             </div>
             <Link href="/trips" className="text-[10px] font-black uppercase tracking-[0.2em] text-forest/40 hover:text-primary transition-colors flex items-center gap-2 group">
               See All Trips <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -132,7 +167,7 @@ export default async function Home() {
         <div className="container mx-auto px-6">
           <div className="text-center mb-10 md:mb-20">
             <span className="text-[10px] font-black text-forest/20 uppercase tracking-[0.4em] mb-2 md:mb-4 block">Our Commitment</span>
-            <h2 className="text-3xl md:text-5xl font-black font-heading text-forest tracking-tighter">WHY NONGTUENG?</h2>
+            <h2 className="text-3xl md:text-5xl font-black font-heading text-forest tracking-tighter">WHY EXPLORE WITH US?</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
             {[
@@ -185,7 +220,7 @@ export default async function Home() {
             src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=1600"
             fill
             className="object-cover"
-            alt="Mountain background"
+            alt="Stunning mountain landscapes in Chiang Mai Northern Thailand"
           />
         </div>
         <div className="absolute inset-0 bg-gradient-to-t from-forest via-forest/40 to-transparent"></div>
@@ -216,7 +251,7 @@ export default async function Home() {
           <div className="flex flex-col md:flex-row justify-between items-end mb-10 md:mb-16 gap-4 md:gap-6">
             <div className="max-w-xl">
               <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-2 md:mb-3 block">Cars & Vans</span>
-              <h2 className="text-3xl md:text-5xl font-black font-heading text-forest tracking-tighter uppercase">COMFORTABLE RENTALS</h2>
+              <h2 className="text-3xl md:text-5xl font-black font-heading text-forest tracking-tighter uppercase">PREMIUM PRIVATE FLEET</h2>
             </div>
             <Link href="/transport" className="text-[10px] font-black uppercase tracking-[0.2em] text-forest/40 hover:text-primary transition-colors flex items-center gap-2 group">
               See All Transport <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

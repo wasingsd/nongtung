@@ -1,6 +1,8 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
+    const baseUrl = 'https://nongtung.com'
+
     return {
         rules: [
             {
@@ -8,7 +10,13 @@ export default function robots(): MetadataRoute.Robots {
                 allow: '/',
                 disallow: ['/adminnongtung/'], // Prevent crawling of admin pages
             },
+            {
+                // Explicitly allow AI bots for Generative Engine Optimization (GEO)
+                userAgent: ['GPTBot', 'ChatGPT-User', 'PerplexityBot', 'ClaudeBot', 'Google-Extended'],
+                allow: '/',
+                disallow: ['/adminnongtung/'],
+            }
         ],
-        sitemap: 'https://nongtung.com/sitemap.xml',
+        sitemap: `${baseUrl}/sitemap.xml`,
     }
 }

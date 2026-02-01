@@ -192,6 +192,16 @@ export async function saveTransport(transport: Transport): Promise<void> {
     }
 }
 
+export async function deleteTransport(id: string): Promise<void> {
+    try {
+        const docRef = doc(db, COLLECTIONS.TRANSPORT, id);
+        await deleteDoc(docRef);
+    } catch (error) {
+        console.error('Error deleting transport:', error);
+        throw error;
+    }
+}
+
 // --- QUOTES (Corporate Inquiries) ---
 export async function getQuotes(): Promise<Quote[]> {
     try {

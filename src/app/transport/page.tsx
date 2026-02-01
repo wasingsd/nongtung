@@ -2,11 +2,57 @@ import Image from 'next/image';
 import { CheckCircle, Bus, Phone, Info, Calendar, MapPin, Gauge } from 'lucide-react';
 import { getTransport } from '@/lib/firestore-db';
 
+// ... imports unchanged
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Transport Services | Nongtung',
+    description: 'Premium private fleet and chauffeur services for Northern Thailand adventures. Comfortable 9-seater vans and 4WD options available.',
+    openGraph: {
+        title: 'Transport Services | Nongtung',
+        description: 'Premium private fleet and chauffeur services for Northern Thailand adventures.',
+        images: ['https://images.unsplash.com/photo-1464822759023-fed622ff2c3b'],
+    },
+};
+
 export default async function TransportPage() {
     const transports = await getTransport();
 
+    const jsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'AutoRental',
+        name: 'Nongtung Transport Services',
+        description: 'Premium private fleet and chauffeur services for Northern Thailand adventures.',
+        areaServed: 'Chiang Mai, Thailand',
+        availableLanguage: ['English', 'Thai'],
+        priceRange: 'Top-tier',
+        image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b',
+        hasOfferCatalog: {
+            '@type': 'OfferCatalog',
+            name: 'Transport Fleet',
+            itemListElement: transports.map(t => ({
+                '@type': 'Offer',
+                itemOffered: {
+                    '@type': 'Vehicle',
+                    name: t.type,
+                    image: t.image
+                },
+                priceSpecification: {
+                    '@type': 'PriceSpecification',
+                    price: t.price1Day,
+                    priceCurrency: 'THB',
+                    unitCode: 'DAY'
+                }
+            }))
+        }
+    };
+
     return (
         <div className="fade-in pb-32 bg-[#fdfdfb]">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             {/* Immersive Hero Section */}
             <div className="relative h-[60vh] md:h-[70vh] w-full overflow-hidden bg-forest">
                 <Image

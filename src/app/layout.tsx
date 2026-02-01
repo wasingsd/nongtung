@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 import { Kanit, Urbanist } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -106,6 +107,8 @@ export default function RootLayout({
             }
           }}
         />
+        {process.env.NEXT_PUBLIC_GA_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />}
+        {process.env.NEXT_PUBLIC_GTM_ID && <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />}
       </body>
     </html>
   );

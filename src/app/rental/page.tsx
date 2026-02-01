@@ -1,12 +1,55 @@
 import Image from 'next/image';
 import { Search, AlertCircle, ShoppingCart, Package, ShieldCheck, Zap } from 'lucide-react';
 import { getRentals } from '@/lib/firestore-db';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Equipment Rental | Nongtung',
+    description: 'Premium camping and trekking equipment rental in Chiang Mai. High-quality tents, sleeping bags, and outdoor gear.',
+    openGraph: {
+        title: 'Equipment Rental | Nongtung',
+        description: 'Premium camping and trekking equipment rental in Chiang Mai.',
+    },
+};
 
 export default async function RentalPage() {
     const rentals = await getRentals();
 
+    const jsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'Store',
+        name: 'Nongtung Rental Shop',
+        description: 'Professional grade camping and adventure equipment rental.',
+        areaServed: 'Chiang Mai, Thailand',
+        image: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4',
+        hasOfferCatalog: {
+            '@type': 'OfferCatalog',
+            name: 'Camping Equipment',
+            itemListElement: rentals.map(r => ({
+                '@type': 'Offer',
+                itemOffered: {
+                    '@type': 'Product',
+                    name: r.name,
+                    image: r.image,
+                    description: r.description
+                },
+                priceSpecification: {
+                    '@type': 'PriceSpecification',
+                    price: r.price,
+                    priceCurrency: 'THB',
+                    unitCode: r.unit === 'Day' ? 'DAY' : 'C62'
+                },
+                availability: (r.stock || 0) > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock'
+            }))
+        }
+    };
+
     return (
         <div className="fade-in bg-[#fdfdfb] min-h-screen">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             {/* Immersive Header */}
             <div className="relative bg-forest pt-32 pb-20 overflow-hidden">
                 <div className="absolute inset-0 opacity-10 bg-[url('https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1600')] bg-cover bg-center grayscale"></div>

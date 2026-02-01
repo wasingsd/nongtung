@@ -62,11 +62,6 @@ export const metadata: Metadata = {
     description: "Bespoke northern Thailand travel curated for those who seek the extraordinary.",
     images: ["/images/og-image.jpg"], // Ensure this image exists
   },
-  icons: {
-    icon: '/images/favicon.svg',
-    shortcut: '/images/favicon.svg',
-    apple: '/images/favicon.svg',
-  },
   alternates: {
     canonical: "https://nongtung.com",
   }

@@ -62,7 +62,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             name: 'Nongtung',
             logo: {
                 '@type': 'ImageObject',
-                url: 'https://nongtung.com/images/favicon.svg'
+                url: 'https://nongtung.com/images/favicon.png'
             }
         },
         datePublished: article.date,

@@ -64,7 +64,12 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "https://nongtung.com",
-  }
+  },
+  icons: {
+    icon: "/images/favicon.svg",
+    shortcut: "/images/favicon.svg",
+    apple: "/images/favicon.svg",
+  },
 };
 
 export default function RootLayout({

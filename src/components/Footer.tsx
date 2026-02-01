@@ -9,7 +9,7 @@ export default function Footer() {
                     <div className="flex flex-col items-center md:items-start text-center md:text-left">
                         <Link href="/" className="mb-8 block md:ml-20">
                             <img
-                                src="/images/logo.svg"
+                                src="/images/logo.png"
                                 alt="NONGTUNG"
                                 className="h-24 md:h-28 w-auto brightness-0 invert opacity-80"
                             />

@@ -21,19 +21,21 @@ const COLLECTIONS = {
 
 import { Trip, Rental, Transport, Article } from '../types/types';
 
+import { articles as staticArticles } from '../app/articles/data';
+
 // --- ARTICLES ---
 export async function getArticles(): Promise<Article[]> {
-    try {
-        const q = query(collection(db, COLLECTIONS.ARTICLES));
-        const snapshot = await getDocs(q);
-        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Article));
-    } catch (error) {
-        console.error('Error fetching articles:', error);
-        return [];
-    }
+    // Return static articles first (for SEO content), potentially merge with DB later
+    return staticArticles.map(a => ({ ...a, id: a.slug } as Article));
 }
 
 export async function getArticle(slug: string): Promise<Article | null> {
+    // Try static first
+    const staticArticle = staticArticles.find(a => a.slug === slug);
+    if (staticArticle) {
+        return { ...staticArticle, id: staticArticle.slug } as Article;
+    }
+
     try {
         // Since we query by slug, we can't use getDoc directly unless ID is slug
         // Let's assume ID might not be slug for flexibility, so we query

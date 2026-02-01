@@ -77,14 +77,9 @@ export const metadata: Metadata = {
     canonical: "https://nongtung.com",
   },
   icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/images/favicon.png", type: "image/png", sizes: "32x32" },
-    ],
-    apple: [
-      { url: "/images/favicon.png", sizes: "180x180", type: "image/png" },
-    ],
-    shortcut: ["/favicon.ico"],
+    icon: "/images/favicon.png",
+    shortcut: "/images/favicon.png",
+    apple: "/images/favicon.png",
   },
 };
 

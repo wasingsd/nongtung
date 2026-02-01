@@ -10,15 +10,86 @@ import {
     query,
     orderBy
 } from 'firebase/firestore';
-import { Trip, Rental, Transport } from '../types/types';
-
 // Collection names
 const COLLECTIONS = {
     TRIPS: 'trips',
     RENTALS: 'rentals',
     TRANSPORT: 'transport',
-    QUOTES: 'quotes'
+    QUOTES: 'quotes',
+    ARTICLES: 'articles'
 } as const;
+
+import { Trip, Rental, Transport, Article } from '../types/types';
+
+// --- ARTICLES ---
+export async function getArticles(): Promise<Article[]> {
+    try {
+        const q = query(collection(db, COLLECTIONS.ARTICLES));
+        const snapshot = await getDocs(q);
+        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Article));
+    } catch (error) {
+        console.error('Error fetching articles:', error);
+        return [];
+    }
+}
+
+export async function getArticle(slug: string): Promise<Article | null> {
+    try {
+        // Since we query by slug, we can't use getDoc directly unless ID is slug
+        // Let's assume ID might not be slug for flexibility, so we query
+        const q = query(
+            collection(db, COLLECTIONS.ARTICLES),
+            // We need to fetch all and filter or set up an index. 
+            // For small scale, fetch all is fine or query by field if indexed.
+            // But usually getDoc by ID (slug) is best if we enforce ID=slug.
+        );
+        // Better approach: Use ID = slug when saving.
+        const docRef = doc(db, COLLECTIONS.ARTICLES, slug);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            return { id: docSnap.id, ...docSnap.data() } as Article;
+        }
+        return null;
+    } catch (error) {
+        console.error('Error fetching article:', error);
+        return null;
+    }
+}
+
+export async function saveArticle(article: Article): Promise<void> {
+    try {
+        // Use slug as ID for friendly URLs and easy lookup
+        const docRef = doc(db, COLLECTIONS.ARTICLES, article.slug);
+        await setDoc(docRef, {
+            slug: article.slug,
+            title: article.title,
+            excerpt: article.excerpt,
+            content: article.content,
+            coverImage: article.coverImage,
+            author: article.author,
+            date: article.date,
+            readingTime: article.readingTime,
+            tags: article.tags || [],
+            keywords: article.keywords || [],
+            relatedTripId: article.relatedTripId || '',
+            relatedRentalId: article.relatedRentalId || '',
+        });
+    } catch (error) {
+        console.error('Error saving article:', error);
+        throw error;
+    }
+}
+
+export async function deleteArticle(slug: string): Promise<void> {
+    try {
+        const docRef = doc(db, COLLECTIONS.ARTICLES, slug);
+        await deleteDoc(docRef);
+    } catch (error) {
+        console.error('Error deleting article:', error);
+        throw error;
+    }
+}
 
 export interface Quote {
     id: string;

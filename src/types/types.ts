@@ -43,9 +43,14 @@ export interface Article {
   id: string;
   slug: string;
   title: string;
-  summary: string;
-  content: string; // Markdown or HTML
+  excerpt: string; // Changed from summary
+  content: string;
   coverImage: string;
   author: string;
-  publishedAt: string;
+  date: string; // Changed from publishedAt for consistency
+  readingTime: string;
+  tags: string[];
+  keywords: string[]; // For SEO
+  relatedTripId?: string;
+  relatedRentalId?: string;
 }

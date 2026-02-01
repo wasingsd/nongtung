@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { LayoutDashboard, Ticket, Car, Truck, LogOut, Database, Gem, Building2 } from 'lucide-react';
+import { LayoutDashboard, Ticket, Car, Truck, LogOut, Database, Gem, Building2, BookOpen } from 'lucide-react';
 import { logoutAction } from '@/app/actions/authActions';
 
 export default function AdminLayout({
@@ -28,6 +28,9 @@ export default function AdminLayout({
                     </Link>
                     <Link href="/adminnongtung/corporate" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-colors text-sm font-bold">
                         <Building2 className="w-5 h-5" /> Corporate Inquiries
+                    </Link>
+                    <Link href="/adminnongtung/articles" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-colors text-sm font-bold">
+                        <BookOpen className="w-5 h-5" /> Articles
                     </Link>
                     <div className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold text-gray-500 cursor-not-allowed opacity-50">
                         <Gem className="w-5 h-5" /> Shop <span className="ml-auto text-xs bg-gray-600 px-2 py-0.5 rounded">Coming Soon</span>

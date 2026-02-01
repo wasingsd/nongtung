@@ -18,6 +18,7 @@ export default function Navbar() {
         { id: 'trips', label: 'Trips', href: '/trips' },
         { id: 'transport', label: 'Transport', href: '/transport' },
         { id: 'rental', label: 'Rental', href: '/rental' },
+        { id: 'articles', label: 'Articles', href: '/articles' },
         // { id: 'shop', label: 'Shop', href: '/shop' }, // Hidden - Shop is disabled
         { id: 'corporate', label: 'Corporate', href: '/corporate' },
     ];
@@ -32,6 +33,7 @@ export default function Navbar() {
                 <div className="container mx-auto px-6 flex justify-between items-center">
                     {/* Logo */}
                     <Link href="/" className="cursor-pointer flex items-center relative z-[100]">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                             src="/images/typo_logo.svg"
                             alt="NONGTUNG"

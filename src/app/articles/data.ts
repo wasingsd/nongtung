@@ -78,35 +78,34 @@ export const articles: Article[] = [
     },
     {
         slug: 'hidden-gems-chiang-mai-trekking',
-        title: 'Hidden Gems of Chiang Mai: A Trekking Guide for Nature Lovers 🥾',
-        excerpt: 'Chiang Mai is not just about temples. Discover the lush jungles, hidden waterfalls, and serene trails that most tourists miss. Here is my local guide to the best treks.',
-        coverImage: 'https://images.unsplash.com/photo-1504214208698-ea1916a2195a?auto=format&fit=crop&q=80&w=1600',
+        title: 'Monk\'s Trail & Hidden Waterfalls: The Authentic Chiang Mai Trekking Guide 🛕',
+        excerpt: 'Skip the tourist traps. Discover the spiritual Monk\'s Trail (Wat Pha Lat) and lush hidden waterfalls. A guide for those seeking an authentic connection with Northern Thailand\'s nature.',
+        coverImage: 'https://images.unsplash.com/photo-1590497576020-c8fcc1ad7c50?auto=format&fit=crop&q=80&w=1600',
         date: '2025-07-01',
-        author: 'Nongtung Team',
+        author: 'Nongtung Local Expert',
         readingTime: '6 min read',
-        tags: ['Chiang Mai', 'Trekking', 'Travel Guide'],
-        keywords: ['Chiang Mai trekking', 'Hiking Northern Thailand', 'Hidden waterfalls Chiang Mai', 'Best jungle trails Thailand', 'Eco tourism Chiang Mai'],
+        tags: ['Chiang Mai', 'Trekking', 'Monk\'s Trail'],
+        keywords: ['Monk\'s Trail Chiang Mai', 'Wat Pha Lat hike', 'Authentic trekking Chiang Mai', 'Hidden waterfalls Northern Thailand', 'Nature trails Chiang Mai'],
         relatedTripId: 'doi-pui-hike',
         content: `
-            <p class="lead">Hey there, fellow adventurer! If you're reading this, you probably love the smell of pine forests and the sound of crunching leaves under your boots just as much as I do. Chiang Mai is famous for its old city, but the <em>real</em> magic happens when you step out of the Grab and into the green.</p>
+            <p class="lead">Chiang Mai is a city of layers. There's the ancient city walls, the bustling markets, but peel back the noise, and you find the soul of the north: its green, silent mountains.</p>
 
-            <h2>Why Trek in Chiang Mai?</h2>
-            <p>Unlike the southern islands, Northern Thailand offers a cool, misty climate (especially in "winter" from Nov-Feb) and biodiversity that will blow your mind. You're not just walking; you're exploring ancient hill tribe paths, coffee plantations, and cloud forests.</p>
+            <h2>Why "Authentic" Matters</h2>
+            <p>In 2025, travel isn't about ticking boxes. It's about connection. The trails we recommend aren't just paths; they are historic routes used by monks, hill tribes, and locals for centuries.</p>
 
-            <h2>1. The Monk's Trail (Wat Pha Lat)</h2>
-            <p>If you have just a morning to spare, this is it. It's a spiritual journey up the mountain that monks used to take to reach the temple. <br>
-            <strong>Difficulty:</strong> Easy-Moderate<br>
-            <strong>Vibe:</strong> Peaceful, meditative, and green.</p>
-
-            <h2>2. Doi Inthanon Kew Mae Pan Nature Trail</h2>
-            <p>Okay, this one is popular, but for a reason. Walking along the ridge with the clouds BELOW you? Unbeatable.</p>
-
-            <h2>My Personal Tips for You</h2>
+            <h2>1. The Monk's Trail (Wat Pha Lat) - A Spiritual Ascent</h2>
+            <p>This path (known locally as "Palaad" trail) is the highlight of Doi Suthep, yet many swift past it. It’s a gentle 45-minute hike that ends at <strong>Wat Pha Lat</strong>, a temple that blends into the jungle and waterfall. No gold chedis screaming for attention—just pure zen.</p>
             <ul>
-                <li><strong>Start Early:</strong> I mean 6 AM early. You beat the heat and the crowds.</li>
-                <li><strong>Leech Socks?</strong> In rainy season (July-Oct), yes. You'll thank me later.</li>
-                <li><strong>Respect the Locals:</strong> Many trails pass through hill tribe villages. A smile and a "Sawasdee" go a long way.</li>
+                <li><strong>Best Time:</strong> 6:00 AM for the monks' alms atmosphere.</li>
+                <li><strong>Difficulty:</strong> Beginner-friendly but humid.</li>
             </ul>
+
+            <h2>2. Doi Pui Summit - The Roof of the City</h2>
+            <p>Want cooler air? Head higher. Doi Pui offers an escape from the city heat with temperatures often 10 degrees cooler. It's lush, green, and smells like pine forests.</p>
+
+            <blockquote>
+                "Walk where the locals walk, eat where the locals eat. That's the Nongtung way."
+            </blockquote>
         `
     },
     {
@@ -115,58 +114,112 @@ export const articles: Article[] = [
         excerpt: 'Planning a road trip to Pai or Chiang Rai? Forget the crowded buses. Here is why renting a private van with a driver is the smartest travel hack for your group.',
         coverImage: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=1600',
         date: '2025-07-05',
-        author: 'Nongtung Local Expert',
+        author: 'Nongtung Logistics',
         readingTime: '5 min read',
-        tags: ['Transport', 'Road Trip', 'Travel Tips'],
-        keywords: ['Rent a van Chiang Mai', 'Private driver Northern Thailand', 'Chiang Mai to Pai transport', 'Van rental with driver', 'Group travel Thailand'],
+        tags: ['Transport', 'Road Trip', 'Van Rental'],
+        keywords: ['Rent a van Chiang Mai', 'Private driver Northern Thailand', 'Chiang Mai to Pai transport', 'Van rental with driver', 'VIP Van Chiang Mai'],
         relatedRentalId: 'commuter-van',
         content: `
-            <p class="lead">Let's be real. The road to Pai has 762 curves. Do you really want to be driving that yourself, or bouncing around in the back of a motion-sickness-inducing public minivan?</p>
+            <p class="lead">The road to Pai features 762 legendary curves. Navigating them yourself? Stressful. Being driven in a VIP van with reclining seats? Bliss.</p>
 
-            <h2>Freedom Like Never Before</h2>
-            <p>Renting a private van isn't just about luxury; it's about <strong>freedom</strong>. Want to stop at that cute strawberry farm? Go for it. Need a bathroom break <em>now</em>? Done. You control the playlist and the pace.</p>
+            <h2>Freedom & Safety Combined</h2>
+            <p>Northern Thailand's roads are stunning but technically demanding. Our fleet of <strong>Toyota Commuters</strong> comes with experienced drivers who know every hairpin turn on Highway 1095.</p>
 
-            <h2>Safety First (Seriously)</h2>
-            <p>Northern Thailand's roads are beautiful but tricky. Steep gradients and sharp hairpins are the norm. Our drivers at Nongtung drive these roads every single day. They know every pothole and every viewpoint.</p>
-
-            <h2>Is it Worth the Cost?</h2>
-            <p>If you are a group of 4-9 people, absolutely.</p>
-            <ul>
-                <li><strong>Cost per person:</strong> Often similar to buying multiple bus/plane tickets.</li>
-                <li><strong>Comfort:</strong> AC, reclining seats, and room for all your luggage (yes, even that extra suitcase).</li>
-            </ul>
-            <p>Trust me, being able to nap comfortably between destinations changes your entire trip energy.</p>
+            <h2>Cost-Effective for Groups</h2>
+            <p>If you're traveling with 4+ friends, a private van often costs less per person than separate flights or VIP bus tickets, plus you get door-to-door service.</p>
         `
     },
     {
         slug: 'ultimate-glamping-experience-doi-inthanon',
-        title: 'Camping Under the Stars: The Ultimate Glamping Experience in Doi Inthanon ✨',
-        excerpt: 'Imagine waking up to a sea of mist right outside your tent. Glamping in Northern Thailand combines raw nature with the comfort you deserve.',
+        title: 'Eco-Friendly Glamping: Sustainable Luxury in Doi Inthanon 🌿',
+        excerpt: 'Experience the "Sea of Mist" without leaving your carbon footprint. Our guide to sustainable glamping in Northern Thailand combines luxury with eco-consciousness.',
         coverImage: 'https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?auto=format&fit=crop&q=80&w=1600',
         date: '2025-07-10',
-        author: 'Nongtung Team',
+        author: 'Nongtung Eco Team',
         readingTime: '6 min read',
-        tags: ['Camping', 'Glamping', 'Doi Inthanon'],
-        keywords: ['Glamping Chiang Mai', 'Camping Doi Inthanon', 'Luxury camping Thailand', 'Best camping spots Northern Thailand', 'Sea of mist Chiang Mai'],
+        tags: ['Glamping', 'Sustainable Travel', 'Doi Inthanon'],
+        keywords: ['Eco glamping Chiang Mai', 'Sustainable travel Thailand', 'Doi Inthanon camping', 'Luxury tent Chiang Mai', 'Green travel Northern Thailand'],
         relatedTripId: 'inthanon-camp',
         content: `
-            <p class="lead">Camping used to mean back pain and instant noodles. Not anymore. Welcome to the world of Glamping (Glamorous Camping) in the mountains of Chiang Mai.</p>
+            <p class="lead">Luxury doesn't have to cost the Earth. At Nongtung, we believe in "Leave No Trace" camping—but that doesn't mean you can't have a comfortable mattress.</p>
 
-            <h2>What to Expect?</h2>
-            <p>Picture this: You arrive at your campsite as the sun sets, painting the sky in purple and orange. Your tent? It's huge. Inside, there's a real mattress, cozy blankets, and fairy lights.</p>
+            <h2>The Rise of Green Glamping</h2>
+            <p>Doi Inthanon, the roof of Thailand, is fragile. Our partner campsites focus on solar power, waste reduction, and supporting local hill tribe communities. You get the view, the "Mookata" dinner, and the peace of mind.</p>
 
-            <h2>The "Mookata" Dinner</h2>
-            <p>No camping trip in Thailand is complete without <strong>Mookata</strong> (Thai BBQ). Grilling pork belly on a hot pan while the mountain air chills your nose... it's a core memory waiting to happen.</p>
-
-            <h2>Waking Up to the Mist</h2>
-            <p>The best part isn't the night; it's the morning. Around 6 AM, you unzip your tent and—boom. You're above the clouds. The famous "Sea of Mist" (Talay Mok) is right there.</p>
-
-            <h2>What to Pack?</h2>
+            <h2>What Makes it Special?</h2>
             <ul>
-                <li><strong>Warm Jacket:</strong> Yes, it gets COLD (single digits °C).</li>
-                <li><strong>Power Bank:</strong> For all the photos you'll take.</li>
-                <li><strong>Beanie/Hat:</strong> Keeps you cozy during the BBQ.</li>
+                <li><strong>Temperature:</strong> Single digits in winter (bring layers!).</li>
+                <li><strong>The View:</strong> Waking up above the cloud layer is an experience that stays with you forever.</li>
+                <li><strong>Local Connection:</strong> Ingredients for your BBQ are sourced from the Royal Project nearby.</li>
             </ul>
+        `
+    },
+    // --- New Thai Strategy Articles ---
+    {
+        slug: 'ultimate-trekking-guide-chiang-mai-2025',
+        title: 'คู่มือเดินป่าเชียงใหม่ 2025: ครบทุกเส้นทาง สายลุยห้ามพลาด! ⛰️',
+        excerpt: 'อัปเดตล่าสุดเส้นทางเดินป่าดอยสุเทพ-ดอยปุย และม่อนแจ่ม ฉบับคนท้องถิ่นพาเที่ยว จอยทริปยังไงให้สนุก เตรียมตัวยังไงไม่ให้เฟล',
+        coverImage: 'https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?auto=format&fit=crop&q=80&w=1600',
+        date: '2025-08-01',
+        author: 'Nongtung Local Guide',
+        readingTime: '8 min read',
+        tags: ['เดินป่า', 'เชียงใหม่', 'Trekking'],
+        keywords: ['เดินป่าเชียงใหม่', 'จอยทริปเดินป่า', 'ดอยสุเทพ', 'เดินป่าดอยปุย', 'ที่เที่ยวธรรมชาติเชียงใหม่ 2568'],
+        relatedTripId: 'doi-suthep-hike',
+        content: `
+            <p class="lead">ปี 2025 แล้ว ใครที่ยังไม่เคยสัมผัสป่าหน้าฝนเชียงใหม่ บอกเลยว่าพลาด! น่องตึงขอเปิดคัมภีร์เส้นทางเดินป่าฉบับคนพื้นที่</p>
+
+            <h2>ทำไมต้อง "ดอยปุย"?</h2>
+            <p>หลายคนรู้จักแค่ดอยสุเทพ แต่เลยขึ้นไปอีกนิดคือ <strong>ดอยปุย</strong> ที่มีป่าสนสามใบเหมือนเมืองนอก อากาศเย็นตลอดปี และเส้นทางเดินที่ไม่โหดจนเกินไป เหมาะสำหรับมือใหม่ที่ใจพร้อม</p>
+
+            <h2>Join Trip vs Private Trip?</h2>
+            <p>ถ้ามาคนเดียวหรือมาเป็นคู่ <strong>Join Trip</strong> คือคำตอบ ได้เพื่อนใหม่ ได้Connection แต่ถ้ามาเป็นแก๊งออฟฟิศ <strong>Private Trip</strong> จะตอบโจทย์กว่าเพราะกำหนดเวลาเองได้</p>
+        `
+    },
+    {
+        slug: 'chiang-mai-camping-gear-rental-guide',
+        title: 'เช่าอุปกรณ์แคมป์ปิ้งเชียงใหม่: สะอาด ครบ จบที่เดียว (K2, Coleman Available) ⛺',
+        excerpt: 'ไม่ต้องแบกให้หนัก! บริการเช่าเต็นท์และอุปกรณ์เดินป่าเกรดพรีเมียมในเชียงใหม่ สะอาดเหมือนใหม่ ผ่านการฆ่าเชื้อทุกครั้งก่อนส่งมอบ',
+        coverImage: 'https://images.unsplash.com/photo-1496545672479-df5c1505e101?auto=format&fit=crop&q=80&w=1600',
+        date: '2025-08-05',
+        author: 'Nongtung Rental',
+        readingTime: '4 min read',
+        tags: ['เช่าเต็นท์', 'อุปกรณ์แคมป์ปิ้ง', 'Rental'],
+        keywords: ['เช่าเต็นท์เชียงใหม่', 'ร้านเช่าอุปกรณ์เดินป่า', 'เช่าเต็นท์ K2', 'Coleman เชียงใหม่', 'เช่าพัดลมแคมป์ปิ้ง'],
+        relatedRentalId: 'tent-family-set',
+        content: `
+            <p class="lead">จะขึ้นดอยทั้งที อุปกรณ์ต้องพร้อม! แต่จะซื้อใหม่ทั้งชุดก็แพง แถมรกบ้าน น่องตึงจัดให้ด้วยบริการเช่าอุปกรณ์แคมป์ปิ้งที่ "สะอาด" ที่สุดในเชียงใหม่</p>
+
+            <h2>ความสะอาดคือหัวใจของเรา</h2>
+            <p>เราเข้าใจว่าการนอนถุงนอนร่วมกับคนอื่นดูน่ากลัว เราจึงซักและอบฆ่าเชื้ออุปกรณ์ทุกชิ้น 100% หลังใช้งาน มั่นใจได้ว่าหอม สะอาด ปลอดภัย</p>
+
+            <h2>แบรนด์ดังมีให้เลือกครบ</h2>
+            <ul>
+                <li><strong>สายลุย:</strong> เต็นท์เดินป่าเบาพิเศษ</li>
+                <li><strong>สายครอบครัว:</strong> K2, Coleman หลังใหญ่ ยืนในเต็นท์ได้สบาย</li>
+                <li><strong>สายพร็อพ:</strong> เก้าอี้ Kermit, โต๊ะไม้ Roll table ถ่ายรูปสวยแน่นอน</li>
+            </ul>
+        `
+    },
+    {
+        slug: 'corporate-outing-teambuilding-chiang-mai',
+        title: 'จัด Outing เชียงใหม่ยังไงให้พนักงาน Love? ไอเดีย Teambuilding เชิงผจญภัย 🤝',
+        excerpt: 'ลืมการละลายพฤติกรรมในห้องแอร์ไปได้เลย พาพนักงานและผู้บริหารมาเปิดประสบการณ์ใหม่กับกิจกรรม Adventure ที่ทั้งปลอดภัยและได้สาระ',
+        coverImage: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=1600',
+        date: '2025-08-10',
+        author: 'Nongtung Corporate',
+        readingTime: '6 min read',
+        tags: ['Corporate', 'Teambuilding', 'Outing'],
+        keywords: ['รับจัด outing เชียงใหม่', 'Teambuilding เชียงใหม่', 'กิจกรรมบริษัท', 'Company trip Northern Thailand', 'ท่องเที่ยวประจำปีบริษัท'],
+        relatedTripId: 'corporate-package',
+        content: `
+            <p class="lead">HR กำลังปวดหัวกับการหาที่เที่ยวประจำปีอยู่หรือเปล่า? ลองเปลี่ยนบรรยากาศมาเป็น "Adventure Teambuilding" ในป่าเชียงใหม่ดูไหม?</p>
+
+            <h2>Adventure Based Learning (ABL)</h2>
+            <p>การเดินป่าด้วยกันคือการสร้าง Teamwork ที่ดีที่สุด เมื่อเพื่อนร่วมงานต้องช่วยกันข้ามลำธาร หรือแบ่งปันน้ำดื่ม กำแพงระหว่างแผนกจะพังทลายลงเองโดยธรรมชาติ</p>
+
+            <h2>Safety & Professionalism</h2>
+            <p>เราเชี่ยวชาญการดูแลกรุ๊ปองค์กร มีไกด์ดูแลประกบ 1:5 พร้อมประกันอุบัติเหตุและพยาบาล Standby มั่นใจได้ในมาตรฐานความปลอดภัยระดับสากล</p>
         `
     }
 ];

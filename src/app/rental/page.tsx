@@ -5,10 +5,10 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Equipment Rental | Nongtung',
-    description: 'Premium camping and trekking equipment rental in Chiang Mai. High-quality tents, sleeping bags, and outdoor gear.',
+    description: 'Hygiene-first camping rental in Chiang Mai. Full camping sets (K2, Coleman) and trekking gear. 100% sanitized after every use.',
     openGraph: {
         title: 'Equipment Rental | Nongtung',
-        description: 'Premium camping and trekking equipment rental in Chiang Mai.',
+        description: 'Clean & Complete Camping Sets in Chiang Mai. Rent tents, glamping gear, and stoves.',
     },
 };
 
@@ -55,12 +55,12 @@ export default async function RentalPage() {
                 <div className="absolute inset-0 opacity-10 bg-[url('https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1600')] bg-cover bg-center grayscale"></div>
                 <div className="container mx-auto px-6 relative z-10">
                     <div className="max-w-4xl">
-                        <span className="text-[10px] font-black text-primary uppercase tracking-[0.4em] mb-4 block">Professional Grade Equipment</span>
+                        <span className="text-[10px] font-black text-primary uppercase tracking-[0.4em] mb-4 block">Clean & Complete Sets</span>
                         <h2 className="text-4xl md:text-7xl font-black font-heading text-white mb-6 tracking-tighter leading-none">
-                            GEAR <span className="italic text-primary">FOR THE BOLD</span>
+                            RENTAL <span className="italic text-primary">GEAR & SETS</span>
                         </h2>
                         <p className="text-xl text-white/50 max-w-2xl font-medium leading-relaxed">
-                            Premium camping and adventure essentials, meticulously maintained and sanitized for your next northern expedition.
+                            Premium camping sets (K2, Coleman) and trekking essentials. Meticulously cleaned and sanitized for your hygiene and comfort.
                         </p>
                     </div>
                 </div>
@@ -73,7 +73,7 @@ export default async function RentalPage() {
                         <div className="flex gap-10">
                             <div className="flex items-center gap-3">
                                 <ShieldCheck className="w-5 h-5 text-primary" />
-                                <span className="text-[10px] font-black uppercase tracking-widest text-forest">Sanitized</span>
+                                <span className="text-[10px] font-black uppercase tracking-widest text-forest">Deeply Sanitized</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Zap className="w-5 h-5 text-primary" />

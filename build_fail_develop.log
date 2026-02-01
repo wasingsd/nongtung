@@ -1,0 +1,24 @@
+
+> temp_app@0.1.0 build
+> next build
+
+▲ Next.js 16.1.1 (Turbopack)
+- Environments: .env
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+✓ Compiled successfully in 5.3s
+  Running TypeScript ...
+Failed to compile.
+
+./src/lib/data.ts:54:9
+Type error: Object literal may only specify known properties, and 'summary' does not exist in type 'Article'.
+
+[0m [90m 52 |[39m         slug[33m:[39m [32m'top-10-street-foods'[39m[33m,[39m
+ [90m 53 |[39m         title[33m:[39m [32m'Top 10 Street Foods in Bangkok'[39m[33m,[39m
+[31m[1m>[22m[39m[90m 54 |[39m         summary[33m:[39m [32m'A guide to the best delicious street food you must try in Bangkok.'[39m[33m,[39m
+ [90m    |[39m         [31m[1m^[22m[39m
+ [90m 55 |[39m         content[33m:[39m [32m`[39m
+ [90m 56 |[39m [32m      <h2>1. Pad Thai</h2>[39m
+ [90m 57 |[39m [32m      <p>The classic Thai stir-fried noodle dish.</p>[39m[0m
+Next.js build worker exited with code: 1 and signal: null

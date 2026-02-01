@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "extract": "node extract_images.js"
   },
   "dependencies": {
     "@next/third-parties": "^16.1.6",

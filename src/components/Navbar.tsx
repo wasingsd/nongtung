@@ -35,7 +35,7 @@ export default function Navbar() {
                     <Link href="/" className="cursor-pointer flex items-center relative z-[100]">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
-                            src="/images/typo_logo.svg"
+                            src="/images/typo_logo.png"
                             alt="NONGTUNG"
                             className="h-8 md:h-14 w-auto object-contain"
                         />

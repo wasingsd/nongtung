@@ -169,7 +169,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                             <p className="text-forest/50 text-sm mb-6">
                                 Get the latest trail updates and hidden spots delivered to your feed.
                             </p>
-                            <a href="https://www.facebook.com/nongtung" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-primary font-black uppercase text-xs tracking-widest hover:text-forest transition-colors">
+                            <a href="https://web.facebook.com/Venturevibecnx?_rdc=1&_rdr#" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-primary font-black uppercase text-xs tracking-widest hover:text-forest transition-colors">
                                 Follow on Facebook <ArrowRight className="w-4 h-4 ml-2" />
                             </a>
                         </div>

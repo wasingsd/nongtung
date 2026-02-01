@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "NONGTUNG - Private Northern Thailand Adventures",
+    title: "NONGTUNG: Bespoke Northern Thailand Adventures & Trekking",
     description: "Bespoke northern Thailand travel curated for those who seek the extraordinary. Trekking, camping, and premium van services.",
     url: "https://nongtung.com",
     siteName: "NONGTUNG",
@@ -60,18 +60,18 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1510312305653-8ed496efae75?q=80&w=1200&h=630&fit=crop",
+        url: "/images/og-image-hq.png",
         width: 1200,
         height: 630,
-        alt: "NONGTUNG Adventure",
+        alt: "NONGTUNG Bespoke Adventures",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "NONGTUNG - Northern Thailand Adventure Experiences",
+    title: "NONGTUNG: Bespoke Northern Thailand Adventures & Trekking",
     description: "Bespoke northern Thailand travel curated for those who seek the extraordinary.",
-    images: ["https://images.unsplash.com/photo-1510312305653-8ed496efae75?q=80&w=1200&h=630&fit=crop"],
+    images: ["/images/og-image-hq.png"],
   },
   alternates: {
     canonical: "https://nongtung.com",

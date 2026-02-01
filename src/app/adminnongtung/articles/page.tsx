@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { getArticles } from '@/lib/firestore-db';
-import { Plus, Edit, Trash2, ExternalLink } from 'lucide-react';
-import { deleteArticle } from '@/app/actions/articleActions';
+import { Plus, Edit, ExternalLink } from 'lucide-react';
+import { DeleteArticleButton } from '@/components/DeleteArticleButton';
 
 export default async function AdminArticlesPage() {
     const articles = await getArticles();
@@ -64,19 +64,7 @@ export default async function AdminArticlesPage() {
                                         >
                                             <Edit className="w-4 h-4" />
                                         </Link>
-                                        <form action={deleteArticle.bind(null, article.slug)} className="inline-block" onSubmit={(e) => {
-                                            if (!confirm('Are you sure you want to delete this article?')) {
-                                                e.preventDefault();
-                                            }
-                                        }}>
-                                            <button
-                                                type="submit"
-                                                className="inline-flex items-center justify-center p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                                                title="Delete"
-                                            >
-                                                <Trash2 className="w-4 h-4" />
-                                            </button>
-                                        </form>
+                                        <DeleteArticleButton slug={article.slug} />
                                     </td>
                                 </tr>
                             ))

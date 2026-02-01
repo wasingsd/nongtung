@@ -7,7 +7,7 @@ const files = [
     { src: 'typo_logo.svg', dest: 'typo_logo.png' }
 ];
 
-const baseDir = path.join('d:', 'nongtung', 'public', 'images');
+const baseDir = path.join(process.cwd(), 'public', 'images');
 
 console.log(`Base directory: ${baseDir}`);
 

@@ -115,31 +115,63 @@ export default function ImageLightbox({ images, mainImage }: ImageLightboxProps)
             }}
             onClick={closeLightbox}
         >
-            {/* Close Button - Always visible, safe area aware */}
+            {/* Close Button TOP - Always visible, safe area aware */}
             <button
-                onClick={(e) => { e.stopPropagation(); closeLightbox(); }}
+                onClick={(e) => { e.stopPropagation(); e.preventDefault(); closeLightbox(); }}
+                onTouchEnd={(e) => { e.stopPropagation(); e.preventDefault(); closeLightbox(); }}
                 style={{
                     position: 'absolute',
-                    top: 'max(16px, env(safe-area-inset-top, 16px))',
-                    right: 'max(16px, env(safe-area-inset-right, 16px))',
-                    width: '60px',
-                    height: '60px',
+                    top: 'max(20px, env(safe-area-inset-top, 20px))',
+                    right: 'max(20px, env(safe-area-inset-right, 20px))',
+                    width: '64px',
+                    height: '64px',
                     borderRadius: '50%',
-                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                    color: '#000',
-                    border: 'none',
+                    backgroundColor: '#ffffff',
+                    color: '#000000',
+                    border: '3px solid #000',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     cursor: 'pointer',
-                    zIndex: 999999,
-                    boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
+                    zIndex: 9999999,
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.5)',
                     WebkitTapHighlightColor: 'transparent',
                     touchAction: 'manipulation',
                 }}
                 aria-label="Close Gallery"
             >
-                <X size={32} strokeWidth={2.5} />
+                <X size={36} strokeWidth={3} />
+            </button>
+
+            {/* Close Button BOTTOM - Fallback for mobile */}
+            <button
+                onClick={(e) => { e.stopPropagation(); e.preventDefault(); closeLightbox(); }}
+                onTouchEnd={(e) => { e.stopPropagation(); e.preventDefault(); closeLightbox(); }}
+                style={{
+                    position: 'absolute',
+                    bottom: 'max(140px, calc(env(safe-area-inset-bottom, 20px) + 120px))',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    padding: '16px 32px',
+                    borderRadius: '50px',
+                    backgroundColor: '#ffffff',
+                    color: '#000000',
+                    border: '2px solid #000',
+                    fontSize: '18px',
+                    fontWeight: 'bold',
+                    cursor: 'pointer',
+                    zIndex: 9999999,
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.5)',
+                    WebkitTapHighlightColor: 'transparent',
+                    touchAction: 'manipulation',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                }}
+                aria-label="Close Gallery"
+            >
+                <X size={24} strokeWidth={2.5} />
+                CLOSE
             </button>
 
             {/* Navigation - Previous */}

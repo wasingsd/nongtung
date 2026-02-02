@@ -10,6 +10,9 @@ export default function Navbar() {
     const pathname = usePathname();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+    // Don't show Navbar on Admin routes
+    if (pathname?.startsWith('/adminnongtung')) return null;
+
     // Close mobile menu when route changes
     useEffect(() => {
         setIsMenuOpen(false);
@@ -57,9 +60,14 @@ export default function Navbar() {
 
                         <ThemeToggle />
 
-                        <button className="bg-primary text-white px-7 py-2.5 rounded-full font-bold uppercase text-[10px] tracking-widest hover:bg-primary-deep transition-all shadow-lg hover:shadow-primary/20 transform hover:-translate-y-0.5">
+                        <a
+                            href="https://www.facebook.com/Venturevibecnx"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bg-primary text-white px-7 py-2.5 rounded-full font-bold uppercase text-[10px] tracking-widest hover:bg-primary-deep transition-all shadow-lg hover:shadow-primary/20 transform hover:-translate-y-0.5"
+                        >
                             Contact Us
-                        </button>
+                        </a>
                     </div>
 
                     {/* Mobile Menu Toggle */}
@@ -95,9 +103,14 @@ export default function Navbar() {
                             {link.label}
                         </Link>
                     ))}
-                    <button className="mt-8 bg-primary text-white px-10 py-4 md:px-14 md:py-5 rounded-full font-black uppercase text-[10px] md:text-xs tracking-widest shadow-2xl active:scale-95 transition-all">
+                    <a
+                        href="https://www.facebook.com/Venturevibecnx"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-8 bg-primary text-white px-10 py-4 md:px-14 md:py-5 rounded-full font-black uppercase text-[10px] md:text-xs tracking-widest shadow-2xl active:scale-95 transition-all text-center"
+                    >
                         Contact Us
-                    </button>
+                    </a>
 
                     <div className="mt-8 md:mt-12 text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] text-forest/20 dark:text-white/20">
                         Nongtung Adventure • 2026

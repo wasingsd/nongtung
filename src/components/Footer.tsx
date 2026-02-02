@@ -1,7 +1,15 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Instagram, Facebook, Phone, Mail, MapPin } from 'lucide-react';
 
 export default function Footer() {
+    const pathname = usePathname();
+
+    // Don't show Footer on Admin routes
+    if (pathname?.startsWith('/adminnongtung')) return null;
+
     return (
         <footer id="footer" className="bg-forest text-white/90 pt-20 pb-12 rounded-t-[4rem] mt-auto immersive-shadow relative z-30">
             <div className="container mx-auto px-6">

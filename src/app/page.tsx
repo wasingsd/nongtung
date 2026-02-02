@@ -1,12 +1,27 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { ShieldCheck, Gem, UserCheck, ChevronRight, MapPin, Users, Calendar, ArrowRight, Compass, Heart, Award } from 'lucide-react';
-import { getTrips, getTransport } from '@/lib/firestore-db';
+import { getTrips, getTransport, getHomeSettings } from '@/lib/firestore-db';
+import { Trip } from '@/types/types';
 
 export default async function Home() {
-  const trips = await getTrips();
-  const featuredTrips = trips.slice(0, 6);
-  const transports = await getTransport();
+  const [trips, transports, settings] = await Promise.all([
+    getTrips(),
+    getTransport(),
+    getHomeSettings()
+  ]);
+
+  let featuredTrips: Trip[] = [];
+  if (settings?.popularAdventureIds?.length) {
+    // Map IDs to trip objects, maintaining the order from settings
+    featuredTrips = settings.popularAdventureIds
+      .map(id => trips.find(t => t.id === id))
+      .filter((t): t is Trip => !!t);
+  } else {
+    // Fallback to first 6 if no settings
+    featuredTrips = trips.slice(0, 6);
+  }
+
   const featuredFleet = transports.slice(0, 3);
 
   const faqJsonLd = {

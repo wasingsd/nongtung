@@ -1,17 +1,26 @@
 'use client';
 
-import { Trash2 } from 'lucide-react';
+import { Trash2, Loader2 } from 'lucide-react';
 import { deleteArticle } from '@/app/actions/articleActions';
+import { useFormStatus } from 'react-dom';
+import { useState } from 'react';
 
 interface DeleteArticleButtonProps {
     slug: string;
 }
 
 export function DeleteArticleButton({ slug }: DeleteArticleButtonProps) {
+    const [isDeleting, setIsDeleting] = useState(false);
+
     return (
         <form
             action={async () => {
-                await deleteArticle(slug);
+                setIsDeleting(true);
+                try {
+                    await deleteArticle(slug);
+                } finally {
+                    setIsDeleting(false);
+                }
             }}
             className="inline-block"
             onSubmit={(e) => {
@@ -22,10 +31,11 @@ export function DeleteArticleButton({ slug }: DeleteArticleButtonProps) {
         >
             <button
                 type="submit"
-                className="inline-flex items-center justify-center p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                disabled={isDeleting}
+                className="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-gray-400 hover:text-red-500 transition-all shadow-sm disabled:opacity-50"
                 title="Delete"
             >
-                <Trash2 className="w-4 h-4" />
+                {isDeleting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
             </button>
         </form>
     );

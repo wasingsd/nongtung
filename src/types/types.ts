@@ -59,3 +59,9 @@ export interface Article {
     zoom?: number;
   };
 }
+
+export interface HomeSettings {
+  id: 'home';
+  popularAdventureIds: string[]; // IDs of trips to show in POPULAR ADVENTURES section
+}
+

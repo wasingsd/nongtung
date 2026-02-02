@@ -16,10 +16,11 @@ const COLLECTIONS = {
     RENTALS: 'rentals',
     TRANSPORT: 'transport',
     QUOTES: 'quotes',
-    ARTICLES: 'articles'
+    ARTICLES: 'articles',
+    SETTINGS: 'settings'
 } as const;
 
-import { Trip, Rental, Transport, Article } from '../types/types';
+import { Trip, Rental, Transport, Article, HomeSettings } from '../types/types';
 
 import { articles as staticArticles } from '../app/articles/data';
 
@@ -318,6 +319,34 @@ export async function updateQuoteStatus(id: string, status: 'pending' | 'done'):
         await setDoc(docRef, { status }, { merge: true });
     } catch (error) {
         console.error('Error updating quote status:', error);
+        throw error;
+    }
+}
+
+// --- SETTINGS ---
+export async function getHomeSettings(): Promise<HomeSettings | null> {
+    try {
+        const docRef = doc(db, COLLECTIONS.SETTINGS, 'home');
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            return { id: docSnap.id, ...docSnap.data() } as HomeSettings;
+        }
+        return null;
+    } catch (error) {
+        console.error('Error fetching home settings:', error);
+        return null;
+    }
+}
+
+export async function saveHomeSettings(settings: Partial<HomeSettings>): Promise<void> {
+    try {
+        const docRef = doc(db, COLLECTIONS.SETTINGS, 'home');
+        await setDoc(docRef, {
+            ...settings,
+            id: 'home'
+        }, { merge: true });
+    } catch (error) {
+        console.error('Error saving home settings:', error);
         throw error;
     }
 }

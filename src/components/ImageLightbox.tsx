@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { createPortal } from 'react-dom';
 
 interface ImageLightboxProps {
     images: string[];
@@ -12,48 +13,261 @@ interface ImageLightboxProps {
 export default function ImageLightbox({ images, mainImage }: ImageLightboxProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [mounted, setMounted] = useState(false);
 
     // Combine main image with gallery
     const allImages = mainImage ? [mainImage, ...images] : images;
 
-    // Handle body scroll lock with cleanup
+    // Ensure component is mounted before using portal
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    // Handle body scroll lock with iOS-specific handling
     useEffect(() => {
         if (isOpen) {
+            // Save current scroll position
+            const scrollY = window.scrollY;
+
+            // iOS Safari specific handling
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${scrollY}px`;
+            document.body.style.left = '0';
+            document.body.style.right = '0';
             document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
         } else {
-            document.body.style.overflow = 'unset';
+            // Restore scroll position
+            const scrollY = document.body.style.top;
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.left = '';
+            document.body.style.right = '';
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
+
+            if (scrollY) {
+                window.scrollTo(0, parseInt(scrollY || '0') * -1);
+            }
         }
 
         return () => {
-            document.body.style.overflow = 'unset';
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.left = '';
+            document.body.style.right = '';
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
         };
     }, [isOpen]);
 
-    const openLightbox = (index: number) => {
+    const openLightbox = useCallback((index: number) => {
         setCurrentIndex(index);
         setIsOpen(true);
-    };
+    }, []);
 
-    const closeLightbox = () => {
+    const closeLightbox = useCallback(() => {
         setIsOpen(false);
-    };
+    }, []);
 
-    const goNext = () => {
+    const goNext = useCallback(() => {
         setCurrentIndex((prev) => (prev + 1) % allImages.length);
-    };
+    }, [allImages.length]);
 
-    const goPrev = () => {
+    const goPrev = useCallback(() => {
         setCurrentIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
-    };
+    }, [allImages.length]);
 
     // Handle keyboard navigation
-    const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === 'Escape') closeLightbox();
-        if (e.key === 'ArrowRight') goNext();
-        if (e.key === 'ArrowLeft') goPrev();
-    };
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (!isOpen) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') goNext();
+            if (e.key === 'ArrowLeft') goPrev();
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isOpen, closeLightbox, goNext, goPrev]);
 
     if (images.length === 0) return null;
+
+    // Lightbox Modal Component - rendered via portal
+    const LightboxModal = () => (
+        <div
+            className="lightbox-overlay"
+            style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                width: '100vw',
+                height: '100vh',
+                height: '100dvh', // Dynamic viewport height for iOS
+                zIndex: 99999,
+                backgroundColor: 'rgba(0, 0, 0, 0.98)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                touchAction: 'none',
+            }}
+            onClick={closeLightbox}
+        >
+            {/* Close Button - Always visible, safe area aware */}
+            <button
+                onClick={(e) => { e.stopPropagation(); closeLightbox(); }}
+                style={{
+                    position: 'absolute',
+                    top: 'max(16px, env(safe-area-inset-top, 16px))',
+                    right: 'max(16px, env(safe-area-inset-right, 16px))',
+                    width: '60px',
+                    height: '60px',
+                    borderRadius: '50%',
+                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                    color: '#000',
+                    border: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    zIndex: 999999,
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
+                    WebkitTapHighlightColor: 'transparent',
+                    touchAction: 'manipulation',
+                }}
+                aria-label="Close Gallery"
+            >
+                <X size={32} strokeWidth={2.5} />
+            </button>
+
+            {/* Navigation - Previous */}
+            {allImages.length > 1 && (
+                <>
+                    <button
+                        onClick={(e) => { e.stopPropagation(); goPrev(); }}
+                        style={{
+                            position: 'absolute',
+                            left: '8px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            width: '48px',
+                            height: '48px',
+                            borderRadius: '50%',
+                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                            color: '#fff',
+                            border: 'none',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            zIndex: 999998,
+                        }}
+                    >
+                        <ChevronLeft size={32} />
+                    </button>
+                    <button
+                        onClick={(e) => { e.stopPropagation(); goNext(); }}
+                        style={{
+                            position: 'absolute',
+                            right: '8px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            width: '48px',
+                            height: '48px',
+                            borderRadius: '50%',
+                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                            color: '#fff',
+                            border: 'none',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            zIndex: 999998,
+                        }}
+                    >
+                        <ChevronRight size={32} />
+                    </button>
+                </>
+            )}
+
+            {/* Main Image Container */}
+            <div
+                style={{
+                    position: 'relative',
+                    width: '90vw',
+                    height: '70vh',
+                    maxWidth: '1200px',
+                }}
+                onClick={(e) => e.stopPropagation()}
+            >
+                <Image
+                    src={allImages[currentIndex]}
+                    alt={`Image ${currentIndex + 1}`}
+                    fill
+                    className="object-contain"
+                    priority
+                    sizes="90vw"
+                />
+            </div>
+
+            {/* Image Counter */}
+            <div
+                style={{
+                    position: 'absolute',
+                    bottom: 'max(100px, calc(env(safe-area-inset-bottom, 20px) + 80px))',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    color: 'rgba(255, 255, 255, 0.8)',
+                    fontSize: '14px',
+                    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                    padding: '8px 16px',
+                    borderRadius: '20px',
+                    zIndex: 999997,
+                }}
+            >
+                {currentIndex + 1} / {allImages.length}
+            </div>
+
+            {/* Thumbnail Strip */}
+            <div
+                style={{
+                    position: 'absolute',
+                    bottom: 'max(40px, calc(env(safe-area-inset-bottom, 20px) + 20px))',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    display: 'flex',
+                    gap: '8px',
+                    maxWidth: '90vw',
+                    overflowX: 'auto',
+                    padding: '8px',
+                    zIndex: 999997,
+                }}
+            >
+                {allImages.map((img, i) => (
+                    <button
+                        key={i}
+                        onClick={(e) => { e.stopPropagation(); setCurrentIndex(i); }}
+                        style={{
+                            position: 'relative',
+                            width: '60px',
+                            height: '45px',
+                            borderRadius: '4px',
+                            overflow: 'hidden',
+                            flexShrink: 0,
+                            border: currentIndex === i ? '2px solid #f97316' : '2px solid transparent',
+                            opacity: currentIndex === i ? 1 : 0.6,
+                            transform: currentIndex === i ? 'scale(1.1)' : 'scale(1)',
+                            transition: 'all 0.2s',
+                        }}
+                    >
+                        <Image src={img} alt={`Thumb ${i + 1}`} fill className="object-cover" sizes="60px" />
+                    </button>
+                ))}
+            </div>
+        </div>
+    );
 
     return (
         <>
@@ -80,78 +294,10 @@ export default function ImageLightbox({ images, mainImage }: ImageLightboxProps)
                 })}
             </div>
 
-            {/* Lightbox Modal */}
-            {isOpen && (
-                <div
-                    className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center"
-                    onClick={closeLightbox}
-                    onKeyDown={handleKeyDown}
-                    tabIndex={0}
-                >
-                    {/* Close Button - Large Touch Target for Mobile */}
-                    <button
-                        onClick={(e) => { e.stopPropagation(); closeLightbox(); }}
-                        className="absolute top-4 right-4 md:top-8 md:right-8 text-white p-4 rounded-full bg-black/70 hover:bg-black/90 transition-all z-[70] backdrop-blur-sm touch-manipulation"
-                        style={{
-                            minWidth: '56px',
-                            minHeight: '56px',
-                            WebkitTapHighlightColor: 'transparent'
-                        }}
-                        aria-label="Close Gallery"
-                    >
-                        <X className="w-7 h-7 md:w-8 md:h-8" strokeWidth={2.5} />
-                    </button>
-
-                    {/* Navigation Arrows */}
-                    {allImages.length > 1 && (
-                        <>
-                            <button
-                                onClick={(e) => { e.stopPropagation(); goPrev(); }}
-                                className="absolute left-2 md:left-8 top-1/2 -translate-y-1/2 text-white/70 hover:text-white p-2 md:p-4 rounded-full bg-black/30 hover:bg-black/50 transition-colors z-[55] backdrop-blur-sm"
-                            >
-                                <ChevronLeft className="w-8 h-8 md:w-10 md:h-10" />
-                            </button>
-                            <button
-                                onClick={(e) => { e.stopPropagation(); goNext(); }}
-                                className="absolute right-2 md:right-8 top-1/2 -translate-y-1/2 text-white/70 hover:text-white p-2 md:p-4 rounded-full bg-black/30 hover:bg-black/50 transition-colors z-[55] backdrop-blur-sm"
-                            >
-                                <ChevronRight className="w-8 h-8 md:w-10 md:h-10" />
-                            </button>
-                        </>
-                    )}
-
-                    {/* Main Image */}
-                    <div
-                        className="relative w-[90vw] h-[85vh] max-w-6xl"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <Image
-                            src={allImages[currentIndex]}
-                            alt={`Image ${currentIndex + 1}`}
-                            fill
-                            className="object-contain"
-                            priority
-                        />
-                    </div>
-
-                    {/* Image Counter */}
-                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/70 text-sm bg-black/50 px-4 py-2 rounded-full">
-                        {currentIndex + 1} / {allImages.length}
-                    </div>
-
-                    {/* Thumbnail Strip */}
-                    <div className="absolute bottom-16 left-1/2 -translate-x-1/2 flex gap-2 max-w-[90vw] overflow-x-auto py-2 px-4">
-                        {allImages.map((img, i) => (
-                            <button
-                                key={i}
-                                onClick={(e) => { e.stopPropagation(); setCurrentIndex(i); }}
-                                className={`relative w-16 h-12 rounded overflow-hidden flex-shrink-0 transition-all ${currentIndex === i ? 'ring-2 ring-primary scale-110' : 'opacity-60 hover:opacity-100'}`}
-                            >
-                                <Image src={img} alt={`Thumb ${i + 1}`} fill className="object-cover" />
-                            </button>
-                        ))}
-                    </div>
-                </div>
+            {/* Lightbox Modal - Rendered via Portal to ensure it's on top */}
+            {mounted && isOpen && createPortal(
+                <LightboxModal />,
+                document.body
             )}
         </>
     );

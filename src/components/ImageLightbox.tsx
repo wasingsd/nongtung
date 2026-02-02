@@ -104,7 +104,6 @@ export default function ImageLightbox({ images, mainImage }: ImageLightboxProps)
                 right: 0,
                 bottom: 0,
                 width: '100vw',
-                height: '100vh',
                 height: '100dvh', // Dynamic viewport height for iOS
                 zIndex: 99999,
                 backgroundColor: 'rgba(0, 0, 0, 0.98)',

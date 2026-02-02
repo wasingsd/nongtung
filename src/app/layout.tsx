@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
 import "./globals.css";
 import { Providers } from "@/app/providers";
+import FloatingLineChat from "@/components/FloatingLineChat";
 
 const kanit = Kanit({
   weight: ['300', '400', '500', '600'],
@@ -37,7 +38,26 @@ export const metadata: Metadata = {
     template: "%s | NONGTUNG"
   },
   description: "Experience unique Northern Thailand adventures, trekking, and camping curated for international travelers. Bespoke travel, local culture, and breathtaking landscapes in Chiang Mai and Pai.",
-  keywords: ["Nongtung", "Northern Thailand Travel", "Adventure Experiences", "Thailand Tours", "Chiang Mai Travel", "Bespoke Travel", "Nature Tours", "Cultural Experiences", "Chiang Mai Trekking", "Camping Chiang Mai", "Private Van Rental Chiang Mai", "Hiking Northern Thailand", "Pai Adventure", "Doi Inthanon Tours"],
+  keywords: [
+    // Brand
+    "Nongtung", "Nongtung Adventure", "นองตึง",
+    // Trekking (EN)
+    "chiang mai trekking", "trekking in chiang mai", "chiang mai trail", "hiking chiang mai",
+    "doi inthanon trekking", "doi suthep hiking", "chiang mai hiking tour",
+    // Camping (EN)
+    "camping chiang mai", "chiang mai camping trip", "overnight camping thailand",
+    "camping tour chiang mai", "chiang mai camping experience",
+    // Transport (EN)
+    "chiang mai van rental", "private van chiang mai", "airport transfer chiang mai",
+    "chauffeur service chiang mai", "van rental northern thailand",
+    // Adventure (EN)
+    "adventure chiang mai", "outdoor activities chiang mai", "nature tour chiang mai",
+    "chiang mai outdoor adventure", "northern thailand adventure",
+    // Corporate (EN)
+    "team building chiang mai", "corporate retreat thailand", "company outing chiang mai",
+    // Thai keywords
+    "เดินป่าเชียงใหม่", "แคมป์ปิ้งเชียงใหม่", "ทริปเดินป่า", "รถตู้เช่าเชียงใหม่"
+  ],
   authors: [{ name: "NONGTUNG Team" }],
   creator: "NONGTUNG",
   publisher: "NONGTUNG",
@@ -151,33 +171,76 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          <FloatingLineChat />
         </Providers>
         <JsonLd
           data={{
             "@context": "https://schema.org",
-            "@type": "Organization",
-            name: "NONGTUNG",
-            description: "Bespoke northern Thailand travel curate specializing in unique adventures, local culture, and breathtaking landscapes for international seekers of the extraordinary.",
+            "@type": ["TravelAgency", "LocalBusiness", "Organization"],
+            "@id": "https://nongtung.com/#organization",
+            name: "Nongtung Adventure",
+            alternateName: "NONGTUNG",
+            description: "Bespoke outdoor adventures and trekking experiences in Northern Thailand. We offer professionally guided trekking, camping, private van rental, and corporate teambuilding.",
             url: "https://nongtung.com",
             logo: "https://nongtung.com/images/favicon.png",
+            image: "https://nongtung.com/images/og-image-hq.png",
             sameAs: [
               "https://www.facebook.com/Venturevibecnx",
-              "https://www.instagram.com/nongtung"
+              "https://www.instagram.com/nongtung",
+              "https://lin.ee/pAbgN1M"
             ],
             contactPoint: {
               "@type": "ContactPoint",
-              telephone: "+66-123-456-789",
               contactType: "customer service",
-              areaServed: "TH",
-              availableLanguage: ["en", "th"]
+              areaServed: ["TH", "Worldwide"],
+              availableLanguage: ["en", "th"],
+              url: "https://m.me/Venturevibecnx"
             },
             address: {
               "@type": "PostalAddress",
               addressLocality: "Chiang Mai",
-              addressCountry: "TH",
-              addressRegion: "Chiang Mai"
+              addressRegion: "Chiang Mai",
+              addressCountry: "TH"
             },
-            priceRange: "$$"
+            geo: {
+              "@type": "GeoCoordinates",
+              latitude: "18.7883",
+              longitude: "98.9853"
+            },
+            areaServed: {
+              "@type": "Place",
+              name: "Northern Thailand"
+            },
+            serviceType: ["Trekking Tours", "Camping Adventures", "Private Van Rental", "Corporate Teambuilding", "Equipment Rental"],
+            priceRange: "$$",
+            openingHoursSpecification: {
+              "@type": "OpeningHoursSpecification",
+              dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+              opens: "08:00",
+              closes: "20:00"
+            },
+            hasOfferCatalog: {
+              "@type": "OfferCatalog",
+              name: "Adventure Services",
+              itemListElement: [
+                {
+                  "@type": "Offer",
+                  itemOffered: {
+                    "@type": "TouristTrip",
+                    name: "Trekking & Camping Trips",
+                    description: "Guided multi-day adventures in Northern Thailand mountains"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  itemOffered: {
+                    "@type": "Product",
+                    name: "Private Van Rental",
+                    description: "Comfortable 9-seater vans with professional drivers"
+                  }
+                }
+              ]
+            }
           }}
         />
         {process.env.NEXT_PUBLIC_GA_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />}

@@ -1,0 +1,23 @@
+# Nongtung Adventure - robots.txt
+# https://nongtung.com
+
+User-agent: *
+Allow: /
+Disallow: /adminnongtung/
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://nongtung.com/sitemap.xml
+
+# AI Crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Anthropic-AI
+Allow: /

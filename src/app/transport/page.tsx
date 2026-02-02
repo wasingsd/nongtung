@@ -6,10 +6,15 @@ import { getTransport } from '@/lib/firestore-db';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Transport Services | Nongtung',
-    description: 'Premium private fleet and chauffeur services for Northern Thailand adventures. Comfortable 9-seater vans and 4WD options available.',
+    title: 'Private Van Rental Chiang Mai | Transport Services',
+    description: 'Premium private van rental and chauffeur services in Chiang Mai. Comfortable 9-seater vans with experienced drivers for airport transfers, day trips, and Northern Thailand adventures.',
+    keywords: [
+        'chiang mai van rental', 'private van chiang mai', 'airport transfer chiang mai',
+        'chauffeur service chiang mai', 'van rental northern thailand',
+        'รถตู้เช่าเชียงใหม่', 'รถรับส่งสนามบินเชียงใหม่'
+    ],
     openGraph: {
-        title: 'Transport Services | Nongtung',
+        title: 'Private Van Rental | Nongtung Transport',
         description: 'Premium private fleet and chauffeur services for Northern Thailand adventures.',
         images: ['https://images.unsplash.com/photo-1464822759023-fed622ff2c3b'],
     },

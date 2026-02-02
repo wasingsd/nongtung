@@ -133,25 +133,26 @@
 | Task | Status | Notes |
 |------|--------|-------|
 | Contact Us → Facebook Link | ✅ Done | Header button links to FB page |
-| LINE Chat Widget | 🔲 Todo | Floating button for quick contact |
+| LINE Chat Widget | ✅ Done | Floating button with pulse animation |
+| Testimonials Section | ✅ Done | 3 customer reviews with premium dark theme |
+| Trust Badges | ✅ Done | Replaced old statistics section |
 | Trip Booking CTA Enhancement | 🔲 Todo | Sticky footer on mobile |
-| Testimonials Section | 🔲 Todo | Customer reviews carousel |
-| Trust Badges | 🔲 Todo | Safety certifications, Partners |
 | Price Comparison Tables | 🔲 Todo | For rental packages |
 
 ---
 
-### Phase F5: SEO & Performance 🔲 PLANNED
+### Phase F5: SEO & Performance 🔄 IN PROGRESS
 > ปรับแต่งเพื่อติดอันดับ Google
 
 | Task | Status | Notes |
 |------|--------|-------|
+| robots.txt Setup | ✅ Done | AI bots allowed |
+| llms.txt for AI Search | ✅ Done | ChatGPT, Claude, Perplexity |
+| Sitemap Enhancement | ✅ Done | Added articles, corporate pages |
+| Enhanced Structured Data | ✅ Done | TravelAgency, LocalBusiness schema |
 | Meta Tags Management | 🔲 Todo | Dynamic OG images per page |
-| Structured Data (JSON-LD) | 🔄 Partial | Articles done, Trips pending |
 | Image Optimization | 🔄 Partial | Using next/image |
 | Core Web Vitals Audit | 🔲 Todo | Target: All Green |
-| Sitemap Generation | 🔲 Todo | Dynamic sitemap.xml |
-| robots.txt Setup | 🔲 Todo | Crawl optimization |
 
 ---
 

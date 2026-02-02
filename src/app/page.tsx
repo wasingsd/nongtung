@@ -3,6 +3,8 @@ import Image from 'next/image';
 import { ShieldCheck, Gem, UserCheck, ChevronRight, MapPin, Users, Calendar, ArrowRight, Compass, Heart, Award } from 'lucide-react';
 import { getTrips, getTransport, getHomeSettings } from '@/lib/firestore-db';
 import { Trip } from '@/types/types';
+import TrustBadges from '@/components/TrustBadges';
+import Testimonials from '@/components/Testimonials';
 
 export default async function Home() {
   const [trips, transports, settings] = await Promise.all([
@@ -90,31 +92,8 @@ export default async function Home() {
         </div>
       </div>
 
-      {/* Atmospheric Statistics */}
-      <section className="relative z-30 -mt-12 md:-mt-16 pb-12 md:pb-20">
-        <div className="container mx-auto px-6">
-          <div className="bg-white rounded-[2rem] md:rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-8 md:p-14 border border-forest/10">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 text-center">
-              <div className="space-y-2">
-                <div className="text-2xl md:text-4xl font-black font-heading text-forest tracking-tighter uppercase">Authentic</div>
-                <div className="text-[9px] font-black uppercase tracking-[0.3em] text-forest/30">Real Adventure</div>
-              </div>
-              <div className="space-y-2">
-                <div className="text-2xl md:text-4xl font-black font-heading text-forest tracking-tighter uppercase">Local</div>
-                <div className="text-[9px] font-black uppercase tracking-[0.3em] text-forest/30">Expert Guides</div>
-              </div>
-              <div className="space-y-2">
-                <div className="text-2xl md:text-4xl font-black font-heading text-forest tracking-tighter uppercase">Clean</div>
-                <div className="text-[9px] font-black uppercase tracking-[0.3em] text-forest/30">Quality Gear</div>
-              </div>
-              <div className="space-y-2">
-                <div className="text-2xl md:text-4xl font-black font-heading text-primary tracking-tighter uppercase">Trusted</div>
-                <div className="text-[9px] font-black uppercase tracking-[0.3em] text-primary/50">Safety Certified</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Trust Badges */}
+      <TrustBadges />
 
       {/* Featured Adventures */}
       <section className="py-12 md:py-24 bg-white">
@@ -201,6 +180,9 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {/* Customer Testimonials - Hidden until real reviews available */}
+      {/* <Testimonials /> */}
 
       {/* Process: The Easy Path to Adventure */}
       <section className="py-12 md:py-24 bg-white">

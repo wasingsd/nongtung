@@ -4,10 +4,14 @@ import { getRentals } from '@/lib/firestore-db';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Equipment Rental | Nongtung',
-    description: 'Hygiene-first camping rental in Chiang Mai. Full camping sets (K2, Coleman) and trekking gear. 100% sanitized after every use.',
+    title: 'Camping Gear Rental Chiang Mai | Equipment Rental',
+    description: 'Hygiene-first camping gear rental in Chiang Mai. Full camping sets (K2, Coleman), tents, sleeping bags, and trekking equipment. 100% sanitized after every use.',
+    keywords: [
+        'camping gear rental chiang mai', 'tent rental chiang mai', 'camping equipment rental thailand',
+        'outdoor gear rental chiang mai', 'เช่าอุปกรณ์แคมป์ปิ้ง', 'เช่าเต็นท์เชียงใหม่'
+    ],
     openGraph: {
-        title: 'Equipment Rental | Nongtung',
+        title: 'Camping Gear Rental | Nongtung',
         description: 'Clean & Complete Camping Sets in Chiang Mai. Rent tents, glamping gear, and stoves.',
     },
 };

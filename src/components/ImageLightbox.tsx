@@ -83,7 +83,7 @@ export default function ImageLightbox({ images, mainImage }: ImageLightboxProps)
             {/* Lightbox Modal */}
             {isOpen && (
                 <div
-                    className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
+                    className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center"
                     onClick={closeLightbox}
                     onKeyDown={handleKeyDown}
                     tabIndex={0}

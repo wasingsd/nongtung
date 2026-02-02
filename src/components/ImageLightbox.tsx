@@ -88,13 +88,18 @@ export default function ImageLightbox({ images, mainImage }: ImageLightboxProps)
                     onKeyDown={handleKeyDown}
                     tabIndex={0}
                 >
-                    {/* Close Button - Optimized for Mobile */}
+                    {/* Close Button - Large Touch Target for Mobile */}
                     <button
-                        onClick={closeLightbox}
-                        className="absolute top-5 right-5 md:top-8 md:right-8 text-white hover:text-white/80 p-3 rounded-full bg-black/50 hover:bg-black/70 transition-all z-[60] backdrop-blur-sm"
+                        onClick={(e) => { e.stopPropagation(); closeLightbox(); }}
+                        className="absolute top-4 right-4 md:top-8 md:right-8 text-white p-4 rounded-full bg-black/70 hover:bg-black/90 transition-all z-[70] backdrop-blur-sm touch-manipulation"
+                        style={{
+                            minWidth: '56px',
+                            minHeight: '56px',
+                            WebkitTapHighlightColor: 'transparent'
+                        }}
                         aria-label="Close Gallery"
                     >
-                        <X className="w-8 h-8" />
+                        <X className="w-7 h-7 md:w-8 md:h-8" strokeWidth={2.5} />
                     </button>
 
                     {/* Navigation Arrows */}

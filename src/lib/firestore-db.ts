@@ -387,8 +387,8 @@ export async function getHomeSettings(): Promise<HomeSettings | null> {
             return { id: docSnap.id, ...docSnap.data() } as HomeSettings;
         }
         return null;
-    } catch (error) {
-        console.error('Error fetching home settings:', error);
+    } catch (error: any) {
+        console.warn('⚠️ Firestore getHomeSettings failed, using default (null):', error.message);
         return null;
     }
 }

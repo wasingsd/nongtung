@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Rental } from '@/types/types';
 import { createRental, updateRental } from '@/app/actions/rentalActions';
-import { Save, Plus, X, Link as LinkIcon } from 'lucide-react';
+import { Save, Plus, X, Link as LinkIcon, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 
 interface RentalFormProps {
@@ -13,20 +13,47 @@ interface RentalFormProps {
 export default function RentalForm({ rental }: RentalFormProps) {
     const [imageUrl, setImageUrl] = useState<string>(rental?.image || '');
     const [features, setFeatures] = useState<string[]>(rental?.features || []);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const handleSubmit = async (formData: FormData) => {
-        formData.append('features', JSON.stringify(features));
-        formData.append('imageUrl', imageUrl);
+        setIsSubmitting(true);
+        setError(null);
 
-        if (rental) {
-            await updateRental(rental.id, formData);
-        } else {
-            await createRental(formData);
+        try {
+            formData.append('features', JSON.stringify(features));
+            formData.append('imageUrl', imageUrl);
+
+            if (rental) {
+                await updateRental(rental.id, formData);
+            } else {
+                await createRental(formData);
+            }
+        } catch (err: any) {
+            // Handle Next.js redirect special error
+            if (err.message === 'NEXT_REDIRECT' || err.digest?.startsWith('NEXT_REDIRECT')) {
+                return;
+            }
+
+            console.error('Submit error:', err);
+            setError(err.message || 'Something went wrong. Please try again.');
+            setIsSubmitting(false);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     };
 
     return (
-        <form action={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg border border-gray-100 space-y-8 max-w-2xl">
+        <form action={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg border border-gray-100 space-y-8 max-w-2xl relative">
+            {error && (
+                <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6 flex items-start gap-3">
+                    <X className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                    <div>
+                        <p className="text-red-800 font-bold">เกิดข้อผิดพลาด</p>
+                        <p className="text-red-700 text-sm">{error}</p>
+                    </div>
+                </div>
+            )}
+
             <section className="space-y-6">
                 <h3 className="text-xl font-bold text-forest border-b pb-2">ข้อมูลอุปกรณ์</h3>
 
@@ -109,7 +136,11 @@ export default function RentalForm({ rental }: RentalFormProps) {
                     <div className="space-y-2">
                         {features.map((f, i) => (
                             <div key={i} className="flex gap-2">
-                                <input type="text" value={f} onChange={(e) => { const n = [...features]; n[i] = e.target.value; setFeatures(n); }} className="flex-grow border border-gray-300 rounded p-2 text-sm" placeholder="เช่น กันน้ำ 100%" />
+                                <input type="text" value={f} onChange={(e) => {
+                                    const n = [...features];
+                                    n[i] = e.target.value;
+                                    setFeatures(n);
+                                }} className="flex-grow border border-gray-300 rounded p-2 text-sm" placeholder="เช่น กันน้ำ 100%" />
                                 <button type="button" onClick={() => setFeatures(features.filter((_, idx) => idx !== i))} className="text-red-400 hover:text-red-600"><X className="w-4 h-4" /></button>
                             </div>
                         ))}
@@ -118,8 +149,23 @@ export default function RentalForm({ rental }: RentalFormProps) {
             </section>
 
             <div className="pt-6 border-t border-gray-100">
-                <button type="submit" className="w-full bg-primary text-white font-bold py-4 rounded-lg hover:bg-primary-deep transition-all flex justify-center items-center gap-2 shadow-lg text-lg">
-                    <Save className="w-6 h-6" /> {rental ? 'อัพเดท' : 'สร้างรายการใหม่'}
+                <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className={`w-full text-white font-bold py-4 rounded-lg transition-all flex justify-center items-center gap-2 shadow-lg text-lg
+                        ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-primary hover:bg-primary-deep'}
+                    `}
+                >
+                    {isSubmitting ? (
+                        <>
+                            <Loader2 className="w-6 h-6 animate-spin" />
+                            กำลังบันทึก...
+                        </>
+                    ) : (
+                        <>
+                            <Save className="w-6 h-6" /> {rental ? 'อัพเดท' : 'สร้างรายการใหม่'}
+                        </>
+                    )}
                 </button>
             </div>
         </form>

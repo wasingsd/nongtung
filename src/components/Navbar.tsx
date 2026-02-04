@@ -10,13 +10,13 @@ export default function Navbar() {
     const pathname = usePathname();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    // Don't show Navbar on Admin routes
-    if (pathname?.startsWith('/adminnongtung')) return null;
-
     // Close mobile menu when route changes
     useEffect(() => {
         setIsMenuOpen(false);
     }, [pathname]);
+
+    // Don't show Navbar on Admin routes
+    if (pathname?.startsWith('/adminnongtung')) return null;
 
     const navLinks = [
         { id: 'trips', label: 'Trips', href: '/trips' },

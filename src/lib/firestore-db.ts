@@ -107,14 +107,37 @@ export interface Quote {
 }
 
 // --- TRIPS ---
+import { TRIPS as MOCK_TRIPS, RENTAL_GEAR as MOCK_RENTALS } from '@/data/mock';
+
+// Helper to map mock trip to full Trip type
+const mapMockTrip = (t: any): Trip => ({
+    ...t,
+    gallery: [t.image],
+    description: t.subtitle || 'Experience the beauty of Northern Thailand with this amazing adventure.',
+    location: 'Chiang Mai',
+    highlights: ['Scenic Views', 'Professional Guide', 'Safety Equipment'],
+    itinerary: [
+        { day: 'Day 1', title: 'Start Adventure', desc: 'Meeting at Chiang Mai city and travel to the destination.' },
+        { day: 'Day 2', title: 'Explore & Return', desc: 'Morning hike and return to the city.' }
+    ],
+    whatsIncluded: ['Guide', 'Meals', 'Transportation'],
+    notIncluded: ['Personal expenses', 'Alcohol'],
+});
+
 export async function getTrips(): Promise<Trip[]> {
     try {
         const q = query(collection(db, COLLECTIONS.TRIPS));
         const snapshot = await getDocs(q);
+        if (snapshot.empty) {
+            // If DB is empty or (more likely) query failed silently, try generic catch or return empty
+            // But if permission error, it throws.
+            return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Trip));
+        }
         return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Trip));
-    } catch (error) {
-        console.error('Error fetching trips:', error);
-        return [];
+    } catch (error: any) {
+        // Fallback to mock data if permission error or other failure
+        console.warn('⚠️ Firestore getTrips failed (likely permission), using mock data:', error.message);
+        return MOCK_TRIPS.map(mapMockTrip);
     }
 }
 
@@ -125,10 +148,16 @@ export async function getTrip(id: string): Promise<Trip | null> {
         if (docSnap.exists()) {
             return { id: docSnap.id, ...docSnap.data() } as Trip;
         }
+
+        // If not in DB, check mocks
+        const mock = MOCK_TRIPS.find(t => t.id === id);
+        if (mock) return mapMockTrip(mock);
+
         return null;
-    } catch (error) {
-        console.error('Error fetching trip:', error);
-        return null;
+    } catch (error: any) {
+        console.warn('⚠️ Firestore getTrip failed, checking mocks:', error.message);
+        const mock = MOCK_TRIPS.find(t => t.id === id);
+        return mock ? mapMockTrip(mock) : null;
     }
 }
 
@@ -170,14 +199,27 @@ export async function deleteTrip(id: string): Promise<void> {
 }
 
 // --- RENTALS ---
+// Helper to map mock rental
+const mapMockRental = (r: any): Rental => ({
+    id: r.id,
+    name: r.name,
+    type: 'Other', // Default
+    price: r.price,
+    unit: r.unit,
+    stock: r.stock,
+    image: r.image,
+    description: r.desc,
+    features: ['High Quality', 'Clean', 'Ready to use']
+});
+
 export async function getRentals(): Promise<Rental[]> {
     try {
         const q = query(collection(db, COLLECTIONS.RENTALS));
         const snapshot = await getDocs(q);
         return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Rental));
-    } catch (error) {
-        console.error('Error fetching rentals:', error);
-        return [];
+    } catch (error: any) {
+        console.warn('⚠️ Firestore getRentals failed, using mocks:', error.message);
+        return MOCK_RENTALS.map(mapMockRental);
     }
 }
 
@@ -188,10 +230,15 @@ export async function getRental(id: string): Promise<Rental | null> {
         if (docSnap.exists()) {
             return { id: docSnap.id, ...docSnap.data() } as Rental;
         }
+
+        const mock = MOCK_RENTALS.find(r => r.id === id);
+        if (mock) return mapMockRental(mock);
+
         return null;
-    } catch (error) {
-        console.error('Error fetching rental:', error);
-        return null;
+    } catch (error: any) {
+        console.warn('⚠️ Firestore getRental failed, checking mocks:', error.message);
+        const mock = MOCK_RENTALS.find(r => r.id === id);
+        return mock ? mapMockRental(mock) : null;
     }
 }
 
@@ -225,14 +272,20 @@ export async function deleteRental(id: string): Promise<void> {
 }
 
 // --- TRANSPORT ---
+const MOCK_TRANSPORT: Transport[] = [
+    { id: 'van-vip', type: 'VIP Van 9 Seats', price1Day: 2500, price2Day: 5000, image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800', note: 'Luxury Van with Driver' },
+    { id: 'suv-4wd', type: 'SUV 4WD', price1Day: 3500, price2Day: 7000, image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=800', note: 'Adventure ready' },
+    { id: 'red-truck', type: 'Red Truck (Rod Daeng)', price1Day: 1500, price2Day: 3000, image: 'https://images.unsplash.com/photo-1563720769398-386b461f3659?w=800', note: 'Local experience' }
+];
+
 export async function getTransport(): Promise<Transport[]> {
     try {
         const q = query(collection(db, COLLECTIONS.TRANSPORT));
         const snapshot = await getDocs(q);
         return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Transport));
-    } catch (error) {
-        console.error('Error fetching transport:', error);
-        return [];
+    } catch (error: any) {
+        console.warn('⚠️ Firestore getTransport failed, using mocks:', error.message);
+        return MOCK_TRANSPORT;
     }
 }
 
@@ -243,10 +296,12 @@ export async function getTransportItem(id: string): Promise<Transport | null> {
         if (docSnap.exists()) {
             return { id: docSnap.id, ...docSnap.data() } as Transport;
         }
-        return null;
-    } catch (error) {
-        console.error('Error fetching transport:', error);
-        return null;
+        const mock = MOCK_TRANSPORT.find(t => t.id === id);
+        return mock || null;
+    } catch (error: any) {
+        console.warn('⚠️ Firestore getTransportItem failed, checking mocks:', error.message);
+        const mock = MOCK_TRANSPORT.find(t => t.id === id);
+        return mock || null;
     }
 }
 

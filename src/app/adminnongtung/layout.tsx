@@ -6,11 +6,15 @@ import {
 } from 'lucide-react';
 import { logoutAction } from '@/app/actions/authActions';
 
-export default function AdminLayout({
+import { getSession } from '@/lib/auth';
+
+export default async function AdminLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
+    const session = await getSession();
+    const user = session?.user as { name: string; email: string } | undefined;
     return (
         <div className="flex bg-[#f8fafc] min-h-screen font-kanit">
             {/* Sidebar */}
@@ -94,8 +98,8 @@ export default function AdminLayout({
                         <div className="h-8 w-px bg-gray-100 mx-2"></div>
                         <div className="flex items-center gap-3 pl-2">
                             <div className="text-right hidden sm:block">
-                                <div className="text-xs font-black text-forest uppercase tracking-widest">Administrator</div>
-                                <div className="text-[10px] font-bold text-gray-400">admin@nongtung.com</div>
+                                <div className="text-xs font-black text-forest uppercase tracking-widest">{user?.name || 'Administrator'}</div>
+                                <div className="text-[10px] font-bold text-gray-400">{user?.email || 'admin@nongtung.com'}</div>
                             </div>
                             <div className="w-10 h-10 bg-primary/10 border border-primary/20 rounded-xl flex items-center justify-center text-primary">
                                 <User className="w-5 h-5" />

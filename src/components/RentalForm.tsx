@@ -13,20 +13,41 @@ interface RentalFormProps {
 export default function RentalForm({ rental }: RentalFormProps) {
     const [imageUrl, setImageUrl] = useState<string>(rental?.image || '');
     const [features, setFeatures] = useState<string[]>(rental?.features || []);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const handleSubmit = async (formData: FormData) => {
-        formData.append('features', JSON.stringify(features));
-        formData.append('imageUrl', imageUrl);
+        setIsSubmitting(true);
+        setError(null);
 
-        if (rental) {
-            await updateRental(rental.id, formData);
-        } else {
-            await createRental(formData);
+        try {
+            formData.append('features', JSON.stringify(features));
+            formData.append('imageUrl', imageUrl);
+
+            if (rental) {
+                await updateRental(rental.id, formData);
+            } else {
+                await createRental(formData);
+            }
+        } catch (err: any) {
+            console.error('RentalForm Error:', err);
+            setError(err.message || 'Something went wrong. Please check your permissions.');
+            setIsSubmitting(false);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     };
 
     return (
-        <form action={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg border border-gray-100 space-y-8 max-w-2xl">
+        <form action={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg border border-gray-100 space-y-8 max-w-2xl relative">
+            {error && (
+                <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6 flex items-start gap-3">
+                    <X className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                    <div>
+                        <p className="text-red-800 font-bold">เกิดข้อผิดพลาด</p>
+                        <p className="text-red-700 text-sm">{error}</p>
+                    </div>
+                </div>
+            )}
             <section className="space-y-6">
                 <h3 className="text-xl font-bold text-forest border-b pb-2">ข้อมูลอุปกรณ์</h3>
 
@@ -118,8 +139,23 @@ export default function RentalForm({ rental }: RentalFormProps) {
             </section>
 
             <div className="pt-6 border-t border-gray-100">
-                <button type="submit" className="w-full bg-primary text-white font-bold py-4 rounded-lg hover:bg-primary-deep transition-all flex justify-center items-center gap-2 shadow-lg text-lg">
-                    <Save className="w-6 h-6" /> {rental ? 'อัพเดท' : 'สร้างรายการใหม่'}
+                <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className={`w-full text-white font-bold py-4 rounded-lg transition-all flex justify-center items-center gap-2 shadow-lg text-lg
+                        ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-primary hover:bg-primary-deep'}
+                    `}
+                >
+                    {isSubmitting ? (
+                        <>
+                            <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                            กำลังบันทึก...
+                        </>
+                    ) : (
+                        <>
+                            <Save className="w-6 h-6" /> {rental ? 'อัพเดท' : 'สร้างรายการใหม่'}
+                        </>
+                    )}
                 </button>
             </div>
         </form>

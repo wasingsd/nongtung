@@ -26,7 +26,7 @@ export default function LoginPage() {
 
             if (user.email) {
                 // 2. Server-Side Session Creation
-                await createSession(user.email);
+                await createSession(user.email, user.displayName || user.email.split('@')[0]);
             } else {
                 setError('Login failed: No email returned from provider.');
                 setLoading(false);

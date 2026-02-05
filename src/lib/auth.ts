@@ -20,8 +20,8 @@ export async function decrypt(input: string): Promise<JWTPayload> {
     return payload;
 }
 
-export async function loginSimple(email: string) {
-    const user = { email, name: 'Admin' };
+export async function loginSimple(email: string, name?: string) {
+    const user = { email, name: name || 'Admin' };
 
     // Create the session
     const expires = new Date(Date.now() + ONE_DAY);

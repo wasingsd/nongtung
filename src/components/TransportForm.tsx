@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { createTransport, updateTransport } from '@/app/actions/transportActions';
 import { Transport } from '@/types/types';
+import { Loader2, Save } from 'lucide-react';
 
 interface TransportFormProps {
     transport?: Transport;
@@ -10,19 +11,43 @@ interface TransportFormProps {
 
 export default function TransportForm({ transport }: TransportFormProps) {
     const [imageUrl, setImageUrl] = useState(transport?.image || '');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const handleSubmit = async (formData: FormData) => {
-        formData.set('imageUrl', imageUrl);
+        setIsSubmitting(true);
+        setError(null);
 
-        if (transport) {
-            await updateTransport(transport.id, formData);
-        } else {
-            await createTransport(formData);
+        try {
+            formData.set('imageUrl', imageUrl);
+
+            if (transport) {
+                await updateTransport(transport.id, formData);
+            } else {
+                await createTransport(formData);
+            }
+        } catch (err: any) {
+            // Handle Next.js redirect special error
+            if (err.message === 'NEXT_REDIRECT' || err.digest?.startsWith('NEXT_REDIRECT')) {
+                return;
+            }
+
+            console.error('Submit error:', err);
+            setError(err.message || 'Something went wrong. Please try again.');
+            setIsSubmitting(false);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     };
 
     return (
-        <form action={handleSubmit} className="space-y-6 max-w-2xl bg-white p-8 rounded-lg shadow border border-gray-100">
+        <form action={handleSubmit} className="space-y-6 max-w-2xl bg-white p-8 rounded-lg shadow border border-gray-100 relative">
+            {error && (
+                <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6">
+                    <p className="text-red-800 font-bold">เกิดข้อผิดพลาด</p>
+                    <p className="text-red-700 text-sm">{error}</p>
+                </div>
+            )}
+
             <div className="bg-orange-50 border-l-4 border-orange-400 p-4 mb-6">
                 <p className="text-sm text-orange-700 font-medium">
                     ⚠️ ราคานี้เป็นค่าบริการรถนำเที่ยวพร้อมคนขับ **ไม่รวมค่าน้ำมันตามจริง**
@@ -103,9 +128,19 @@ export default function TransportForm({ transport }: TransportFormProps) {
             <div className="pt-4 border-t border-gray-100">
                 <button
                     type="submit"
-                    className="w-full bg-primary text-white py-3 rounded-lg font-bold text-sm uppercase hover:bg-primary-deep transition-colors"
+                    disabled={isSubmitting}
+                    className={`w-full text-white py-3 rounded-lg font-bold text-sm uppercase transition-colors flex justify-center items-center gap-2
+                        ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-primary hover:bg-primary-deep'}
+                    `}
                 >
-                    {transport ? 'อัพเดทข้อมูลรถ' : 'เพิ่มข้อมูลรถใหม่'}
+                    {isSubmitting ? (
+                        <>
+                            <Loader2 className="w-5 h-5 animate-spin" />
+                            กำลังบันทึก...
+                        </>
+                    ) : (
+                        transport ? 'อัพเดทข้อมูลรถ' : 'เพิ่มข้อมูลรถใหม่'
+                    )}
                 </button>
             </div>
         </form>

@@ -62,7 +62,15 @@ export default function TripForm({ trip }: TripFormProps) {
                 await createTrip(formData);
             }
         } catch (err: any) {
-            console.error(err);
+            // If it's a redirect, we don't want to show it as an error
+            // In Next.js, redirect() throws a special error that should not be caught on the client 
+            // if we want the browser to actually redirect.
+            if (err.message === 'NEXT_REDIRECT' || err.digest?.startsWith('NEXT_REDIRECT')) {
+                // Let the redirect happen
+                return;
+            }
+
+            console.error('Submit error:', err);
             setError(err.message || 'Something went wrong. Please try again.');
             setIsSubmitting(false);
             // Scroll to top to see error
@@ -320,11 +328,11 @@ export default function TripForm({ trip }: TripFormProps) {
                             <button type="button" onClick={() => setItinerary(itinerary.filter((_, idx) => idx !== i))} className="absolute top-2 right-2 text-gray-400 hover:text-red-600"><X className="w-4 h-4" /></button>
                             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                                 <div className="md:col-span-1">
-                                    <input type="text" value={day.day} onChange={(e) => { const n = [...itinerary]; n[i].day = e.target.value; setItinerary(n); }} className="w-full border border-gray-300 rounded p-2 font-bold text-sm" placeholder="e.g. Day 1" />
+                                    <input type="text" value={day.day} onChange={(e) => { const n = [...itinerary]; n[i] = { ...n[i], day: e.target.value }; setItinerary(n); }} className="w-full border border-gray-300 rounded p-2 font-bold text-sm" placeholder="e.g. Day 1" />
                                 </div>
                                 <div className="md:col-span-3">
-                                    <input type="text" value={day.title} onChange={(e) => { const n = [...itinerary]; n[i].title = e.target.value; setItinerary(n); }} className="w-full border border-gray-300 rounded p-2 font-bold mb-2" placeholder="Title (e.g. Departure)" />
-                                    <textarea rows={2} value={day.desc} onChange={(e) => { const n = [...itinerary]; n[i].desc = e.target.value; setItinerary(n); }} className="w-full border border-gray-300 rounded p-2 text-sm" placeholder="Detailed description..." />
+                                    <input type="text" value={day.title} onChange={(e) => { const n = [...itinerary]; n[i] = { ...n[i], title: e.target.value }; setItinerary(n); }} className="w-full border border-gray-300 rounded p-2 font-bold mb-2" placeholder="Title (e.g. Departure)" />
+                                    <textarea rows={2} value={day.desc} onChange={(e) => { const n = [...itinerary]; n[i] = { ...n[i], desc: e.target.value }; setItinerary(n); }} className="w-full border border-gray-300 rounded p-2 text-sm" placeholder="Detailed description..." />
                                 </div>
                             </div>
                         </div>

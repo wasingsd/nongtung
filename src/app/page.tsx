@@ -2,16 +2,25 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ShieldCheck, Gem, UserCheck, ChevronRight, MapPin, Users, Calendar, ArrowRight, Compass, Heart, Award } from 'lucide-react';
 import { getTrips, getTransport, getHomeSettings } from '@/lib/firestore-db';
-import { Trip } from '@/types/types';
+import { Trip, Transport, HomeSettings } from '@/types/types';
 import TrustBadges from '@/components/TrustBadges';
 import Testimonials from '@/components/Testimonials';
 
 export default async function Home() {
-  const [trips, transports, settings] = await Promise.all([
-    getTrips(),
-    getTransport(),
-    getHomeSettings()
-  ]);
+  let trips: Trip[] = [];
+  let transports: Transport[] = [];
+  let settings: HomeSettings | null = null;
+
+  try {
+    [trips, transports, settings] = await Promise.all([
+      getTrips(),
+      getTransport(),
+      getHomeSettings()
+    ]);
+  } catch (e) {
+    console.error("Critical Error fetching homepage data:", e);
+    // Continue with empty data
+  }
 
   let featuredTrips: Trip[] = [];
   if (settings?.popularAdventureIds?.length) {

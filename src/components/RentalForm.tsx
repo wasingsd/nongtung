@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Rental } from '@/types/types';
 import { createRental, updateRental } from '@/app/actions/rentalActions';
-import { Save, Plus, X, Link as LinkIcon } from 'lucide-react';
+import { Save, Plus, X, Link as LinkIcon, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 
 interface RentalFormProps {
@@ -30,7 +30,12 @@ export default function RentalForm({ rental }: RentalFormProps) {
                 await createRental(formData);
             }
         } catch (err: any) {
-            console.error('RentalForm Error:', err);
+            // Handle Next.js redirect special error
+            if (err.message === 'NEXT_REDIRECT' || err.digest?.startsWith('NEXT_REDIRECT')) {
+                return;
+            }
+
+            console.error('Submit error:', err);
             setError(err.message || 'Something went wrong. Please check your permissions.');
             setIsSubmitting(false);
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -48,6 +53,7 @@ export default function RentalForm({ rental }: RentalFormProps) {
                     </div>
                 </div>
             )}
+
             <section className="space-y-6">
                 <h3 className="text-xl font-bold text-forest border-b pb-2">ข้อมูลอุปกรณ์</h3>
 
@@ -130,7 +136,11 @@ export default function RentalForm({ rental }: RentalFormProps) {
                     <div className="space-y-2">
                         {features.map((f, i) => (
                             <div key={i} className="flex gap-2">
-                                <input type="text" value={f} onChange={(e) => { const n = [...features]; n[i] = e.target.value; setFeatures(n); }} className="flex-grow border border-gray-300 rounded p-2 text-sm" placeholder="เช่น กันน้ำ 100%" />
+                                <input type="text" value={f} onChange={(e) => {
+                                    const n = [...features];
+                                    n[i] = e.target.value;
+                                    setFeatures(n);
+                                }} className="flex-grow border border-gray-300 rounded p-2 text-sm" placeholder="เช่น กันน้ำ 100%" />
                                 <button type="button" onClick={() => setFeatures(features.filter((_, idx) => idx !== i))} className="text-red-400 hover:text-red-600"><X className="w-4 h-4" /></button>
                             </div>
                         ))}
@@ -148,7 +158,7 @@ export default function RentalForm({ rental }: RentalFormProps) {
                 >
                     {isSubmitting ? (
                         <>
-                            <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                            <Loader2 className="w-6 h-6 animate-spin" />
                             กำลังบันทึก...
                         </>
                     ) : (

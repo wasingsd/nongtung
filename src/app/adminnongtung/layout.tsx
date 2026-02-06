@@ -2,11 +2,12 @@ import Link from 'next/link';
 import {
     LayoutDashboard, Ticket, Car, Truck, LogOut,
     Database, Gem, Building2, BookOpen, Settings,
-    User, ChevronRight, Bell, Search
+    User, ChevronRight, Search
 } from 'lucide-react';
 import { logoutAction } from '@/app/actions/authActions';
-
 import { getSession } from '@/lib/auth';
+import { getQuotes } from '@/lib/firestore-db';
+import NotificationBell from '@/components/admin/NotificationBell';
 
 export default async function AdminLayout({
     children,
@@ -15,6 +16,18 @@ export default async function AdminLayout({
 }) {
     const session = await getSession();
     const user = session?.user as { name: string; email: string } | undefined;
+
+    // Fetch pending quotes for notification
+    let pendingQuotes: any[] = [];
+    let pendingCount = 0;
+    try {
+        const allQuotes = await getQuotes();
+        pendingQuotes = allQuotes.filter(q => q.status === 'pending');
+        pendingCount = pendingQuotes.length;
+    } catch (error) {
+        console.error('Error fetching quotes for notification:', error);
+    }
+
     return (
         <div className="flex bg-[#f8fafc] min-h-screen font-kanit">
             {/* Sidebar */}
@@ -36,7 +49,7 @@ export default async function AdminLayout({
                         { href: '/adminnongtung/trips', label: 'Trips', icon: Ticket },
                         { href: '/adminnongtung/transport', label: 'Transport', icon: Car },
                         { href: '/adminnongtung/rental', label: 'Rental Gear', icon: Truck },
-                        { href: '/adminnongtung/corporate', label: 'Corporate', icon: Building2 },
+                        { href: '/adminnongtung/corporate', label: 'Corporate', icon: Building2, badge: pendingCount > 0 ? pendingCount : undefined },
                         { href: '/adminnongtung/articles', label: 'Articles', icon: BookOpen },
                         { href: '/adminnongtung/settings', label: 'Home Settings', icon: Settings },
                     ].map((item) => (
@@ -47,7 +60,12 @@ export default async function AdminLayout({
                         >
                             <item.icon className="w-5 h-5 text-white/40 group-hover:text-primary transition-colors" />
                             <span>{item.label}</span>
-                            <ChevronRight className="w-4 h-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity text-white/20" />
+                            {item.badge && (
+                                <span className="ml-auto bg-primary text-white text-[10px] font-black px-2 py-0.5 rounded-full min-w-[20px] text-center">
+                                    {item.badge > 9 ? '9+' : item.badge}
+                                </span>
+                            )}
+                            {!item.badge && <ChevronRight className="w-4 h-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity text-white/20" />}
                         </Link>
                     ))}
 
@@ -91,10 +109,10 @@ export default async function AdminLayout({
                     </div>
 
                     <div className="flex items-center gap-4">
-                        <button className="p-2.5 rounded-xl text-gray-400 hover:bg-gray-50 hover:text-forest transition-all relative">
-                            <Bell className="w-5 h-5" />
-                            <span className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full border-2 border-white"></span>
-                        </button>
+                        <NotificationBell
+                            initialPendingCount={pendingCount}
+                            initialPendingQuotes={pendingQuotes}
+                        />
                         <div className="h-8 w-px bg-gray-100 mx-2"></div>
                         <div className="flex items-center gap-3 pl-2">
                             <div className="text-right hidden sm:block">
@@ -117,6 +135,12 @@ export default async function AdminLayout({
             <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-6 py-3 flex justify-between items-center z-50">
                 <Link href="/adminnongtung/trips" className="p-3 text-gray-400 hover:text-primary transition-all"><Ticket className="w-6 h-6" /></Link>
                 <Link href="/adminnongtung/transport" className="p-3 text-gray-400 hover:text-primary transition-all"><Car className="w-6 h-6" /></Link>
+                <Link href="/adminnongtung/corporate" className="p-3 text-gray-400 hover:text-primary transition-all relative">
+                    <Building2 className="w-6 h-6" />
+                    {pendingCount > 0 && (
+                        <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full"></span>
+                    )}
+                </Link>
                 <Link href="/adminnongtung/settings" className="p-3 text-gray-400 hover:text-primary transition-all"><Settings className="w-6 h-6" /></Link>
                 <form action={logoutAction}>
                     <button type="submit" className="p-3 text-red-400"><LogOut className="w-6 h-6" /></button>

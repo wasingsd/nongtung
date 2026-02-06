@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
-import { Save, ArrowLeft, Image as ImageIcon, Type, Layout, Tag as TagIcon, Link as LinkIcon } from 'lucide-react';
+import { useState, useTransition } from 'react';
+import { Save, ArrowLeft, Image as ImageIcon, Type, Layout, Tag as TagIcon, Link as LinkIcon, CheckCircle, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import RichTextEditor from './RichTextEditor';
 import { Article } from '@/types/types';
 
@@ -14,22 +15,49 @@ interface ArticleFormProps {
 
 export default function ArticleForm({ article, isNew, action }: ArticleFormProps) {
     const [content, setContent] = useState(article?.content || '');
-    const [isSaving, setIsSaving] = useState(false);
+    const [isPending, startTransition] = useTransition();
+    const [status, setStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+    const router = useRouter();
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        setIsSaving(true);
-        // We let the form action handle it, but we need to inject the content
+    const handleSubmit = async (formData: FormData) => {
+        setStatus(null);
+        formData.set('content', content);
+
+        startTransition(async () => {
+            try {
+                await action(formData);
+                setStatus({ type: 'success', message: 'Article saved successfully! Redirecting...' });
+                // Manual redirect after success
+                setTimeout(() => {
+                    router.push('/adminnongtung/articles');
+                    router.refresh();
+                }, 1500);
+            } catch (error) {
+                console.error('Error saving article:', error);
+                setStatus({ type: 'error', message: 'Failed to save article. Please try again.' });
+            }
+        });
     };
 
     return (
         <form
-            action={async (formData) => {
-                formData.set('content', content);
-                await action(formData);
-                setIsSaving(false);
-            }}
+            action={handleSubmit}
             className="space-y-10"
         >
+            {/* Status Message */}
+            {status && (
+                <div className={`p-6 rounded-2xl flex items-center gap-4 ${status.type === 'success'
+                        ? 'bg-green-50 border border-green-200 text-green-800'
+                        : 'bg-red-50 border border-red-200 text-red-800'
+                    }`}>
+                    {status.type === 'success'
+                        ? <CheckCircle className="w-6 h-6 text-green-600" />
+                        : <AlertCircle className="w-6 h-6 text-red-600" />
+                    }
+                    <span className="font-bold">{status.message}</span>
+                </div>
+            )}
+
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
                 {/* Left Column: Editor */}
                 <div className="lg:col-span-2 space-y-8">
@@ -94,11 +122,20 @@ export default function ArticleForm({ article, isNew, action }: ArticleFormProps
                         <div className="space-y-4">
                             <button
                                 type="submit"
-                                disabled={isSaving}
-                                className="w-full bg-primary hover:bg-white hover:text-forest text-white py-4 rounded-full font-black uppercase text-xs tracking-widest transition-all shadow-lg flex items-center justify-center gap-2 group disabled:opacity-50"
+                                disabled={isPending}
+                                className="w-full bg-primary hover:bg-white hover:text-forest text-white py-4 rounded-full font-black uppercase text-xs tracking-widest transition-all shadow-lg flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                <Save className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                                {isSaving ? 'Saving...' : 'Save & Publish'}
+                                {isPending ? (
+                                    <>
+                                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                        Saving...
+                                    </>
+                                ) : (
+                                    <>
+                                        <Save className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                                        Save & Publish
+                                    </>
+                                )}
                             </button>
                             <Link
                                 href="/adminnongtung/articles"

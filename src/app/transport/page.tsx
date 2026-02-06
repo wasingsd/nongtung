@@ -1,9 +1,10 @@
 import Image from 'next/image';
 import { CheckCircle, Bus, Phone, Info, Calendar, MapPin, Gauge } from 'lucide-react';
 import { getTransport } from '@/lib/firestore-db';
-
-// ... imports unchanged
 import { Metadata } from 'next';
+
+// Force dynamic rendering to fetch fresh data from Firestore on every request
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
     title: 'Private Van Rental Chiang Mai | Transport Services',

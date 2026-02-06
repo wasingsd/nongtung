@@ -6,6 +6,9 @@ import { Trip, Transport, HomeSettings } from '@/types/types';
 import TrustBadges from '@/components/TrustBadges';
 import Testimonials from '@/components/Testimonials';
 
+// Force dynamic rendering to fetch fresh data from Firestore on every request
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   let trips: Trip[] = [];
   let transports: Transport[] = [];

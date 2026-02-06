@@ -1,4 +1,4 @@
-import { getTrips, getTrip } from '@/lib/firestore-db';
+import { getTrip } from '@/lib/firestore-db';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -7,12 +7,8 @@ import ImageLightbox from '@/components/ImageLightbox';
 import ItineraryAccordion from '@/components/visual/ItineraryAccordion';
 import { Metadata } from 'next';
 
-export async function generateStaticParams() {
-    const TRIPS = await getTrips();
-    return TRIPS.map((trip) => ({
-        id: trip.id,
-    }));
-}
+// Force dynamic rendering to fetch fresh data from Firestore on every request
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
     const { id } = await params;

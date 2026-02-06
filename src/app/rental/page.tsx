@@ -3,6 +3,9 @@ import { Search, AlertCircle, ShoppingCart, Package, ShieldCheck, Zap } from 'lu
 import { getRentals } from '@/lib/firestore-db';
 import { Metadata } from 'next';
 
+// Force dynamic rendering to fetch fresh data from Firestore on every request
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
     title: 'Camping Gear Rental Chiang Mai | Equipment Rental',
     description: 'Hygiene-first camping gear rental in Chiang Mai. Full camping sets (K2, Coleman), tents, sleeping bags, and trekking equipment. 100% sanitized after every use.',

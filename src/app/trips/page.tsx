@@ -2,6 +2,9 @@ import { getTrips } from '@/lib/firestore-db';
 import TripList from '@/components/TripList';
 import { Metadata } from 'next';
 
+// Force dynamic rendering to fetch fresh data from Firestore on every request
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
     title: 'Adventure Trips | Trekking & Camping in Chiang Mai',
     description: 'Explore guided trekking and camping trips in Chiang Mai. Day trips and multi-day adventures to Doi Inthanon, Doi Suthep, and hidden trails in Northern Thailand.',

@@ -4,6 +4,9 @@ import { getArticles } from '@/lib/firestore-db';
 import { Metadata } from 'next';
 import { Calendar, User, ArrowRight, TrendingUp } from 'lucide-react';
 
+// Force dynamic rendering to fetch fresh data from Firestore on every request
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
     title: 'Travel Journal & Guides | Nongtung Adventure',
     description: 'Explore Northern Thailand with our expert guides. Tips for trekking, camping, and hidden gems in Chiang Mai.',
@@ -13,9 +16,6 @@ export const metadata: Metadata = {
         images: ['https://images.unsplash.com/photo-1533227297464-9d5d1e21b77d?auto=format&fit=crop&q=80&w=1600'],
     }
 };
-
-// Revalidate every hour
-export const revalidate = 3600;
 
 export default async function ArticlesIndex() {
     const articles = await getArticles();

@@ -1,17 +1,13 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { getArticle, getArticles } from '@/lib/firestore-db';
+import { getArticle } from '@/lib/firestore-db';
 import { Metadata } from 'next';
 import { Calendar, User, Clock, ChevronLeft, Share2, Tag, ArrowRight, Bookmark, MessageSquare } from 'lucide-react';
 import TrekkingMap from '@/components/TrekkingMapSafe';
 
-export async function generateStaticParams() {
-    const articles = await getArticles();
-    return articles.map((article) => ({
-        slug: article.slug,
-    }));
-}
+// Force dynamic rendering to fetch fresh data from Firestore on every request
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     const { slug } = await params;

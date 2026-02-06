@@ -10,7 +10,7 @@ import { Article } from '@/types/types';
 interface ArticleFormProps {
     article: Partial<Article> | null;
     isNew: boolean;
-    action: (formData: FormData) => Promise<void>;
+    action: (formData: FormData) => Promise<void | { success: boolean; slug?: string }>;
 }
 
 export default function ArticleForm({ article, isNew, action }: ArticleFormProps) {
@@ -47,8 +47,8 @@ export default function ArticleForm({ article, isNew, action }: ArticleFormProps
             {/* Status Message */}
             {status && (
                 <div className={`p-6 rounded-2xl flex items-center gap-4 ${status.type === 'success'
-                        ? 'bg-green-50 border border-green-200 text-green-800'
-                        : 'bg-red-50 border border-red-200 text-red-800'
+                    ? 'bg-green-50 border border-green-200 text-green-800'
+                    : 'bg-red-50 border border-red-200 text-red-800'
                     }`}>
                     {status.type === 'success'
                         ? <CheckCircle className="w-6 h-6 text-green-600" />

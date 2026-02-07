@@ -125,12 +125,20 @@ export default async function RentalPage() {
                                     <p className="text-xs text-forest/40 font-medium mb-6 line-clamp-2 leading-relaxed">{g.description || 'Professional grade equipment for rugged use.'}</p>
                                     <div className="flex items-center justify-between pt-4 border-t border-forest/5">
                                         <div className="text-forest font-black text-lg">฿{(g.price || 0).toLocaleString()} <span className="text-[10px] text-forest/20 uppercase tracking-widest font-black ml-1">/{g.unit || 'Day'}</span></div>
-                                        <button
-                                            disabled={(g.stock || 0) === 0}
-                                            className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${(g.stock || 0) > 0 ? 'bg-forest text-white hover:bg-primary shadow-lg hover:shadow-primary/30' : 'bg-surface text-gray-200 cursor-not-allowed'}`}
-                                        >
-                                            <ShoppingCart className="w-4 h-4" />
-                                        </button>
+                                        {(g.stock || 0) > 0 ? (
+                                            <a
+                                                href={`https://m.me/Venturevibecnx?text=${encodeURIComponent(`สวัสดีครับ สนใจเช่า: ${g.name}`)}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="w-10 h-10 rounded-full flex items-center justify-center bg-forest text-white hover:bg-primary shadow-lg hover:shadow-primary/30 transition-all"
+                                            >
+                                                <ShoppingCart className="w-4 h-4" />
+                                            </a>
+                                        ) : (
+                                            <span className="w-10 h-10 rounded-full flex items-center justify-center bg-surface text-gray-200 cursor-not-allowed">
+                                                <ShoppingCart className="w-4 h-4" />
+                                            </span>
+                                        )}
                                     </div>
                                 </div>
                             </div>

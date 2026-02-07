@@ -1,13 +1,14 @@
 import { MetadataRoute } from 'next'
-import { getTrips, getArticles } from '@/lib/firestore-db'
+import { getTrips, getArticles, getActivities } from '@/lib/firestore-db'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const baseUrl = 'https://nongtung.com'
 
     // Fetch dynamic data
-    const [trips, articles] = await Promise.all([
+    const [trips, articles, activities] = await Promise.all([
         getTrips(),
-        getArticles()
+        getArticles(),
+        getActivities()
     ])
 
     // Static pages
@@ -20,6 +21,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         },
         {
             url: `${baseUrl}/trips`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.9,
+        },
+        {
+            url: `${baseUrl}/activities`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.9,
@@ -66,5 +73,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.6,
     }))
 
-    return [...staticPages, ...tripPages, ...articlePages]
+    // Dynamic Activity Pages
+    const activityPages: MetadataRoute.Sitemap = activities.map((activity) => ({
+        url: `${baseUrl}/activities/${activity.slug}`,
+        lastModified: new Date(activity.updatedAt || activity.createdAt),
+        changeFrequency: 'weekly',
+        priority: 0.8,
+    }))
+
+    return [...staticPages, ...tripPages, ...articlePages, ...activityPages]
 }

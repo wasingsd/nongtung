@@ -99,3 +99,22 @@ h6,
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+
+/* Floating animation for TikTok RTB */
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.3;
+    }
+
+    50% {
+        transform: translateY(-30px) rotate(10deg);
+        opacity: 0.6;
+    }
+}
+
+.animate-float {
+    animation: float 8s ease-in-out infinite;
+}

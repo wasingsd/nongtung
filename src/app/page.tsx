@@ -5,6 +5,7 @@ import { getTrips, getTransport, getHomeSettings } from '@/lib/firestore-db';
 import { Trip, Transport, HomeSettings } from '@/types/types';
 import TrustBadges from '@/components/TrustBadges';
 import Testimonials from '@/components/Testimonials';
+import TikTokRTB from '@/components/TikTokRTB';
 
 // Force dynamic rendering to fetch fresh data from Firestore on every request
 export const dynamic = 'force-dynamic';
@@ -221,6 +222,9 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {/* TikTok Social Proof RTB */}
+      <TikTokRTB />
 
       {/* Deep Immersive CTA */}
       <section className="py-20 md:py-32 relative overflow-hidden bg-forest">

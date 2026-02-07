@@ -17,10 +17,11 @@ const COLLECTIONS = {
     TRANSPORT: 'transport',
     QUOTES: 'quotes',
     ARTICLES: 'articles',
+    ACTIVITIES: 'activities',
     SETTINGS: 'settings'
 } as const;
 
-import { Trip, Rental, Transport, Article, HomeSettings } from '../types/types';
+import { Trip, Rental, Transport, Article, Activity, HomeSettings } from '../types/types';
 
 import { articles as staticArticles } from '../app/articles/data';
 
@@ -402,6 +403,82 @@ export async function saveHomeSettings(settings: Partial<HomeSettings>): Promise
         }, { merge: true });
     } catch (error) {
         console.error('Error saving home settings:', error);
+        throw error;
+    }
+}
+
+// --- ACTIVITIES ---
+export async function getActivities(): Promise<Activity[]> {
+    try {
+        const q = query(collection(db, COLLECTIONS.ACTIVITIES), orderBy('startDate', 'desc'));
+        const snapshot = await getDocs(q);
+        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Activity));
+    } catch (error: any) {
+        console.warn('⚠️ Firestore getActivities failed:', error.message);
+        return [];
+    }
+}
+
+export async function getActivity(slug: string): Promise<Activity | null> {
+    try {
+        const docRef = doc(db, COLLECTIONS.ACTIVITIES, slug);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            return { id: docSnap.id, ...docSnap.data() } as Activity;
+        }
+        return null;
+    } catch (error: any) {
+        console.warn('⚠️ Firestore getActivity failed:', error.message);
+        return null;
+    }
+}
+
+export async function saveActivity(activity: Activity): Promise<void> {
+    try {
+        const docRef = doc(db, COLLECTIONS.ACTIVITIES, activity.slug);
+        await setDoc(docRef, {
+            slug: activity.slug,
+            title: activity.title,
+            subtitle: activity.subtitle || '',
+            description: activity.description || '',
+            excerpt: activity.excerpt || '',
+            coverImage: activity.coverImage || '',
+            gallery: activity.gallery || [],
+            activityType: activity.activityType || 'event',
+            status: activity.status || 'upcoming',
+            startDate: activity.startDate,
+            endDate: activity.endDate || '',
+            time: activity.time || '',
+            location: activity.location || '',
+            mapCoordinates: activity.mapCoordinates || null,
+            price: activity.price || 0,
+            priceNote: activity.priceNote || '',
+            keywords: activity.keywords || [],
+            tags: activity.tags || [],
+            metaTitle: activity.metaTitle || '',
+            metaDescription: activity.metaDescription || '',
+            relatedTripIds: activity.relatedTripIds || [],
+            maxParticipants: activity.maxParticipants || 0,
+            currentParticipants: activity.currentParticipants || 0,
+            highlights: activity.highlights || [],
+            requirements: activity.requirements || '',
+            organizer: activity.organizer || 'Nongtung Team',
+            contactInfo: activity.contactInfo || '',
+            createdAt: activity.createdAt || new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+        });
+    } catch (error) {
+        console.error('Error saving activity:', error);
+        throw error;
+    }
+}
+
+export async function deleteActivity(slug: string): Promise<void> {
+    try {
+        const docRef = doc(db, COLLECTIONS.ACTIVITIES, slug);
+        await deleteDoc(docRef);
+    } catch (error) {
+        console.error('Error deleting activity:', error);
         throw error;
     }
 }

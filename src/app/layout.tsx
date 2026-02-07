@@ -74,7 +74,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "NONGTUNG: Bespoke Northern Thailand Adventures & Trekking",
-    description: "Bespoke northern Thailand travel curated for those who seek the extraordinary. Trekking, camping, and premium van services.",
+    description: "Bespoke northern Thailand travel curated for those who seek the extraordinary. Trekking, camping, and private van services.",
     url: "https://nongtung.com",
     siteName: "NONGTUNG",
     locale: "en_US",

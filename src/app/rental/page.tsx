@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
     title: 'Camping Gear Rental Chiang Mai | Equipment Rental',
-    description: 'Hygiene-first camping gear rental in Chiang Mai. Full camping sets (K2, Coleman), tents, sleeping bags, and trekking equipment. 100% sanitized after every use.',
+    description: 'Hygiene-first camping gear rental in Chiang Mai. Complete camping sets (K2, Coleman), tents, sleeping bags, and trekking equipment. 100% sanitized after every use.',
     keywords: [
         'camping gear rental chiang mai', 'tent rental chiang mai', 'camping equipment rental thailand',
         'outdoor gear rental chiang mai', 'เช่าอุปกรณ์แคมป์ปิ้ง', 'เช่าเต็นท์เชียงใหม่'
@@ -67,7 +67,7 @@ export default async function RentalPage() {
                             RENTAL <span className="italic text-primary">GEAR & SETS</span>
                         </h2>
                         <p className="text-xl text-white/50 max-w-2xl font-medium leading-relaxed">
-                            Premium camping sets (K2, Coleman) and trekking essentials. Meticulously cleaned and sanitized for your hygiene and comfort.
+                            Professional camping sets (K2, Coleman) and trekking essentials. Meticulously cleaned and sanitized for your hygiene and comfort.
                         </p>
                     </div>
                 </div>

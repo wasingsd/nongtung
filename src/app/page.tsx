@@ -1,10 +1,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { ShieldCheck, Gem, UserCheck, ChevronRight, MapPin, Users, Calendar, ArrowRight, Compass, Heart, Award } from 'lucide-react';
+import { ShieldCheck, Gem, UserCheck, ChevronRight, MapPin, Users, Calendar, ArrowRight, Compass, Heart, Award, Leaf } from 'lucide-react';
 import { getTrips, getTransport, getHomeSettings } from '@/lib/firestore-db';
 import { Trip, Transport, HomeSettings } from '@/types/types';
 import TrustBadges from '@/components/TrustBadges';
-import Testimonials from '@/components/Testimonials';
 import TikTokRTB from '@/components/TikTokRTB';
 
 // Force dynamic rendering to fetch fresh data from Firestore on every request
@@ -87,19 +86,19 @@ export default async function Home() {
           priority
         />
         <div className="relative z-20 text-center text-white px-6 max-w-5xl">
-          <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.5em] mb-4 md:mb-6 block drop-shadow-lg">Explore Northern Thailand</span>
+          <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.5em] mb-4 md:mb-6 block drop-shadow-lg text-primary-light">Full Nature Experience</span>
           <h1 className="text-4xl md:text-8xl font-black mb-6 md:mb-8 font-heading leading-[0.9] tracking-tighter drop-shadow-2xl">
-            NORTHERN THAILAND<br /><span className="text-primary italic">ADVENTURES</span>
+            IMMERSE IN<br /><span className="text-primary italic">PURE NATURE</span>
           </h1>
-          <p className="text-base md:text-xl text-white/80 mb-8 md:mb-12 max-w-2xl mx-auto font-medium drop-shadow-md">
-            Bespoke camping, trekking, and corporate teambuilding trips in Chiang Mai designed for those who seek authentic experiences.
+          <p className="text-base md:text-xl text-white/90 mb-8 md:mb-12 max-w-2xl mx-auto font-medium drop-shadow-md leading-relaxed">
+            Experience the true value of authentic travel. Expertly curated adventures, heartfelt service, and the finest natural landscapes of Northern Thailand.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center">
             <Link href="/trips" className="bg-primary hover:bg-forest text-white px-8 md:px-10 py-3 md:py-4 rounded-full font-black uppercase text-[10px] tracking-[0.2em] transition-all shadow-xl hover:shadow-primary/20 transform hover:-translate-y-1">
-              Book a Trip
+              Explore Trips
             </Link>
             <Link href="/transport" className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white hover:text-forest text-white px-8 md:px-10 py-3 md:py-4 rounded-full font-black uppercase text-[10px] tracking-[0.2em] transition-all shadow-xl">
-              Rent a Van Now
+              Private Transport
             </Link>
           </div>
         </div>
@@ -113,11 +112,11 @@ export default async function Home() {
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-end mb-10 md:mb-16 gap-4 md:gap-6">
             <div className="max-w-xl">
-              <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-2 md:mb-3 block">Recommended for You</span>
-              <h2 className="text-3xl md:text-5xl font-black font-heading text-forest tracking-tighter uppercase">POPULAR ADVENTURES</h2>
+              <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-2 md:mb-3 block">Curated For Value</span>
+              <h2 className="text-3xl md:text-5xl font-black font-heading text-forest tracking-tighter uppercase">SIGNATURE EXPERIENCES</h2>
             </div>
             <Link href="/trips" className="text-[10px] font-black uppercase tracking-[0.2em] text-forest/40 hover:text-primary transition-colors flex items-center gap-2 group">
-              See All Trips <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              View All Collections <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
 
@@ -173,14 +172,14 @@ export default async function Home() {
       <section className="py-12 md:py-24 bg-surface/30">
         <div className="container mx-auto px-6">
           <div className="text-center mb-10 md:mb-20">
-            <span className="text-[10px] font-black text-forest/20 uppercase tracking-[0.4em] mb-2 md:mb-4 block">Our Commitment</span>
-            <h2 className="text-3xl md:text-5xl font-black font-heading text-forest tracking-tighter">WHY EXPLORE WITH US?</h2>
+            <span className="text-[10px] font-black text-forest/20 uppercase tracking-[0.4em] mb-2 md:mb-4 block">Our Promise</span>
+            <h2 className="text-3xl md:text-5xl font-black font-heading text-forest tracking-tighter">THE NONGTUNG STANDARD</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
             {[
-              { icon: Compass, title: 'Safe Trips', desc: 'Our guides are trained for safety on every trail.' },
-              { icon: Heart, title: 'Bespoke Service', desc: 'Customized private trips and teambuilding for your needs.' },
-              { icon: Award, title: 'Local Guides', desc: 'We know the best hidden spots in Northern Thailand.' }
+              { icon: Gem, title: 'Unmatched Value', desc: 'Authentic experiences priced with integrity. We ensure every baht brings you closer to nature.' },
+              { icon: Heart, title: 'Service from the Heart', desc: 'Our concierge team cares for every detail, so you can simply enjoy the moment.' },
+              { icon: Leaf, title: 'Full Nature & Trust', desc: 'Authentic connections with local communities and untouched natural landscapes.' }
             ].map((item, i) => (
               <div key={i} className="bg-white p-8 md:p-12 rounded-[2rem] md:rounded-[3rem] immersive-shadow border border-forest/5 hover:-translate-y-2 transition-all duration-500 group">
                 <div className="w-14 h-14 md:w-16 md:h-16 bg-surface rounded-2xl flex items-center justify-center text-primary mb-6 md:mb-8 group-hover:bg-primary group-hover:text-white transition-all shadow-soft overflow-hidden">
@@ -201,15 +200,15 @@ export default async function Home() {
       <section className="py-12 md:py-24 bg-white">
         <div className="container mx-auto px-6">
           <div className="text-center mb-10 md:mb-20">
-            <span className="text-[10px] font-black text-forest/20 uppercase tracking-[0.4em] mb-2 md:mb-4 block">Easy Planning</span>
-            <h2 className="text-3xl md:text-5xl font-black font-heading text-forest tracking-tighter">HOW IT WORKS</h2>
+            <span className="text-[10px] font-black text-forest/20 uppercase tracking-[0.4em] mb-2 md:mb-4 block">Seamless Journey</span>
+            <h2 className="text-3xl md:text-5xl font-black font-heading text-forest tracking-tighter">EFFORTLESS PLANNING</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12">
             {[
-              { title: 'Choose a Trip', desc: 'Browse our collection of handpicked outdoor trips.' },
-              { title: 'Chat to Book', desc: 'Send us a message to book your trip instantly.' },
-              { title: 'Get Ready', desc: 'We will send you a list of items to bring and your plan.' },
-              { title: 'Enjoy Nature', desc: 'Meet our team and have an amazing time in the mountains.' }
+              { title: 'Select Your Style', desc: 'Choose from our curated nature adventures or transport.' },
+              { title: 'Personal Concierge', desc: 'Connect with our team to customize your perfect trip.' },
+              { title: 'Prepare & Pack', desc: 'Receive a tailored guide for your specific journey.' },
+              { title: 'Immerse & Enjoy', desc: 'Step into nature with full support from our expert guides.' }
             ].map((step, i) => (
               <div key={i} className="relative group">
                 <div className="text-[6rem] md:text-[8rem] font-black text-forest/[0.03] absolute -top-12 md:-top-16 -left-2 md:-left-4 z-0 pointer-events-none group-hover:text-primary/5 transition-colors">0{i + 1}</div>
@@ -239,19 +238,19 @@ export default async function Home() {
         <div className="absolute inset-0 bg-gradient-to-t from-forest via-forest/40 to-transparent"></div>
         <div className="container mx-auto px-6 relative z-10">
           <div className="text-center text-white max-w-4xl mx-auto">
-            <span className="text-[10px] font-black uppercase tracking-[0.5em] mb-4 md:mb-8 block text-primary shadow-glow">Start Your Journey Today</span>
+            <span className="text-[10px] font-black uppercase tracking-[0.5em] mb-4 md:mb-8 block text-primary shadow-glow">Your Journey Awaits</span>
             <h2 className="text-4xl md:text-8xl font-black font-heading mb-6 md:mb-10 tracking-tighter leading-[0.9]">
-              READY FOR THE<br /><span className="italic">MOUNTAINS?</span>
+              ESCAPE TO THE<br /><span className="italic">EXTRAORDINARY</span>
             </h2>
             <p className="text-lg md:text-xl text-white/60 mb-8 md:mb-12 max-w-2xl mx-auto font-medium">
-              Join us for a trip you will never forget. Just send us a message and we will handle the rest.
+              Let us handle the details while you reconnect with nature. Heartfelt service, unforgettable memories.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center">
               <Link href="/trips" className="bg-primary hover:bg-white hover:text-forest text-white px-8 md:px-12 py-4 md:py-5 rounded-full font-black uppercase text-[10px] tracking-[0.2em] transition-all shadow-2xl transform hover:-translate-y-1">
-                Browse All Trips
+                Begin Your Adventure
               </Link>
               <a href="https://m.me/Venturevibecnx" target="_blank" rel="noopener noreferrer" className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white hover:text-forest text-white px-8 md:px-12 py-4 md:py-5 rounded-full font-black uppercase text-[10px] tracking-[0.2em] transition-all shadow-xl">
-                Chat with our Team
+                Chat with Concierge
               </a>
             </div>
           </div>
@@ -264,7 +263,7 @@ export default async function Home() {
           <div className="flex flex-col md:flex-row justify-between items-end mb-10 md:mb-16 gap-4 md:gap-6">
             <div className="max-w-xl">
               <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-2 md:mb-3 block">Cars & Vans</span>
-              <h2 className="text-3xl md:text-5xl font-black font-heading text-forest tracking-tighter uppercase">PREMIUM PRIVATE FLEET</h2>
+              <h2 className="text-3xl md:text-5xl font-black font-heading text-forest tracking-tighter uppercase">PRIVATE & SAFE FLEET</h2>
             </div>
             <Link href="/transport" className="text-[10px] font-black uppercase tracking-[0.2em] text-forest/40 hover:text-primary transition-colors flex items-center gap-2 group">
               See All Transport <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

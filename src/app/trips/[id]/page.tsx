@@ -1,4 +1,4 @@
-import { getTrip } from '@/lib/firestore-db';
+import { getTrip, getHomeSettings } from '@/lib/firestore-db';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -40,12 +40,20 @@ export default async function TripDetailPage({
 }) {
     const { id } = await params;
     const decodedId = decodeURIComponent(id);
-    console.log('Fetching Public Trip Page for ID:', decodedId);
-    const trip = await getTrip(decodedId);
+    const [trip, settings] = await Promise.all([
+        getTrip(decodedId),
+        getHomeSettings()
+    ]);
 
     if (!trip) {
         notFound();
     }
+
+    const facebookUrl = settings?.facebookUrl || "https://www.facebook.com/Venturevibecnx";
+    const fbHandle = facebookUrl.includes('facebook.com/')
+        ? facebookUrl.split('facebook.com/').pop()?.split('/').filter(Boolean)[0]
+        : 'Venturevibecnx';
+    const messengerUrl = `https://m.me/${fbHandle}`;
 
     // Default fallbacks if fields are missing (for old data)
     const highlights = trip.highlights || [];
@@ -176,7 +184,7 @@ export default async function TripDetailPage({
                             </div>
                             <div className="flex-grow ml-auto md:hidden">
                                 <a
-                                    href={`https://m.me/Venturevibecnx?text=${encodeURIComponent(`สวัสดีครับ สนใจจองทริป: ${trip.title}`)}`}
+                                    href={`${messengerUrl}?text=${encodeURIComponent(`สวัสดีครับ สนใจจองทริป: ${trip.title}`)}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="inline-block bg-primary hover:bg-forest text-white font-black px-6 py-3 rounded-full uppercase text-[10px] tracking-[0.2em] shadow-lg hover:shadow-primary/20 transition-all transform hover:-translate-y-1"
@@ -278,7 +286,7 @@ export default async function TripDetailPage({
 
                                 <div className="space-y-4">
                                     <a
-                                        href={`https://m.me/Venturevibecnx?text=${encodeURIComponent(`สวัสดีครับ สนใจจองทริป: ${trip.title}`)}`}
+                                        href={`${messengerUrl}?text=${encodeURIComponent(`สวัสดีครับ สนใจจองทริป: ${trip.title}`)}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="block w-full bg-primary hover:bg-forest text-white text-center font-black py-5 rounded-full uppercase text-xs tracking-[0.2em] shadow-xl hover:shadow-primary/20 transition-all transform hover:-translate-y-1"
@@ -287,7 +295,7 @@ export default async function TripDetailPage({
                                     </a>
 
                                     <a
-                                        href={`https://m.me/Venturevibecnx?text=${encodeURIComponent(`สวัสดีครับ มีคำถามเกี่ยวกับทริป: ${trip.title}`)}`}
+                                        href={`${messengerUrl}?text=${encodeURIComponent(`สวัสดีครับ มีคำถามเกี่ยวกับทริป: ${trip.title}`)}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="block w-full bg-surface hover:bg-white text-forest text-center font-black py-4 rounded-full uppercase text-[10px] tracking-[0.2em] transition-all border border-forest/5 flex items-center justify-center gap-2"
@@ -303,7 +311,7 @@ export default async function TripDetailPage({
 
                             {/* Help Box */}
                             <a
-                                href="https://m.me/Venturevibecnx"
+                                href={messengerUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="mt-8 bg-forest rounded-3xl p-8 flex items-center gap-6 hover:bg-primary transition-all duration-500 group shadow-xl"

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Instagram, Facebook, Phone, Mail, MapPin } from 'lucide-react';
 
-export default function Footer() {
+export default function Footer({ facebookUrl = 'https://www.facebook.com/Venturevibecnx' }: { facebookUrl?: string }) {
     const pathname = usePathname();
 
     // Don't show Footer on Admin routes
@@ -36,7 +36,7 @@ export default function Footer() {
                                 <Instagram className="w-5 h-5 text-white/60 group-hover:text-white" />
                             </a>
                             <a
-                                href="https://www.facebook.com/Venturevibecnx"
+                                href={facebookUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary hover:scale-110 transition-all group"

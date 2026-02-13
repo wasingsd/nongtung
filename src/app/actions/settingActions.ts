@@ -5,10 +5,13 @@ import { revalidatePath } from 'next/cache';
 
 export async function updateHomeSettings(formData: FormData) {
     const popularAdventureIds = formData.getAll('popularAdventureIds') as string[];
+    const facebookUrl = formData.get('facebookUrl') as string;
 
     await saveHomeSettings({
-        popularAdventureIds
+        popularAdventureIds,
+        facebookUrl
     });
+
 
     revalidatePath('/');
     revalidatePath('/adminnongtung/settings');

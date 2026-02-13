@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { CheckCircle, Bus, Phone, Info, Calendar, MapPin, Gauge } from 'lucide-react';
-import { getTransport } from '@/lib/firestore-db';
+import { getTransport, getHomeSettings } from '@/lib/firestore-db';
 import { Metadata } from 'next';
 
 // Force dynamic rendering to fetch fresh data from Firestore on every request
@@ -22,7 +22,16 @@ export const metadata: Metadata = {
 };
 
 export default async function TransportPage() {
-    const transports = await getTransport();
+    const [transports, settings] = await Promise.all([
+        getTransport(),
+        getHomeSettings()
+    ]);
+
+    const facebookUrl = settings?.facebookUrl || "https://www.facebook.com/Venturevibecnx";
+    const fbHandle = facebookUrl.includes('facebook.com/')
+        ? facebookUrl.split('facebook.com/').pop()?.split('/').filter(Boolean)[0]
+        : 'Venturevibecnx';
+    const messengerUrl = `https://m.me/${fbHandle}`;
 
     const jsonLd = {
         '@context': 'https://schema.org',
@@ -161,7 +170,7 @@ export default async function TransportPage() {
 
                                     <div className="mt-auto">
                                         <a
-                                            href={`https://m.me/Venturevibecnx?text=${encodeURIComponent(`สวัสดีครับ สนใจจองรถ: ${car.type}`)}`}
+                                            href={`${messengerUrl}?text=${encodeURIComponent(`สวัสดีครับ สนใจจองรถ: ${car.type}`)}`}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="block w-full bg-forest text-white py-5 rounded-full font-black text-[10px] tracking-[0.2em] text-center transition-all duration-300 shadow-lg hover:shadow-forest/30 uppercase group-hover:bg-primary"
@@ -241,7 +250,7 @@ export default async function TransportPage() {
 
                             <div className="mt-20 pt-16 border-t border-white/5 flex flex-col md:flex-row items-center gap-10">
                                 <a
-                                    href="https://m.me/Venturevibecnx"
+                                    href={messengerUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="bg-primary text-white px-12 py-5 rounded-full font-black uppercase text-[10px] tracking-[0.2em] hover:bg-white hover:text-forest transition-all shadow-xl shadow-primary/20"

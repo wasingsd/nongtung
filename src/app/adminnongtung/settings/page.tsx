@@ -13,6 +13,7 @@ export default async function SettingsPage() {
 
     // Default to the first trip if none are selected, OR empty array
     const initialSelectedIds = settings?.popularAdventureIds || [];
+    const initialFacebookUrl = settings?.facebookUrl || 'https://www.facebook.com/Venturevibecnx';
 
     return (
         <div className="max-w-6xl mx-auto">
@@ -33,7 +34,9 @@ export default async function SettingsPage() {
             <HomeSettingsEditor
                 allTrips={trips}
                 initialSelectedIds={initialSelectedIds}
+                initialFacebookUrl={initialFacebookUrl}
             />
         </div>
     );
+
 }

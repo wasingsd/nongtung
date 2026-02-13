@@ -7,6 +7,7 @@ import JsonLd from "@/components/JsonLd";
 import "./globals.css";
 import { Providers } from "@/app/providers";
 import FloatingLineChat from "@/components/FloatingLineChat";
+import { getHomeSettings } from "@/lib/firestore-db";
 
 const kanit = Kanit({
   weight: ['300', '400', '500', '600'],
@@ -104,11 +105,18 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await getHomeSettings();
+  const facebookUrl = settings?.facebookUrl || "https://www.facebook.com/Venturevibecnx";
+  // Extract handle for messenger if it's a standard FB URL
+  const fbHandle = facebookUrl.includes('facebook.com/')
+    ? facebookUrl.split('facebook.com/').pop()?.split('/').filter(Boolean)[0]
+    : 'Venturevibecnx';
+  const messengerUrl = `https://m.me/${fbHandle}`;
   return (
     <html lang="en">
       <head>
@@ -166,11 +174,11 @@ export default function RootLayout({
           ></iframe>
         </noscript>
         <Providers>
-          <Navbar />
+          <Navbar facebookUrl={facebookUrl} />
           <main className="flex-grow">
             {children}
           </main>
-          <Footer />
+          <Footer facebookUrl={facebookUrl} />
           <FloatingLineChat />
         </Providers>
         <JsonLd
@@ -185,8 +193,8 @@ export default function RootLayout({
             logo: "https://nongtung.com/images/favicon.png",
             image: "https://nongtung.com/images/og-image-hq.png",
             sameAs: [
-              "https://www.facebook.com/Venturevibecnx",
-              "https://www.instagram.com/nongtung",
+              facebookUrl,
+              "https://www.instagram.com/nongtungrunning/",
               "https://lin.ee/pAbgN1M"
             ],
             contactPoint: {
@@ -194,7 +202,7 @@ export default function RootLayout({
               contactType: "customer service",
               areaServed: ["TH", "Worldwide"],
               availableLanguage: ["en", "th"],
-              url: "https://m.me/Venturevibecnx"
+              url: messengerUrl
             },
             address: {
               "@type": "PostalAddress",

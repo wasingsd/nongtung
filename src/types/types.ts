@@ -63,5 +63,7 @@ export interface Article {
 export interface HomeSettings {
   id: 'home';
   popularAdventureIds: string[]; // IDs of trips to show in POPULAR ADVENTURES section
+  facebookUrl?: string; // Sales closing link
 }
+
 

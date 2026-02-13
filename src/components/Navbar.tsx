@@ -6,7 +6,7 @@ import { Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { ThemeToggle } from './ThemeToggle';
 
-export default function Navbar() {
+export default function Navbar({ facebookUrl = 'https://www.facebook.com/Venturevibecnx' }: { facebookUrl?: string }) {
     const pathname = usePathname();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -61,7 +61,7 @@ export default function Navbar() {
                         <ThemeToggle />
 
                         <a
-                            href="https://www.facebook.com/Venturevibecnx"
+                            href={facebookUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="bg-primary text-white px-7 py-2.5 rounded-full font-bold uppercase text-[10px] tracking-widest hover:bg-primary-deep transition-all shadow-lg hover:shadow-primary/20 transform hover:-translate-y-0.5"
@@ -104,7 +104,7 @@ export default function Navbar() {
                         </Link>
                     ))}
                     <a
-                        href="https://www.facebook.com/Venturevibecnx"
+                        href={facebookUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="mt-8 bg-primary text-white px-10 py-4 md:px-14 md:py-5 rounded-full font-black uppercase text-[10px] md:text-xs tracking-widest shadow-2xl active:scale-95 transition-all text-center"

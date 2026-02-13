@@ -246,10 +246,20 @@ export default async function Home() {
               <Link href="/trips" className="bg-primary hover:bg-white hover:text-forest text-white px-8 md:px-12 py-4 md:py-5 rounded-full font-black uppercase text-[10px] tracking-[0.2em] transition-all shadow-2xl transform hover:-translate-y-1">
                 Browse All Trips
               </Link>
-              <a href="https://m.me/Venturevibecnx" target="_blank" rel="noopener noreferrer" className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white hover:text-forest text-white px-8 md:px-12 py-4 md:py-5 rounded-full font-black uppercase text-[10px] tracking-[0.2em] transition-all shadow-xl">
-                Chat with our Team
-              </a>
+              {(() => {
+                const facebookUrl = settings?.facebookUrl || "https://www.facebook.com/Venturevibecnx";
+                const fbHandle = facebookUrl.includes('facebook.com/')
+                  ? facebookUrl.split('facebook.com/').pop()?.split('/').filter(Boolean)[0]
+                  : 'Venturevibecnx';
+                const messengerUrl = `https://m.me/${fbHandle}`;
+                return (
+                  <a href={messengerUrl} target="_blank" rel="noopener noreferrer" className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white hover:text-forest text-white px-8 md:px-12 py-4 md:py-5 rounded-full font-black uppercase text-[10px] tracking-[0.2em] transition-all shadow-xl">
+                    Chat with our Team
+                  </a>
+                );
+              })()}
             </div>
+
           </div>
         </div>
       </section>

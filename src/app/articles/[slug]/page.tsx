@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { getArticle } from '@/lib/firestore-db';
+import { getArticle, getHomeSettings } from '@/lib/firestore-db';
 import { Metadata } from 'next';
 import { Calendar, User, Clock, ChevronLeft, Share2, Tag, ArrowRight, Bookmark, MessageSquare } from 'lucide-react';
 import TrekkingMap from '@/components/TrekkingMapSafe';
@@ -32,8 +32,17 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
-    const article = await getArticle(slug);
+    const [article, settings] = await Promise.all([
+        getArticle(slug),
+        getHomeSettings()
+    ]);
     const relatedTripId = article?.relatedTripId;
+
+    const facebookUrl = settings?.facebookUrl || "https://www.facebook.com/Venturevibecnx";
+    const fbHandle = facebookUrl.includes('facebook.com/')
+        ? facebookUrl.split('facebook.com/').pop()?.split('/').filter(Boolean)[0]
+        : 'Venturevibecnx';
+    const messengerUrl = `https://m.me/${fbHandle}`;
 
     if (!article) notFound();
 
@@ -155,9 +164,14 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                                     <h3 className="text-2xl font-black font-heading tracking-tight mb-2">Thoughts on this trek?</h3>
                                     <p className="text-white/50 text-sm font-medium">Join the discussion on our social community.</p>
                                 </div>
-                                <button className="bg-white text-forest px-8 py-4 rounded-full font-black uppercase text-xs tracking-widest hover:bg-primary hover:text-white transition-all transform active:scale-95 shadow-xl">
+                                <a
+                                    href={facebookUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="bg-white text-forest px-8 py-4 rounded-full font-black uppercase text-xs tracking-widest hover:bg-primary hover:text-white transition-all transform active:scale-95 shadow-xl inline-block"
+                                >
                                     Join Discussion
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>

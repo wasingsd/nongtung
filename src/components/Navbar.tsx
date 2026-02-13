@@ -20,6 +20,7 @@ export default function Navbar({ facebookUrl = 'https://www.facebook.com/Venture
 
     const navLinks = [
         { id: 'trips', label: 'Trips', href: '/trips' },
+        { id: 'activities', label: 'Activities', href: '/activities' },
         { id: 'transport', label: 'Transport', href: '/transport' },
         { id: 'rental', label: 'Rental', href: '/rental' },
         { id: 'articles', label: 'Articles', href: '/articles' },

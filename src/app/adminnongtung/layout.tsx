@@ -2,7 +2,7 @@ import Link from 'next/link';
 import {
     LayoutDashboard, Ticket, Car, Truck, LogOut,
     Database, Gem, Building2, BookOpen, Settings,
-    User, ChevronRight, Search
+    User, ChevronRight, Search, Sparkles
 } from 'lucide-react';
 import { logoutAction } from '@/app/actions/authActions';
 import { getSession } from '@/lib/auth';
@@ -47,6 +47,7 @@ export default async function AdminLayout({
 
                     {[
                         { href: '/adminnongtung/trips', label: 'Trips', icon: Ticket },
+                        { href: '/adminnongtung/activities', label: 'Activities', icon: Sparkles },
                         { href: '/adminnongtung/transport', label: 'Transport', icon: Car },
                         { href: '/adminnongtung/rental', label: 'Rental Gear', icon: Truck },
                         { href: '/adminnongtung/corporate', label: 'Corporate', icon: Building2, badge: pendingCount > 0 ? pendingCount : undefined },

@@ -66,4 +66,55 @@ export interface HomeSettings {
   facebookUrl?: string; // Sales closing link
 }
 
+export interface Activity {
+  id: string;
+  slug: string;
+  title: string;
+  subtitle: string;
+  description: string;          // Rich text content
+  excerpt: string;              // Short description for SEO meta description
+  coverImage: string;
+  gallery: string[];            // Additional images
+  activityType: 'event' | 'workshop' | 'tour' | 'seasonal' | 'special';
+  status: 'upcoming' | 'ongoing' | 'completed' | 'cancelled';
+
+  // Event timing (optional - for activities that run all the time)
+  startDate?: string;           // ISO date string (optional for always-open activities)
+  endDate?: string;             // Optional end date for multi-day events
+  time?: string;                // e.g. "09:00 - 17:00"
+
+  // Location
+  location: string;
+  mapCoordinates?: {
+    lat: number;
+    lng: number;
+  };
+
+  // Pricing
+  price?: number;
+  priceNote?: string;           // e.g. "ต่อคน", "ต่อกลุ่ม"
+
+  // SEO & Marketing
+  keywords: string[];           // SEO keywords
+  tags: string[];               // Display tags
+  metaTitle?: string;           // Custom meta title (falls back to title)
+  metaDescription?: string;     // Custom meta description (falls back to excerpt)
+
+  // Relationships
+  relatedTripIds: string[];     // Link to related trips
+
+  // Capacity
+  maxParticipants?: number;
+  currentParticipants?: number;
+
+  // Additional info
+  highlights: string[];
+  requirements?: string;        // What participants need to bring/know
+  organizer: string;
+  contactInfo?: string;
+
+  // Timestamps
+  createdAt: string;
+  updatedAt: string;
+}
 

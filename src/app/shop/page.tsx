@@ -47,11 +47,14 @@ export default function ShopPage() {
                                     <div className="text-2xl font-bold text-forest">฿{p.price.toLocaleString()}</div>
                                 </div>
                             </div>
-                            <button onClick={() => window.open('https://shop.line.me/@nongtung', '_blank')}
+                            <a
+                                href="https://shop.line.me/@nongtung"
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className="w-full bg-[#06c755] hover:bg-[#05b34c] text-white py-3 rounded font-bold flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-lg">
                                 <ShoppingBag className="w-5 h-5" />
                                 Shop via LINE
-                            </button>
+                            </a>
                             <p className="text-center text-xs text-gray-400 mt-3">สอบถามสเปค/ขอรูปเพิ่มเติมได้ทันที</p>
                         </div>
                     </div>
@@ -81,9 +84,13 @@ export default function ShopPage() {
                         <p className="text-sm text-gray-500">ชำระเงินและรอรับสินค้าที่บ้านได้เลย</p>
                     </div>
                 </div>
-                <button onClick={() => window.open('https://line.me/ti/p/@nongtung', '_blank')} className="mt-12 bg-forest text-white px-8 py-3 rounded-full font-bold uppercase tracking-wider hover:bg-gray-800 transition-all">
+                <a
+                    href="https://line.me/ti/p/@nongtung"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block mt-12 bg-forest text-white px-8 py-3 rounded-full font-bold uppercase tracking-wider hover:bg-gray-800 transition-all">
                     Add LINE: @nongtung
-                </button>
+                </a>
             </div>
         </div>
     );

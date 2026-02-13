@@ -7,16 +7,16 @@ import { Metadata } from 'next';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-    title: 'Private Van Rental Chiang Mai | Transport Services',
-    description: 'Premium private van rental and chauffeur services in Chiang Mai. Comfortable 9-seater vans with experienced drivers for airport transfers, day trips, and Northern Thailand adventures.',
+    title: 'Private Van Rental Chiang Mai | Quality Transport',
+    description: 'Bespoke private van rental and chauffeur services in Chiang Mai. Experience exceptional value, safety, and comfort for your Northern Thailand adventures.',
     keywords: [
         'chiang mai van rental', 'private van chiang mai', 'airport transfer chiang mai',
         'chauffeur service chiang mai', 'van rental northern thailand',
         'รถตู้เช่าเชียงใหม่', 'รถรับส่งสนามบินเชียงใหม่'
     ],
     openGraph: {
-        title: 'Private Van Rental | Nongtung Transport',
-        description: 'Premium private fleet and chauffeur services for Northern Thailand adventures.',
+        title: 'Private Transport | Nongtung',
+        description: 'Experience Northern Thailand with our quality fleet. Safety, comfort, and local expertise included.',
         images: ['https://images.unsplash.com/photo-1464822759023-fed622ff2c3b'],
     },
 };
@@ -37,7 +37,7 @@ export default async function TransportPage() {
         '@context': 'https://schema.org',
         '@type': 'AutoRental',
         name: 'Nongtung Transport Services',
-        description: 'Premium private fleet and chauffeur services for Northern Thailand adventures.',
+        description: 'High-quality private fleet and chauffeur services for Northern Thailand adventures.',
         areaServed: 'Chiang Mai, Thailand',
         availableLanguage: ['English', 'Thai'],
         priceRange: 'Top-tier',
@@ -105,12 +105,12 @@ export default async function TransportPage() {
                 <div className="absolute bottom-20 left-0 w-full z-20">
                     <div className="container mx-auto px-6">
                         <div className="max-w-4xl">
-                            <span className="text-[10px] font-black text-primary uppercase tracking-[0.5em] mb-4 block drop-shadow-lg">Premium Private Fleet</span>
+                            <span className="text-[10px] font-black text-primary uppercase tracking-[0.5em] mb-4 block drop-shadow-lg">Safe, Reliable & Private</span>
                             <h1 className="text-4xl md:text-7xl font-black font-heading text-white leading-[0.9] tracking-tighter drop-shadow-2xl">
-                                CHAUFFEUR<br /><span className="italic">DESIGNED</span> TRAVEL
+                                PRIVATE<br /><span className="italic">JOURNEYS</span>
                             </h1>
                             <p className="text-xl text-white/70 mt-8 max-w-2xl font-medium leading-relaxed">
-                                Expert northern guides and a premium fleet ready to take you deep into the mountains of Chiang Mai.
+                                Explore Northern Thailand with peace of mind. Our well-maintained fleet and expert local drivers ensure your safety and comfort at every turn.
                             </p>
                         </div>
                     </div>
@@ -175,7 +175,7 @@ export default async function TransportPage() {
                                             rel="noopener noreferrer"
                                             className="block w-full bg-forest text-white py-5 rounded-full font-black text-[10px] tracking-[0.2em] text-center transition-all duration-300 shadow-lg hover:shadow-forest/30 uppercase group-hover:bg-primary"
                                         >
-                                            Inquire Availability
+                                            Check Availability
                                         </a>
                                     </div>
                                 </div>
@@ -200,9 +200,9 @@ export default async function TransportPage() {
                             <Bus className="w-[40rem] h-[40rem] -right-20 -bottom-20 absolute rotate-12" />
                         </div>
                         <div className="relative z-10">
-                            <span className="text-[10px] font-black text-primary uppercase tracking-[0.4em] mb-6 block">The Service Charter</span>
+                            <span className="text-[10px] font-black text-primary uppercase tracking-[0.4em] mb-6 block">Our Service Pledge</span>
                             <h2 className="text-4xl md:text-5xl font-black font-heading text-white mb-16 tracking-tighter">
-                                TERMS OF <span className="italic">ENGAGEMENT</span>
+                                TRANSPARENT & <span className="italic">RELIABLE</span>
                             </h2>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-16 text-white/50">
@@ -213,7 +213,7 @@ export default async function TransportPage() {
                                         </div>
                                         <div>
                                             <p className="text-white font-black text-lg tracking-tight mb-2">10 Hours Daily Service</p>
-                                            <p className="text-sm font-medium leading-relaxed">Begins from your scheduled pickup time. Extra hours available on request.</p>
+                                            <p className="text-sm font-medium leading-relaxed">Full day service begins at your preferred pickup time.</p>
                                         </div>
                                     </li>
                                     <li className="flex items-start gap-6">
@@ -221,8 +221,8 @@ export default async function TransportPage() {
                                             <CheckCircle className="w-6 h-6" />
                                         </div>
                                         <div>
-                                            <p className="text-white font-black text-lg tracking-tight mb-2">All-Inclusive Driver Fees</p>
-                                            <p className="text-sm font-medium leading-relaxed">Includes wages, accident insurance, and specialist cleaning fees.</p>
+                                            <p className="text-white font-black text-lg tracking-tight mb-2">No Hidden Driver Fees</p>
+                                            <p className="text-sm font-medium leading-relaxed">Driver's wage, accommodation (if needed), and simple meals are included.</p>
                                         </div>
                                     </li>
                                 </ul>
@@ -232,8 +232,8 @@ export default async function TransportPage() {
                                             <Info className="w-6 h-6" />
                                         </div>
                                         <div>
-                                            <p className="text-white font-black text-lg tracking-tight mb-2">Fuel Excluded</p>
-                                            <p className="text-sm font-medium leading-relaxed">Fuel is charged at actual cost. Please settle directly at the pump.</p>
+                                            <p className="text-white font-black text-lg tracking-tight mb-2">Fuel at Cost</p>
+                                            <p className="text-sm font-medium leading-relaxed">We believe in honesty. You only pay for the fuel you actually use.</p>
                                         </div>
                                     </li>
                                     <li className="flex items-start gap-6">
@@ -241,8 +241,8 @@ export default async function TransportPage() {
                                             <MapPin className="w-6 h-6" />
                                         </div>
                                         <div>
-                                            <p className="text-white font-black text-lg tracking-tight mb-2">Northern Expertise</p>
-                                            <p className="text-sm font-medium leading-relaxed">Our drivers are specialists in navigating remote northern mountain passes.</p>
+                                            <p className="text-white font-black text-lg tracking-tight mb-2">Mountain Experts</p>
+                                            <p className="text-sm font-medium leading-relaxed">Our drivers are skilled in navigating the winding northern roads safely.</p>
                                         </div>
                                     </li>
                                 </ul>
@@ -257,7 +257,7 @@ export default async function TransportPage() {
                                 >
                                     Book via Concierge
                                 </a>
-                                <p className="text-[10px] text-white/20 font-black uppercase tracking-[0.3em]">Specialist Support Available 24/7</p>
+                                <p className="text-[10px] text-white/20 font-black uppercase tracking-[0.3em]">We are here to help 24/7</p>
                             </div>
                         </div>
                     </div>

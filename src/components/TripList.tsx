@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { Filter, Map, BarChart, CheckSquare } from 'lucide-react';
 import { Trip } from '@/types/types';
 
-export default function TripList({ trips }: { trips: Trip[] }) {
+export default function TripList({ trips, lang, dict }: { trips: Trip[], lang: string, dict: any }) {
     const [filter, setFilter] = useState({ duration: 'all', type: 'all', difficulty: 'all', location: 'all' });
 
     const provinces = Array.from(new Set(trips.map(t => {
@@ -33,7 +33,7 @@ export default function TripList({ trips }: { trips: Trip[] }) {
                     {/* Duration */}
                     <div className="flex items-center gap-3">
                         <span className="font-bold text-[10px] text-forest/40 uppercase tracking-[0.2em] whitespace-nowrap flex items-center">
-                            <Filter className="w-3 h-3 mr-2" /> Duration:
+                            <Filter className="w-3 h-3 mr-2" /> {dict.duration}:
                         </span>
                         <div className="flex gap-2">
                             {['All', '1D', '2D', '3D+'].map(d => (
@@ -42,7 +42,7 @@ export default function TripList({ trips }: { trips: Trip[] }) {
                                     onClick={() => setFilter({ ...filter, duration: d.toLowerCase() })}
                                     className={`px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${filter.duration === d.toLowerCase() ? 'bg-primary text-white shadow-lg shadow-primary/20 scale-105' : 'bg-white text-forest/60 hover:text-primary border border-forest/5'}`}
                                 >
-                                    {d}
+                                    {d === 'All' ? dict.all : d}
                                 </button>
                             ))}
                         </div>
@@ -58,7 +58,7 @@ export default function TripList({ trips }: { trips: Trip[] }) {
                                 onClick={() => setFilter({ ...filter, type: t.toLowerCase() })}
                                 className={`px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${filter.type === t.toLowerCase() ? 'bg-forest text-white shadow-lg shadow-forest/20 scale-105' : 'bg-white text-forest/60 hover:text-forest border border-forest/5'}`}
                             >
-                                {t}
+                                {t === 'All' ? dict.all : (t === 'Join' ? dict.join : (t === 'Private' ? dict.private : t))}
                             </button>
                         ))}
                     </div>
@@ -68,7 +68,7 @@ export default function TripList({ trips }: { trips: Trip[] }) {
                     {/* Difficulty */}
                     <div className="flex items-center gap-3">
                         <span className="font-bold text-[10px] text-forest/40 uppercase tracking-[0.2em] whitespace-nowrap flex items-center">
-                            <BarChart className="w-3 h-3 mr-2" /> Difficulty:
+                            <BarChart className="w-3 h-3 mr-2" /> {dict.difficulty}:
                         </span>
                         <select
                             value={filter.difficulty}
@@ -87,7 +87,7 @@ export default function TripList({ trips }: { trips: Trip[] }) {
                     {/* Location */}
                     <div className="flex items-center gap-3 flex-grow">
                         <span className="font-bold text-[10px] text-forest/40 uppercase tracking-[0.2em] whitespace-nowrap flex items-center">
-                            <Map className="w-3 h-3 mr-2" /> Location:
+                            <Map className="w-3 h-3 mr-2" /> {dict.location}:
                         </span>
                         <select
                             value={filter.location}
@@ -161,23 +161,23 @@ export default function TripList({ trips }: { trips: Trip[] }) {
                                     <div className="bg-surface p-1.5 md:p-2 rounded-lg">
                                         <BarChart className="w-3 h-3 md:w-3.5 md:h-3.5" />
                                     </div>
-                                    <span className="text-xs">ระดับ: {t.difficulty}</span>
+                                    <span className="text-xs">{dict.level}: {t.difficulty}</span>
                                 </div>
                             </div>
 
                             <div className="mt-auto pt-4 md:pt-6 border-t border-forest/5">
                                 <Link
-                                    href={`/trips/${t.id}`}
+                                    href={`/${lang}/trips/${t.id}`}
                                     className="block w-full bg-forest text-white hover:bg-primary py-3 md:py-4 rounded-full font-black text-[9px] md:text-[10px] tracking-[0.2em] text-center transition-all duration-300 shadow-lg hover:shadow-primary/30 uppercase"
                                 >
-                                    Discover Experience
+                                    {dict.discover}
                                 </Link>
                             </div>
                         </div>
                     </div>
                 ))}
             </div >
-            {filteredTrips.length === 0 && <div className="text-center py-20 text-forest/40 italic">No adventures found in this category.</div>}
+            {filteredTrips.length === 0 && <div className="text-center py-20 text-forest/40 italic">{dict.no_results}</div>}
         </>
     );
 }

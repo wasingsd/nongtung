@@ -23,7 +23,7 @@ const COLLECTIONS = {
 
 import { Trip, Rental, Transport, Article, Activity, HomeSettings } from '../types/types';
 
-import { articles as staticArticles } from '../app/articles/data';
+import { articles as staticArticles } from '../app/(site)/[lang]/articles/data';
 
 // --- ARTICLES ---
 export async function getArticles(): Promise<Article[]> {

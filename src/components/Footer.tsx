@@ -4,8 +4,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Instagram, Facebook, Phone, Mail, MapPin } from 'lucide-react';
 
-export default function Footer({ facebookUrl = 'https://www.facebook.com/Venturevibecnx' }: { facebookUrl?: string }) {
+export default function Footer({ facebookUrl = 'https://www.facebook.com/Venturevibecnx', lang, dict }: { facebookUrl?: string, lang: string, dict: any }) {
     const pathname = usePathname();
+    const getLocalizedHref = (path: string) => `/${lang}${path === '/' ? '' : path}`;
 
     // Don't show Footer on Admin routes
     if (pathname?.startsWith('/adminnongtung')) return null;
@@ -22,9 +23,8 @@ export default function Footer({ facebookUrl = 'https://www.facebook.com/Venture
                                 className="h-24 md:h-28 w-auto brightness-0 invert opacity-80"
                             />
                         </Link>
-                        <p className="text-white/40 mb-8 text-sm font-medium leading-[1.8]">
-                            Amazing outdoor trips in Northern Thailand since 2024.
-                            <br />Nature • Connection • Adventure
+                        <p className="text-white/40 mb-8 text-sm font-medium leading-[1.8] whitespace-pre-line">
+                            {dict.description}
                         </p>
                         <div className="flex gap-3">
                             <a
@@ -59,16 +59,16 @@ export default function Footer({ facebookUrl = 'https://www.facebook.com/Venture
                         </div>
                     </div>
                     <div>
-                        <h4 className="text-xs font-black mb-8 uppercase tracking-[0.3em] text-primary">Discover</h4>
+                        <h4 className="text-xs font-black mb-8 uppercase tracking-[0.3em] text-primary">{dict.discover}</h4>
                         <ul className="space-y-4 text-sm font-bold">
-                            <li><Link href="/trips" className="text-white/40 hover:text-white transition-colors">Our Adventures</Link></li>
-                            <li><Link href="/transport" className="text-white/40 hover:text-white transition-colors">Private Transit</Link></li>
-                            <li><Link href="/rental" className="text-white/40 hover:text-white transition-colors">Equipment Hire</Link></li>
-                            <li><Link href="/corporate" className="text-white/40 hover:text-white transition-colors">Corporate Retreats</Link></li>
+                            <li><Link href={getLocalizedHref('/trips')} className="text-white/40 hover:text-white transition-colors">{dict.our_adventures}</Link></li>
+                            <li><Link href={getLocalizedHref('/transport')} className="text-white/40 hover:text-white transition-colors">{dict.private_transit}</Link></li>
+                            <li><Link href={getLocalizedHref('/rental')} className="text-white/40 hover:text-white transition-colors">{dict.equipment_hire}</Link></li>
+                            <li><Link href={getLocalizedHref('/corporate')} className="text-white/40 hover:text-white transition-colors">{dict.corporate_retreats}</Link></li>
                         </ul>
                     </div>
                     <div>
-                        <h4 className="text-xs font-black mb-8 uppercase tracking-[0.3em] text-primary">Contact</h4>
+                        <h4 className="text-xs font-black mb-8 uppercase tracking-[0.3em] text-primary">{dict.contact}</h4>
                         <ul className="space-y-4 text-sm font-bold">
                             <li className="flex items-center gap-4 text-white/40"><Phone className="w-4 h-4 text-primary" /> 080-442-5189</li>
                             <li className="flex items-center gap-4 text-white/40">
@@ -79,18 +79,18 @@ export default function Footer({ facebookUrl = 'https://www.facebook.com/Venture
                         </ul>
                     </div>
                     <div>
-                        <h4 className="text-xs font-black mb-8 uppercase tracking-[0.3em] text-primary">Newsletter</h4>
-                        <p className="text-xs font-medium text-white/30 mb-6 leading-relaxed">Sign up for trip updates and new adventure news.</p>
+                        <h4 className="text-xs font-black mb-8 uppercase tracking-[0.3em] text-primary">{dict.newsletter}</h4>
+                        <p className="text-xs font-medium text-white/30 mb-6 leading-relaxed">{dict.newsletter_desc}</p>
                         <div className="flex bg-white/5 border border-white/10 rounded-full p-1 group focus-within:border-primary/50 transition-all">
-                            <input type="email" placeholder="Your Email"
+                            <input type="email" placeholder={dict.your_email}
                                 className="bg-transparent text-white px-5 py-2 text-xs w-full focus:outline-none placeholder-white/20 font-bold" />
                             <button
-                                className="bg-primary px-6 py-2 font-black rounded-full hover:bg-white hover:text-forest transition-all text-[10px] tracking-widest text-white shadow-xl">GO</button>
+                                className="bg-primary px-6 py-2 font-black rounded-full hover:bg-white hover:text-forest transition-all text-[10px] tracking-widest text-white shadow-xl">{dict.go}</button>
                         </div>
                     </div>
                 </div>
                 <div className="border-t border-white/5 pt-12 text-center text-[10px] font-black uppercase tracking-[0.4em] text-white/20">
-                    <p>&copy; 2026 NONGTUNG STRATEGY TEAM. ALL RIGHTS RESERVED.</p>
+                    <p>{dict.rights_reserved}</p>
                 </div>
             </div>
         </footer>

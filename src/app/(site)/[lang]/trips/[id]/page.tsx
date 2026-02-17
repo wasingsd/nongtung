@@ -5,6 +5,8 @@ import { notFound } from 'next/navigation';
 import { MapPin, Clock, Users, CheckCircle, MessageCircle, BarChart, AlertCircle, ChevronLeft, Shield } from 'lucide-react';
 import ImageLightbox from '@/components/ImageLightbox';
 import ItineraryAccordion from '@/components/visual/ItineraryAccordion';
+import { getDictionary } from '@/lib/dictionary';
+import { Locale } from '@/i18n-config';
 import { Metadata } from 'next';
 
 // Force dynamic rendering to fetch fresh data from Firestore on every request
@@ -36,14 +38,16 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 export default async function TripDetailPage({
     params,
 }: {
-    params: Promise<{ id: string }>;
+    params: Promise<{ id: string; lang: Locale }>;
 }) {
-    const { id } = await params;
+    const { id, lang } = await params;
     const decodedId = decodeURIComponent(id);
-    const [trip, settings] = await Promise.all([
+    const [trip, settings, dict] = await Promise.all([
         getTrip(decodedId),
-        getHomeSettings()
+        getHomeSettings(),
+        getDictionary(lang)
     ]);
+    const t = dict.TripDetails;
 
     if (!trip) {
         notFound();
@@ -132,8 +136,8 @@ export default async function TripDetailPage({
 
                 {/* Back Link Overlay */}
                 <div className="absolute top-8 left-8 z-20">
-                    <Link href="/trips" className="inline-flex items-center text-sm font-bold text-white/90 hover:text-white transition-all bg-black/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
-                        <ChevronLeft className="w-4 h-4 mr-1" /> Back to Trips
+                    <Link href={`/${lang}/trips`} className="inline-flex items-center text-sm font-bold text-white/90 hover:text-white transition-all bg-black/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+                        <ChevronLeft className="w-4 h-4 mr-1" /> {t.back_to_trips}
                     </Link>
                 </div>
 
@@ -143,10 +147,10 @@ export default async function TripDetailPage({
                         <div className="max-w-4xl">
                             <div className="flex gap-3 mb-6">
                                 <span className="bg-primary text-white font-black px-4 py-1.5 rounded-full text-[10px] uppercase tracking-[0.2em] shadow-xl">
-                                    {trip.duration} TRIP
+                                    {trip.duration} {t.trip_label}
                                 </span>
                                 <span className="bg-white/20 backdrop-blur-md text-white font-black px-4 py-1.5 rounded-full text-[10px] uppercase tracking-[0.2em] border border-white/20">
-                                    {trip.type} group
+                                    {trip.type} {t.group_label}
                                 </span>
                             </div>
                             <h1 className="text-2xl md:text-7xl font-black font-heading text-white leading-[1.05] tracking-tighter drop-shadow-2xl uppercase italic">
@@ -171,16 +175,16 @@ export default async function TripDetailPage({
                         {/* Highlights Row */}
                         <div className="flex flex-wrap gap-6 md:gap-12 mb-8 md:mb-16 border-b border-forest/5 pb-6 md:pb-10 items-end">
                             <div className="flex flex-col gap-1">
-                                <span className="text-[10px] font-black text-forest/30 uppercase tracking-widest">LOCATION</span>
+                                <span className="text-[10px] font-black text-forest/30 uppercase tracking-widest">{t.location}</span>
                                 <span className="text-forest font-bold">{trip.location || 'Chiang Mai, TH'}</span>
                             </div>
                             <div className="flex flex-col gap-1">
-                                <span className="text-[10px] font-black text-forest/30 uppercase tracking-widest">LEVEL</span>
+                                <span className="text-[10px] font-black text-forest/30 uppercase tracking-widest">{t.level}</span>
                                 <span className="text-forest font-bold">{trip.difficulty}</span>
                             </div>
                             <div className="flex flex-col gap-1">
-                                <span className="text-[9px] font-black text-forest/30 uppercase tracking-widest">PACE</span>
-                                <span className="text-forest font-bold text-xs md:text-base">Standard Adventure</span>
+                                <span className="text-[9px] font-black text-forest/30 uppercase tracking-widest">{t.pace}</span>
+                                <span className="text-forest font-bold text-xs md:text-base">{t.standard_pace}</span>
                             </div>
                             <div className="flex-grow ml-auto md:hidden">
                                 <a
@@ -189,7 +193,7 @@ export default async function TripDetailPage({
                                     rel="noopener noreferrer"
                                     className="inline-block bg-primary hover:bg-forest text-white font-black px-6 py-3 rounded-full uppercase text-[10px] tracking-[0.2em] shadow-lg hover:shadow-primary/20 transition-all transform hover:-translate-y-1"
                                 >
-                                    Book Now
+                                    {t.book_now}
                                 </a>
                             </div>
                         </div>
@@ -197,17 +201,17 @@ export default async function TripDetailPage({
                         {/* Gallery Section */}
                         {(trip.gallery && trip.gallery.length > 0) && (
                             <section className="mb-10 md:mb-20">
-                                <h2 className="text-2xl md:text-3xl font-black font-heading text-forest mb-6 md:mb-8 tracking-tighter">Photo Gallery</h2>
+                                <h2 className="text-2xl md:text-3xl font-black font-heading text-forest mb-6 md:mb-8 tracking-tighter">{t.gallery}</h2>
                                 <ImageLightbox images={trip.gallery} mainImage={trip.image} />
                             </section>
                         )}
 
                         {/* Story/Description */}
                         <section className="mb-10 md:mb-20">
-                            <h2 className="text-2xl md:text-3xl font-black font-heading text-forest mb-6 md:mb-8 tracking-tighter">Trip Details</h2>
+                            <h2 className="text-2xl md:text-3xl font-black font-heading text-forest mb-6 md:mb-8 tracking-tighter">{t.details}</h2>
                             <div className="prose prose-forest max-w-none">
                                 <p className="text-sm md:text-xl text-forest/70 leading-relaxed whitespace-pre-line font-medium italic mb-6 md:mb-10 border-l-4 border-primary/20 pl-5 md:pl-8">
-                                    {trip.description || 'No description available.'}
+                                    {trip.description || t.no_description}
                                 </p>
                             </div>
 
@@ -226,14 +230,14 @@ export default async function TripDetailPage({
                         {/* Journal Timeline (Itinerary) - Optimized for Mobile */}
                         {itinerary.length > 0 && (
                             <section className="mb-10 md:mb-20">
-                                <h2 className="text-2xl md:text-3xl font-black font-heading text-forest mb-8 md:mb-12 tracking-tighter">Plan for the Trip</h2>
+                                <h2 className="text-2xl md:text-3xl font-black font-heading text-forest mb-8 md:mb-12 tracking-tighter">{t.itinerary}</h2>
                                 <ItineraryAccordion itinerary={itinerary} />
                             </section>
                         )}
 
                         {/* Inclusions */}
                         <section className="bg-forest text-white/90 rounded-[2rem] md:rounded-[3rem] p-8 md:p-16">
-                            <h2 className="text-2xl md:text-3xl font-black font-heading text-white mb-6 md:mb-10 tracking-tighter">What's Included</h2>
+                            <h2 className="text-2xl md:text-3xl font-black font-heading text-white mb-6 md:mb-10 tracking-tighter">{t.included}</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-3 md:gap-y-4">
                                 {whatsIncluded.map((item, i) => (
                                     <div key={i} className="flex items-center gap-3 md:gap-4 text-white/70">
@@ -245,7 +249,7 @@ export default async function TripDetailPage({
 
                             {notIncluded.length > 0 && (
                                 <div className="mt-10 md:mt-16 pt-8 md:pt-10 border-t border-white/5">
-                                    <p className="text-xs font-black text-white/30 uppercase tracking-widest mb-4 md:mb-6">NOT INCLUDED</p>
+                                    <p className="text-xs font-black text-white/30 uppercase tracking-widest mb-4 md:mb-6">{t.not_included}</p>
                                     <div className="flex flex-wrap gap-3 md:gap-4">
                                         {notIncluded.map((item, i) => (
                                             <span key={i} className="bg-white/5 border border-white/10 px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-bold text-white/50">
@@ -263,23 +267,23 @@ export default async function TripDetailPage({
                         <div className="sticky top-28">
                             <div className="bg-white rounded-[2.5rem] immersive-shadow border border-forest/5 overflow-hidden p-8 md:p-10">
                                 <div className="text-center mb-10">
-                                    <span className="text-[10px] font-black text-forest/30 uppercase tracking-[0.3em] block mb-2">BOOKING</span>
+                                    <span className="text-[10px] font-black text-forest/30 uppercase tracking-[0.3em] block mb-2">{t.booking_title}</span>
                                     <div className="flex items-baseline justify-center gap-2">
                                         <span className="text-sm font-black text-forest/40">THB</span>
                                         <span className="text-3xl md:text-6xl font-black font-heading text-forest tracking-tighter">
                                             {trip.price.toLocaleString()}
                                         </span>
                                     </div>
-                                    <span className="text-xs font-bold text-forest/30 mt-2 block">Price per person</span>
+                                    <span className="text-xs font-bold text-forest/30 mt-2 block">{t.price_per_person}</span>
                                 </div>
 
                                 <div className="space-y-4 mb-10 bg-surface/50 p-6 rounded-3xl border border-forest/5">
                                     <div className="flex justify-between items-center py-2">
-                                        <span className="text-xs font-bold text-forest/40 uppercase tracking-widest">Availability</span>
+                                        <span className="text-xs font-bold text-forest/40 uppercase tracking-widest">{t.availability}</span>
                                         <span className="text-xs font-black text-line uppercase tracking-widest">{trip.status}</span>
                                     </div>
                                     <div className="flex justify-between items-center py-2">
-                                        <span className="text-xs font-bold text-forest/40 uppercase tracking-widest">Group Choice</span>
+                                        <span className="text-xs font-bold text-forest/40 uppercase tracking-widest">{t.group_choice}</span>
                                         <span className="text-xs font-black text-forest uppercase tracking-widest">{trip.type}</span>
                                     </div>
                                 </div>
@@ -291,7 +295,7 @@ export default async function TripDetailPage({
                                         rel="noopener noreferrer"
                                         className="block w-full bg-primary hover:bg-forest text-white text-center font-black py-5 rounded-full uppercase text-xs tracking-[0.2em] shadow-xl hover:shadow-primary/20 transition-all transform hover:-translate-y-1"
                                     >
-                                        Booking
+                                        {t.booking_btn}
                                     </a>
 
                                     <a
@@ -300,12 +304,12 @@ export default async function TripDetailPage({
                                         rel="noopener noreferrer"
                                         className="block w-full bg-surface hover:bg-white text-forest text-center font-black py-4 rounded-full uppercase text-[10px] tracking-[0.2em] transition-all border border-forest/5 flex items-center justify-center gap-2"
                                     >
-                                        <MessageCircle className="w-4 h-4" /> Message Us
+                                        <MessageCircle className="w-4 h-4" /> {t.message_us}
                                     </a>
                                 </div>
 
                                 <div className="mt-8 flex items-center justify-center gap-2 text-[10px] font-black text-forest/20 uppercase tracking-[0.2em]">
-                                    <Shield className="w-3 h-3" /> SAFE & DIRECT
+                                    <Shield className="w-3 h-3" /> {t.safe_direct}
                                 </div>
                             </div>
 
@@ -320,8 +324,8 @@ export default async function TripDetailPage({
                                     <MessageCircle className="w-7 h-7" />
                                 </div>
                                 <div>
-                                    <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em] mb-1">NEED HELP?</p>
-                                    <p className="text-lg font-black text-white tracking-tighter">Talk to our Team</p>
+                                    <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em] mb-1">{t.need_help}</p>
+                                    <p className="text-lg font-black text-white tracking-tighter">{t.talk_team}</p>
                                 </div>
                             </a>
                         </div>

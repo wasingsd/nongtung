@@ -1,41 +1,34 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-import { updateSession, decrypt } from '@/lib/auth';
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+import { i18n } from './i18n-config'
 
-export async function middleware(request: NextRequest) {
-    // 1. Handle Protected Routes
-    if (request.nextUrl.pathname.startsWith('/adminnongtung')) {
-        const session = request.cookies.get('session')?.value;
+export function middleware(request: NextRequest) {
+    const pathname = request.nextUrl.pathname
 
-        if (!session) {
-            return NextResponse.redirect(new URL('/login', request.url));
-        }
-
-        try {
-            await decrypt(session);
-            return await updateSession(request);
-        } catch {
-            // Invalid token
-            return NextResponse.redirect(new URL('/login', request.url));
-        }
+    // Ignore specific paths that shouldn't be localized
+    if (
+        pathname.startsWith('/api') ||
+        pathname.startsWith('/_next') ||
+        pathname.startsWith('/adminnongtung') ||
+        pathname.includes('.')
+    ) {
+        return
     }
 
-    // 2. Handle Login Page (Redirect to admin if already logged in)
-    if (request.nextUrl.pathname === '/login') {
-        const session = request.cookies.get('session')?.value;
-        if (session) {
-            try {
-                await decrypt(session);
-                return NextResponse.redirect(new URL('/adminnongtung/trips', request.url));
-            } catch {
-                // Token invalid, let them stay on login
-            }
-        }
-    }
+    // Check if pathname already has a locale
+    const pathnameHasLocale = i18n.locales.some(
+        (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+    )
 
-    return NextResponse.next();
+    if (pathnameHasLocale) return
+
+    // Redirect to default locale
+    const locale = i18n.defaultLocale
+
+    const newUrl = new URL(`/${locale}${pathname === '/' ? '' : pathname}`, request.url)
+    return NextResponse.redirect(newUrl)
 }
 
 export const config = {
-    matcher: ['/adminnongtung/:path*', '/login'],
-};
+    matcher: ['/((?!api|_next/static|_next/image|favicon.ico|adminnongtung).*)'],
+}

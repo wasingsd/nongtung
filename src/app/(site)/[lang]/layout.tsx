@@ -77,7 +77,7 @@ export const metadata: Metadata = {
 
 type Props = {
   children: React.ReactNode;
-  params: Promise<{ lang: Locale }>;
+  params: Promise<{ lang: string }>;
 };
 
 export default async function RootLayout({
@@ -85,7 +85,7 @@ export default async function RootLayout({
   params,
 }: Props) {
   const { lang } = await params;
-  const dict = await getDictionary(lang);
+  const dict = await getDictionary(lang as Locale);
   const settings = await getHomeSettings();
   const facebookUrl = settings?.facebookUrl || "https://www.facebook.com/Venturevibecnx";
 

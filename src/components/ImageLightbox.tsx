@@ -122,55 +122,27 @@ export default function ImageLightbox({ images, mainImage }: ImageLightboxProps)
                     position: 'absolute',
                     top: 'max(20px, env(safe-area-inset-top, 20px))',
                     right: 'max(20px, env(safe-area-inset-right, 20px))',
-                    width: '64px',
-                    height: '64px',
+                    width: '44px',
+                    height: '44px',
                     borderRadius: '50%',
-                    backgroundColor: '#ffffff',
+                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
                     color: '#000000',
-                    border: '3px solid #000',
+                    border: 'none',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     cursor: 'pointer',
                     zIndex: 9999999,
-                    boxShadow: '0 4px 20px rgba(0,0,0,0.5)',
+                    boxShadow: '0 2px 12px rgba(0,0,0,0.3)',
                     WebkitTapHighlightColor: 'transparent',
                     touchAction: 'manipulation',
+                    transition: 'transform 0.2s ease',
                 }}
+                onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
                 aria-label="Close Gallery"
             >
-                <X size={36} strokeWidth={3} />
-            </button>
-
-            {/* Close Button BOTTOM - Fallback for mobile */}
-            <button
-                onClick={(e) => { e.stopPropagation(); e.preventDefault(); closeLightbox(); }}
-                onTouchEnd={(e) => { e.stopPropagation(); e.preventDefault(); closeLightbox(); }}
-                style={{
-                    position: 'absolute',
-                    bottom: 'max(140px, calc(env(safe-area-inset-bottom, 20px) + 120px))',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    padding: '16px 32px',
-                    borderRadius: '50px',
-                    backgroundColor: '#ffffff',
-                    color: '#000000',
-                    border: '2px solid #000',
-                    fontSize: '18px',
-                    fontWeight: 'bold',
-                    cursor: 'pointer',
-                    zIndex: 9999999,
-                    boxShadow: '0 4px 20px rgba(0,0,0,0.5)',
-                    WebkitTapHighlightColor: 'transparent',
-                    touchAction: 'manipulation',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                }}
-                aria-label="Close Gallery"
-            >
-                <X size={24} strokeWidth={2.5} />
-                CLOSE
+                <X size={24} strokeWidth={2} />
             </button>
 
             {/* Navigation - Previous */}

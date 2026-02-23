@@ -3,6 +3,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
 
+// TypeScript type declaration for TikTok embed global
+declare global {
+    interface Window {
+        tiktok?: {
+            embed: () => void;
+        };
+    }
+}
+
 // TikTok content from @nongtungrunning - { id, type: 'video' | 'photo' }
 const TIKTOK_CONTENT = [
     { id: '7603675455408934164', type: 'video' },
@@ -28,7 +37,22 @@ export default function TikTokRTB() {
             const script = document.createElement('script');
             script.src = 'https://www.tiktok.com/embed.js';
             script.async = true;
+            
+            // Add onload handler to initialize embeds after script loads
+            script.onload = () => {
+                if (window.tiktok?.embed) {
+                    window.tiktok.embed();
+                }
+            };
+            
             document.body.appendChild(script);
+            
+            // Optional: Add timeout fallback to handle cached script edge cases
+            setTimeout(() => {
+                if (window.tiktok?.embed) {
+                    window.tiktok.embed();
+                }
+            }, 100);
         };
 
         loadTikTokScript();

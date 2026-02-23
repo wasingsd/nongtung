@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { saveArticle } from '@/lib/firestore-db';
-import { articles } from '@/app/articles/data';
+import { articles } from '@/app/(site)/[lang]/articles/data';
 import { Article } from '@/types/types';
 
 export async function GET() {

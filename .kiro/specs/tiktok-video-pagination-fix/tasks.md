@@ -1,0 +1,86 @@
+# Implementation Plan
+
+- [x] 1. Write bug condition exploration test
+  - **Property 1: Fault Condition** - Non-Visible Videos Are Playable
+  - **CRITICAL**: This test MUST FAIL on unfixed code - failure confirms the bug exists
+  - **DO NOT attempt to fix the test or the code when it fails**
+  - **NOTE**: This test encodes the expected behavior - it will validate the fix when it passes after implementation
+  - **GOAL**: Surface counterexamples that demonstrate the bug exists
+  - **Scoped PBT Approach**: Scope the property to concrete failing cases - clips 4-5 (videoIndex >= 3) that are not initially visible
+  - Test that for videoIndex >= 3 AND isInitiallyVisible == false, when user scrolls to the video, it is playable with a functional play button
+  - The test assertions should verify:
+    - All 5 `.tiktok-embed` blockquotes exist in DOM after mount
+    - `window.tiktok.embed()` is called after script loads
+    - Clips 4-5 are transformed into interactive embeds (not plain blockquotes)
+    - Non-visible videos have play buttons that trigger playback
+  - Run test on UNFIXED code
+  - **EXPECTED OUTCOME**: Test FAILS (this is correct - it proves the bug exists)
+  - Document counterexamples found:
+    - Clips 4-5 remain as plain blockquotes without interactive player UI
+    - `window.tiktok.embed()` is never explicitly called
+    - Only initially visible videos are initialized by the script
+  - Mark task complete when test is written, run, and failure is documented
+  - _Requirements: 2.1, 2.2_
+
+- [x] 2. Write preservation property tests (BEFORE implementing fix)
+  - **Property 2: Preservation** - Initially Visible Videos Continue Working
+  - **IMPORTANT**: Follow observation-first methodology
+  - Observe behavior on UNFIXED code for initially visible videos (clips 1-3):
+    - Clips 1-3 display and play correctly
+    - TikTok embed script loads from official CDN
+    - Smooth scrolling and navigation controls work
+    - Navigation arrow visibility logic functions correctly
+    - Scroll indicator dots display on mobile
+    - Component styling and layout render correctly
+  - Write property-based tests capturing observed behavior patterns:
+    - For all videoIndex < 3, videos are playable and display correctly
+    - Script loads from `https://www.tiktok.com/embed.js`
+    - Navigation arrows appear/disappear based on scroll position
+    - Smooth scrolling behavior works for all scroll positions
+    - Component mounts and unmounts without errors
+  - Property-based testing generates many test cases for stronger guarantees
+  - Run tests on UNFIXED code
+  - **EXPECTED OUTCOME**: Tests PASS (this confirms baseline behavior to preserve)
+  - Mark task complete when tests are written, run, and passing on unfixed code
+  - _Requirements: 3.1, 3.2, 3.3, 3.4_
+
+- [x] 3. Fix for TikTok video pagination initialization
+
+  - [x] 3.1 Implement the fix in TikTokRTB component
+    - Add TypeScript type declaration for `window.tiktok` global with `embed()` method
+    - Add `onload` event handler to the script element
+    - In the `onload` handler, check if `window.tiktok?.embed` exists
+    - Call `window.tiktok.embed()` to initialize all embeds after script loads
+    - Optional: Add timeout fallback (100ms) to handle cached script edge cases
+    - Maintain existing cleanup logic that removes script on unmount
+    - _Bug_Condition: isBugCondition(input) where input.videoIndex >= 3 AND input.isInitiallyVisible == false AND userScrollsToVideo(input.videoIndex) AND NOT videoIsPlayable(input.videoIndex)_
+    - _Expected_Behavior: For any TikTok video embed that was not initially visible (clips 4-5), the fixed component SHALL ensure the video is properly initialized and playable when scrolled into view, with a functional play button that triggers video playback_
+    - _Preservation: Initially visible videos (clips 1-3) continue to display and play correctly; TikTok embed script continues to load from official CDN; smooth scrolling and navigation controls continue to work; navigation arrow visibility logic remains unchanged; scroll indicator dots continue to display on mobile; component styling, layout, and responsive behavior remain unchanged_
+    - _Requirements: 2.1, 2.2, 3.1, 3.2, 3.3, 3.4_
+
+  - [x] 3.2 Verify bug condition exploration test now passes
+    - **Property 1: Expected Behavior** - Non-Visible Videos Are Playable
+    - **IMPORTANT**: Re-run the SAME test from task 1 - do NOT write a new test
+    - The test from task 1 encodes the expected behavior
+    - When this test passes, it confirms the expected behavior is satisfied
+    - Run bug condition exploration test from step 1
+    - **EXPECTED OUTCOME**: Test PASSES (confirms bug is fixed)
+    - Verify that clips 4-5 are now properly initialized and playable
+    - Verify that `window.tiktok.embed()` is called after script loads
+    - Verify that all embeds are transformed into interactive players
+    - _Requirements: 2.1, 2.2_
+
+  - [x] 3.3 Verify preservation tests still pass
+    - **Property 2: Preservation** - Initially Visible Videos Continue Working
+    - **IMPORTANT**: Re-run the SAME tests from task 2 - do NOT write new tests
+    - Run preservation property tests from step 2
+    - **EXPECTED OUTCOME**: Tests PASS (confirms no regressions)
+    - Confirm all tests still pass after fix (no regressions):
+      - Initially visible videos still play correctly
+      - Script still loads from TikTok CDN
+      - Navigation controls still work
+      - Smooth scrolling still functions
+      - Component styling unchanged
+
+- [x] 4. Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.

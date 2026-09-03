@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { saveActivity } from '@/lib/firestore-db';
 import { Activity } from '@/types/types';
 
+export const dynamic = 'force-dynamic';
+
 // GET /api/seed-event - Seeds a sample Event with dates
 export async function GET() {
     try {

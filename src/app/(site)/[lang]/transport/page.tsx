@@ -168,14 +168,22 @@ export default async function TransportPage() {
                                         </div>
                                     )}
 
-                                    <div className="mt-auto">
+                                    <div className="mt-auto space-y-2.5">
+                                        <a
+                                            href={`https://line.me/R/oaMessage/@nongtung/?${encodeURIComponent(`สวัสดีครับ สนใจจองรถ: ${car.type}`)}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex items-center justify-center gap-2 w-full bg-[#06C755] hover:bg-[#05a847] text-white py-4 rounded-full font-black text-xs tracking-wider text-center transition-all duration-300 shadow-md hover:shadow-lg active:scale-95"
+                                        >
+                                            <span className="font-bold">จองผ่าน LINE</span>
+                                        </a>
                                         <a
                                             href={`${messengerUrl}?text=${encodeURIComponent(`สวัสดีครับ สนใจจองรถ: ${car.type}`)}`}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="block w-full bg-forest text-white py-5 rounded-full font-black text-[10px] tracking-[0.2em] text-center transition-all duration-300 shadow-lg hover:shadow-forest/30 uppercase group-hover:bg-primary"
+                                            className="block w-full bg-surface border border-forest/10 hover:border-primary/40 text-forest py-3 rounded-full font-bold text-xs tracking-wide text-center transition-all duration-300 hover:text-primary"
                                         >
-                                            Check Availability
+                                            Facebook Messenger
                                         </a>
                                     </div>
                                 </div>

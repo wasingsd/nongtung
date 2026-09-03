@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import Image from 'next/image';
-import { Filter, Map, BarChart, CheckSquare } from 'lucide-react';
+import { Filter, Map, BarChart, CheckSquare, ChevronDown } from 'lucide-react';
 import { Trip } from '@/types/types';
 
 export default function TripList({ trips, lang, dict }: { trips: Trip[], lang: string, dict: any }) {
@@ -70,16 +70,19 @@ export default function TripList({ trips, lang, dict }: { trips: Trip[], lang: s
                         <span className="font-bold text-[10px] text-forest/40 uppercase tracking-[0.2em] whitespace-nowrap flex items-center">
                             <BarChart className="w-3 h-3 mr-2" /> {dict.difficulty}:
                         </span>
-                        <select
-                            value={filter.difficulty}
-                            onChange={(e) => setFilter({ ...filter, difficulty: e.target.value })}
-                            className="bg-white border border-forest/5 text-forest/60 text-[10px] font-black uppercase tracking-widest rounded-full px-5 py-2 outline-none focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer appearance-none min-w-[120px]"
-                        >
-                            <option value="all">ALL LEVELS</option>
-                            <option value="Easy">EASY</option>
-                            <option value="Moderate">MODERATE</option>
-                            <option value="Hard">HARD</option>
-                        </select>
+                        <div className="relative">
+                            <select
+                                value={filter.difficulty}
+                                onChange={(e) => setFilter({ ...filter, difficulty: e.target.value })}
+                                className="bg-white border border-forest/10 hover:border-primary/30 text-forest/70 text-[10px] font-black uppercase tracking-widest rounded-full pl-4 pr-8 py-2 outline-none focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer appearance-none min-w-[125px]"
+                            >
+                                <option value="all">ALL LEVELS</option>
+                                <option value="Easy">EASY</option>
+                                <option value="Moderate">MODERATE</option>
+                                <option value="Hard">HARD</option>
+                            </select>
+                            <ChevronDown className="w-3.5 h-3.5 text-forest/40 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                        </div>
                     </div>
 
                     <div className="w-px h-6 bg-forest/10 hidden xl:block"></div>
@@ -89,16 +92,19 @@ export default function TripList({ trips, lang, dict }: { trips: Trip[], lang: s
                         <span className="font-bold text-[10px] text-forest/40 uppercase tracking-[0.2em] whitespace-nowrap flex items-center">
                             <Map className="w-3 h-3 mr-2" /> {dict.location}:
                         </span>
-                        <select
-                            value={filter.location}
-                            onChange={(e) => setFilter({ ...filter, location: e.target.value })}
-                            className="bg-white border border-forest/5 text-forest/60 text-[10px] font-black uppercase tracking-widest rounded-full px-5 py-2 outline-none focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer appearance-none min-w-[140px]"
-                        >
-                            <option value="all">ALL LOCATIONS</option>
-                            {provinces.map(p => (
-                                <option key={p} value={p}>{p.toUpperCase()}</option>
-                            ))}
-                        </select>
+                        <div className="relative">
+                            <select
+                                value={filter.location}
+                                onChange={(e) => setFilter({ ...filter, location: e.target.value })}
+                                className="bg-white border border-forest/10 hover:border-primary/30 text-forest/70 text-[10px] font-black uppercase tracking-widest rounded-full pl-4 pr-8 py-2 outline-none focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer appearance-none min-w-[145px]"
+                            >
+                                <option value="all">ALL LOCATIONS</option>
+                                {provinces.map(p => (
+                                    <option key={p} value={p}>{p.toUpperCase()}</option>
+                                ))}
+                            </select>
+                            <ChevronDown className="w-3.5 h-3.5 text-forest/40 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                        </div>
                     </div>
                 </div>
             </div>

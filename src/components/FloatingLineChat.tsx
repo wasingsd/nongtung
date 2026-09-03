@@ -20,8 +20,11 @@ export default function FloatingLineChat() {
             className="fixed bottom-6 right-6 z-50 group"
             aria-label="Chat with us on LINE"
         >
+            {/* Pulse Ring */}
+            <div className="absolute inset-0 rounded-full bg-[#06C755] opacity-25 animate-ping pointer-events-none"></div>
+
             {/* Button */}
-            <div className="relative w-14 h-14 md:w-16 md:h-16 bg-[#06C755] rounded-full flex items-center justify-center shadow-xl hover:shadow-2xl hover:scale-110 transition-all duration-300">
+            <div className="relative w-14 h-14 md:w-16 md:h-16 bg-[#06C755] rounded-full flex items-center justify-center shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300">
                 {/* LINE Icon SVG */}
                 <svg
                     viewBox="0 0 24 24"
@@ -33,8 +36,9 @@ export default function FloatingLineChat() {
 
             {/* Tooltip */}
             <div className="absolute bottom-full right-0 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                <div className="bg-forest text-white text-xs font-bold px-4 py-2 rounded-full whitespace-nowrap shadow-lg">
-                    Chat with us! 💬
+                <div className="bg-forest text-white text-xs font-bold px-4 py-2 rounded-full whitespace-nowrap shadow-xl border border-white/10 flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-[#06C755]"></span>
+                    สอบถามทาง LINE 💬
                 </div>
             </div>
         </a>

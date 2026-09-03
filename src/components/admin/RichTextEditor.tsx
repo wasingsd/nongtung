@@ -54,11 +54,11 @@ export default function RichTextEditor({ value, onChange, placeholder }: EditorP
                 .rich-text-editor .ql-toolbar {
                     border-top-left-radius: 0.5rem;
                     border-top-right-radius: 0.5rem;
-                    background: #f9fafb;
-                    border-color: #e5e7eb;
+                    background: #FAF9F4;
+                    border-color: rgba(38, 42, 34, 0.12);
                 }
                 .rich-text-editor .ql-container {
-                    border-color: #e5e7eb;
+                    border-color: rgba(38, 42, 34, 0.12);
                 }
                 .rich-text-editor .ql-editor {
                     min-height: 400px;

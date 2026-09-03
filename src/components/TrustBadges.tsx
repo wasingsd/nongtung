@@ -5,25 +5,29 @@ const badges = [
         icon: ShieldCheck,
         title: 'Safety First',
         desc: 'Certified guides & gear',
-        color: 'text-green-500'
+        color: 'text-accent',
+        bg: 'bg-accent/10'
     },
     {
         icon: Users,
         title: 'Local Experts',
         desc: 'Born in the mountains',
-        color: 'text-blue-500'
+        color: 'text-ochre',
+        bg: 'bg-ochre/10'
     },
     {
         icon: Award,
         title: 'Top Quality',
         desc: 'Premium equipment',
-        color: 'text-yellow-500'
+        color: 'text-primary-deep',
+        bg: 'bg-primary-deep/10'
     },
     {
         icon: ThumbsUp,
         title: 'Trusted',
         desc: '500+ happy guests',
-        color: 'text-primary'
+        color: 'text-primary',
+        bg: 'bg-primary/10'
     },
 ];
 
@@ -38,7 +42,7 @@ export default function TrustBadges() {
                                 key={i}
                                 className="flex flex-col items-center text-center group"
                             >
-                                <div className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-surface flex items-center justify-center mb-4 group-hover:scale-110 transition-transform ${badge.color}`}>
+                                <div className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl ${badge.bg} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform ${badge.color}`}>
                                     <badge.icon className="w-7 h-7 md:w-8 md:h-8" />
                                 </div>
                                 <div className="text-base md:text-lg font-black text-forest tracking-tight">

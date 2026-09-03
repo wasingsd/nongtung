@@ -52,7 +52,7 @@ export default function Navbar({ facebookUrl = 'https://www.facebook.com/Venture
             >
                 <div className="container mx-auto px-6 flex justify-between items-center">
                     {/* Logo */}
-                    <Link href="/" className="cursor-pointer flex items-center relative z-[100]">
+                    <Link href={getLocalizedHref('/')} className="cursor-pointer flex items-center relative z-[100]">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                             src="/images/typo_logo.png"
@@ -74,12 +74,16 @@ export default function Navbar({ facebookUrl = 'https://www.facebook.com/Venture
                             </Link>
                         ))}
 
-                        <div className="flex gap-2 items-center text-[10px] font-black uppercase">
-                            <Link href={switchLocale('en')} className={`hover:text-primary transition-colors ${lang === 'en' ? 'text-primary' : 'text-forest/70 dark:text-gray-400'}`}>EN</Link>
-                            <span className="text-forest/30 dark:text-gray-600">|</span>
-                            <Link href={switchLocale('th')} className={`hover:text-primary transition-colors ${lang === 'th' ? 'text-primary' : 'text-forest/70 dark:text-gray-400'}`}>TH</Link>
-                            <span className="text-forest/30 dark:text-gray-600">|</span>
-                            <Link href={switchLocale('zh')} className={`hover:text-primary transition-colors ${lang === 'zh' ? 'text-primary' : 'text-forest/70 dark:text-gray-400'}`}>CN</Link>
+                        <div className="flex items-center bg-forest/5 dark:bg-white/10 p-1 rounded-full text-[10px] font-black uppercase">
+                            {(['en', 'th', 'zh'] as const).map(loc => (
+                                <Link
+                                    key={loc}
+                                    href={switchLocale(loc)}
+                                    className={`px-2.5 py-1 rounded-full transition-all duration-200 ${lang === loc ? 'bg-primary text-white shadow-xs' : 'text-forest/60 dark:text-gray-400 hover:text-primary'}`}
+                                >
+                                    {loc === 'zh' ? 'CN' : loc.toUpperCase()}
+                                </Link>
+                            ))}
                         </div>
 
                         <ThemeToggle />
@@ -136,12 +140,16 @@ export default function Navbar({ facebookUrl = 'https://www.facebook.com/Venture
                         {dict.contact}
                     </a>
 
-                    <div className="flex gap-4 items-center text-lg font-black uppercase mt-4">
-                        <Link href={switchLocale('en')} className={`hover:text-primary transition-colors ${lang === 'en' ? 'text-primary' : 'text-forest/70 dark:text-gray-400'}`}>EN</Link>
-                        <span className="text-forest/30 dark:text-gray-600">|</span>
-                        <Link href={switchLocale('th')} className={`hover:text-primary transition-colors ${lang === 'th' ? 'text-primary' : 'text-forest/70 dark:text-gray-400'}`}>TH</Link>
-                        <span className="text-forest/30 dark:text-gray-600">|</span>
-                        <Link href={switchLocale('zh')} className={`hover:text-primary transition-colors ${lang === 'zh' ? 'text-primary' : 'text-forest/70 dark:text-gray-400'}`}>CN</Link>
+                    <div className="flex items-center bg-forest/5 dark:bg-white/10 p-1.5 rounded-full text-xs font-black uppercase mt-4">
+                        {(['en', 'th', 'zh'] as const).map(loc => (
+                            <Link
+                                key={loc}
+                                href={switchLocale(loc)}
+                                className={`px-4 py-2 rounded-full transition-all duration-200 ${lang === loc ? 'bg-primary text-white shadow-xs' : 'text-forest/60 dark:text-gray-400 hover:text-primary'}`}
+                            >
+                                {loc === 'zh' ? 'CN' : loc.toUpperCase()}
+                            </Link>
+                        ))}
                     </div>
 
                     <div className="mt-8 md:mt-12 text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] text-forest/20 dark:text-white/20">

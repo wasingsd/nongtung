@@ -1,7 +1,8 @@
 import Image from 'next/image';
-import { Search, AlertCircle, ShoppingCart, Package, ShieldCheck, Zap } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import { getRentals } from '@/lib/firestore-db';
 import { Metadata } from 'next';
+import RentalCatalog from '@/components/RentalCatalog';
 
 // Force dynamic rendering to fetch fresh data from Firestore on every request
 export const dynamic = 'force-dynamic';
@@ -19,7 +20,12 @@ export const metadata: Metadata = {
     },
 };
 
-export default async function RentalPage() {
+type Props = {
+    params: Promise<{ lang: string }>;
+};
+
+export default async function RentalPage({ params }: Props) {
+    const { lang } = await params;
     const rentals = await getRentals();
 
     const jsonLd = {
@@ -75,81 +81,7 @@ export default async function RentalPage() {
 
             {/* Inventory & Search Section */}
             <div className="container mx-auto px-6 -mt-10 relative z-20 pb-32">
-                <div className="bg-white rounded-[3rem] immersive-shadow p-10 md:p-12 mb-16 border border-forest/5">
-                    <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-                        <div className="flex gap-10">
-                            <div className="flex items-center gap-3">
-                                <ShieldCheck className="w-5 h-5 text-primary" />
-                                <span className="text-[10px] font-black uppercase tracking-widest text-forest">Deeply Sanitized</span>
-                            </div>
-                            <div className="flex items-center gap-3">
-                                <Zap className="w-5 h-5 text-primary" />
-                                <span className="text-[10px] font-black uppercase tracking-widest text-forest">Pro-Level</span>
-                            </div>
-                        </div>
-                        <div className="flex w-full md:w-auto bg-surface rounded-full p-1 border border-forest/5 group focus-within:border-primary/50 transition-all">
-                            <input
-                                type="text"
-                                placeholder="Search the armory..."
-                                className="bg-transparent px-6 py-2 text-xs font-bold w-full md:w-64 focus:outline-none placeholder-forest/20"
-                            />
-                            <button className="bg-forest text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-primary transition-all"><Search className="w-4 h-4" /></button>
-                        </div>
-                    </div>
-                </div>
-
-                {rentals.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-                        {rentals.map(g => (
-                            <div key={g.id} className="group flex flex-col h-full bg-white rounded-[2.5rem] overflow-hidden immersive-shadow border border-forest/5 hover:-translate-y-2 transition-all duration-500 p-3">
-                                <div className="relative h-64 bg-surface rounded-[2rem] overflow-hidden p-8 flex items-center justify-center group-hover:bg-white transition-colors duration-500">
-                                    {g.image ? (
-                                        <Image
-                                            src={g.image}
-                                            alt={g.name}
-                                            fill
-                                            className="object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-700 p-6"
-                                        />
-                                    ) : (
-                                        <Package className="w-16 h-16 text-forest/10" />
-                                    )}
-                                    <div className={`absolute top-4 right-4 text-[9px] font-black px-3 py-1.5 rounded-xl shadow-soft uppercase tracking-widest ${(g.stock || 0) > 5 ? 'bg-green-50 text-green-600' :
-                                        (g.stock || 0) > 0 ? 'bg-orange-50 text-orange-600' :
-                                            'bg-red-50 text-red-600'
-                                        }`}>
-                                        Stock: {g.stock || 0}
-                                    </div>
-                                </div>
-                                <div className="p-6">
-                                    <h3 className="text-xl font-black text-forest font-heading mb-2 line-clamp-1 tracking-tighter">{g.name}</h3>
-                                    <p className="text-xs text-forest/40 font-medium mb-6 line-clamp-2 leading-relaxed">{g.description || 'Professional grade equipment for rugged use.'}</p>
-                                    <div className="flex items-center justify-between pt-4 border-t border-forest/5">
-                                        <div className="text-forest font-black text-lg">฿{(g.price || 0).toLocaleString()} <span className="text-[10px] text-forest/20 uppercase tracking-widest font-black ml-1">/{g.unit || 'Day'}</span></div>
-                                        {(g.stock || 0) > 0 ? (
-                                            <a
-                                                href={`https://m.me/Venturevibecnx?text=${encodeURIComponent(`สวัสดีครับ สนใจเช่า: ${g.name}`)}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="w-10 h-10 rounded-full flex items-center justify-center bg-forest text-white hover:bg-primary shadow-lg hover:shadow-primary/30 transition-all"
-                                            >
-                                                <ShoppingCart className="w-4 h-4" />
-                                            </a>
-                                        ) : (
-                                            <span className="w-10 h-10 rounded-full flex items-center justify-center bg-surface text-gray-200 cursor-not-allowed">
-                                                <ShoppingCart className="w-4 h-4" />
-                                            </span>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                ) : (
-                    <div className="text-center py-32 bg-surface/30 rounded-[3rem] border-2 border-dashed border-forest/5">
-                        <Package className="w-16 h-16 mx-auto mb-6 text-forest/10" />
-                        <p className="text-forest/30 font-black uppercase tracking-[0.3em] text-xs">Armory currently undergoing maintenance</p>
-                    </div>
-                )}
+                <RentalCatalog rentals={rentals} lang={lang} />
 
                 {/* Rental Conditions: The Charter */}
                 <div className="mt-32 max-w-4xl mx-auto">

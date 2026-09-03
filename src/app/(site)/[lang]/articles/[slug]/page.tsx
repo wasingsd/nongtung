@@ -137,7 +137,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                                 prose-headings:font-black prose-headings:font-heading prose-headings:tracking-tighter prose-headings:uppercase prose-headings:italic
                                 prose-p:text-forest/80 prose-p:leading-[1.8] prose-p:mb-8
                                 prose-img:rounded-[2rem] prose-img:shadow-2xl prose-img:my-16
-                                prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-surface prose-blockquote:p-8 prose-blockquote:rounded-r-3xl prose-blockquote:italic prose-blockquote:font-bold prose-blockquote:text-forest
+                                prose-blockquote:border prose-blockquote:border-forest/5 prose-blockquote:bg-surface/80 prose-blockquote:px-8 prose-blockquote:py-6 prose-blockquote:rounded-2xl prose-blockquote:italic prose-blockquote:font-bold prose-blockquote:text-forest
                                 prose-a:text-primary prose-a:font-black prose-a:no-underline hover:prose-a:underline
                                 prose-strong:text-forest prose-strong:font-black
                                 selection:bg-primary/20"

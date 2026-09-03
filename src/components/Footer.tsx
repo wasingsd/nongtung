@@ -16,7 +16,7 @@ export default function Footer({ facebookUrl = 'https://www.facebook.com/Venture
             <div className="container mx-auto px-6">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
                     <div className="flex flex-col items-center md:items-start text-center md:text-left">
-                        <Link href="/" className="mb-8 block md:ml-20">
+                        <Link href={getLocalizedHref('/')} className="mb-8 block md:ml-20">
                             <img
                                 src="/images/logo.png"
                                 alt="NONGTUNG"

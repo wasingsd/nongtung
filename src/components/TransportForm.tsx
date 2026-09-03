@@ -42,15 +42,16 @@ export default function TransportForm({ transport }: TransportFormProps) {
     return (
         <form action={handleSubmit} className="space-y-6 max-w-2xl bg-white p-8 rounded-lg shadow border border-gray-100 relative">
             {error && (
-                <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6">
-                    <p className="text-red-800 font-bold">เกิดข้อผิดพลาด</p>
-                    <p className="text-red-700 text-sm">{error}</p>
+                <div className="bg-red-50/90 border border-red-200 p-4 mb-6 rounded-2xl shadow-xs">
+                    <p className="text-red-900 font-bold text-sm">เกิดข้อผิดพลาด</p>
+                    <p className="text-red-700 text-xs mt-0.5">{error}</p>
                 </div>
             )}
 
-            <div className="bg-orange-50 border-l-4 border-orange-400 p-4 mb-6">
-                <p className="text-sm text-orange-700 font-medium">
-                    ⚠️ ราคานี้เป็นค่าบริการรถนำเที่ยวพร้อมคนขับ **ไม่รวมค่าน้ำมันตามจริง**
+            <div className="bg-amber-50/90 border border-amber-200/80 p-4 mb-6 rounded-2xl shadow-xs flex items-start gap-3">
+                <span className="text-base leading-none">⚠️</span>
+                <p className="text-xs text-amber-900 font-medium leading-relaxed">
+                    ราคานี้เป็นค่าบริการรถนำเที่ยวพร้อมคนขับ <strong className="font-bold">ไม่รวมค่าน้ำมันตามจริง</strong>
                 </p>
             </div>
 

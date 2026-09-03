@@ -38,8 +38,8 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #f07d3a;
-    border-radius: 10px;
+    background: var(--color-primary);
+    border-radius: 9999px;
 }
 
 body {

@@ -45,11 +45,13 @@ export default function RentalForm({ rental }: RentalFormProps) {
     return (
         <form action={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg border border-gray-100 space-y-8 max-w-2xl relative">
             {error && (
-                <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6 flex items-start gap-3">
-                    <X className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                <div className="bg-red-50/90 border border-red-200 p-4 mb-6 rounded-2xl flex items-start gap-3 shadow-xs">
+                    <div className="w-8 h-8 rounded-xl bg-red-100 flex items-center justify-center text-red-600 shrink-0">
+                        <X className="w-4 h-4" />
+                    </div>
                     <div>
-                        <p className="text-red-800 font-bold">เกิดข้อผิดพลาด</p>
-                        <p className="text-red-700 text-sm">{error}</p>
+                        <p className="text-red-900 font-bold text-sm">เกิดข้อผิดพลาด</p>
+                        <p className="text-red-700 text-xs mt-0.5">{error}</p>
                     </div>
                 </div>
             )}

@@ -3,6 +3,8 @@ import { saveArticle } from '@/lib/firestore-db';
 import { articles } from '@/app/(site)/[lang]/articles/data';
 import { Article } from '@/types/types';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
     try {
         let count = 0;

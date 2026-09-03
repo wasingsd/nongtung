@@ -210,7 +210,7 @@ export default async function TripDetailPage({
                         <section className="mb-10 md:mb-20">
                             <h2 className="text-2xl md:text-3xl font-black font-heading text-forest mb-6 md:mb-8 tracking-tighter">{t.details}</h2>
                             <div className="prose prose-forest max-w-none">
-                                <p className="text-sm md:text-xl text-forest/70 leading-relaxed whitespace-pre-line font-medium italic mb-6 md:mb-10 border-l-4 border-primary/20 pl-5 md:pl-8">
+                                <p className="text-sm md:text-xl text-forest/80 leading-relaxed whitespace-pre-line font-medium italic mb-6 md:mb-10 bg-surface/60 border border-forest/5 p-6 md:p-8 rounded-2xl shadow-xs">
                                     {trip.description || t.no_description}
                                 </p>
                             </div>

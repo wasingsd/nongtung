@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { saveActivity } from '@/lib/firestore-db';
 import { Activity } from '@/types/types';
 
+export const dynamic = 'force-dynamic';
+
 // GET /api/seed-enduro - Seeds the Enduro activity
 export async function GET() {
     try {

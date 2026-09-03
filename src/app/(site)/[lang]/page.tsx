@@ -1,10 +1,11 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { ShieldCheck, Gem, UserCheck, ChevronRight, MapPin, Users, Calendar, ArrowRight, Compass, Heart, Award, Leaf } from 'lucide-react';
+import { ShieldCheck, Gem, UserCheck, ChevronRight, MapPin, Users, Calendar, ArrowRight, Compass, Heart, Award, Leaf, Tent, Bus, Sparkles } from 'lucide-react';
 import { getTrips, getTransport, getHomeSettings } from '@/lib/firestore-db';
 import { Trip, Transport, HomeSettings } from '@/types/types';
 import TrustBadges from '@/components/TrustBadges';
 import TikTokRTB from '@/components/TikTokRTB';
+import HomeTripFinder from '@/components/HomeTripFinder';
 import { getDictionary } from '@/lib/dictionary';
 import { Locale } from '@/i18n-config';
 
@@ -81,42 +82,136 @@ export default async function Home({ params }: Props) {
   };
 
   return (
-    <div className="fade-in bg-[#fdfdfb]">
+    <div className="fade-in bg-[#FAF9F4] dark:bg-[#181B14] min-h-screen">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       {/* Immersive Hero Section */}
-      <div className="relative h-[80vh] md:h-[90vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60 z-10"></div>
+      <div className="relative h-[85vh] md:h-[92vh] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/75 z-10"></div>
         <Image
-          src="https://images.unsplash.com/photo-1510312305653-8ed496efae75?auto=format&fit=crop&q=80&w=1600"
+          src="https://images.unsplash.com/photo-1510312305653-8ed496efae75?auto=format&fit=crop&q=80&w=1800"
           fill
-          className="absolute inset-0 w-full h-full object-cover z-0"
+          className="absolute inset-0 w-full h-full object-cover z-0 scale-105"
           alt="Adventurers exploring Northern Thailand mountains"
           priority
         />
-        <div className="relative z-20 text-center text-white px-6 max-w-5xl">
-          <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.5em] mb-4 md:mb-6 block drop-shadow-lg text-primary-light">{h.hero_subtitle}</span>
-          <h1 className="text-4xl md:text-8xl font-black mb-6 md:mb-8 font-heading leading-[0.9] tracking-tighter drop-shadow-2xl">
+        <div className="relative z-20 text-center text-white px-6 max-w-5xl mt-[-4vh]">
+          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-[0.3em] mb-6 text-white drop-shadow-md">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+            {h.hero_subtitle}
+          </div>
+          <h1 className="text-4xl sm:text-6xl md:text-8xl font-black mb-6 md:mb-8 font-heading leading-[0.9] tracking-tighter drop-shadow-2xl">
             {h.hero_title_1}<br /><span className="text-primary italic">{h.hero_title_2}</span>
           </h1>
-          <p className="text-base md:text-xl text-white/90 mb-8 md:mb-12 max-w-2xl mx-auto font-medium drop-shadow-md leading-relaxed">
+          <p className="text-base md:text-xl text-white/90 mb-8 md:mb-10 max-w-2xl mx-auto font-medium drop-shadow-md leading-relaxed">
             {h.hero_description}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center">
-            <Link href={`${langPrefix}/trips`} className="bg-primary hover:bg-forest text-white px-8 md:px-10 py-3 md:py-4 rounded-full font-black uppercase text-[10px] tracking-[0.2em] transition-all shadow-xl hover:shadow-primary/20 transform hover:-translate-y-1">
+            <Link href={`${langPrefix}/trips`} className="bg-primary hover:bg-primary-deep text-white px-8 md:px-10 py-3.5 md:py-4 rounded-full font-black uppercase text-xs tracking-[0.2em] transition-all shadow-xl hover:shadow-primary/30 transform hover:-translate-y-1 active:scale-95">
               {h.explore_trips}
             </Link>
-            <Link href={`${langPrefix}/transport`} className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white hover:text-forest text-white px-8 md:px-10 py-3 md:py-4 rounded-full font-black uppercase text-[10px] tracking-[0.2em] transition-all shadow-xl">
+            <Link href={`${langPrefix}/transport`} className="bg-white/10 backdrop-blur-md border border-white/30 hover:bg-white hover:text-forest text-white px-8 md:px-10 py-3.5 md:py-4 rounded-full font-black uppercase text-xs tracking-[0.2em] transition-all shadow-xl hover:-translate-y-1 active:scale-95">
               {h.private_transport}
             </Link>
           </div>
         </div>
       </div>
 
+      {/* Interactive Trip Finder Dock */}
+      <HomeTripFinder lang={lang} dict={dict} />
+
       {/* Trust Badges */}
       <TrustBadges />
+
+      {/* The 4 Pillars of Nongtung Ecosystem */}
+      <section className="py-12 md:py-16">
+        <div className="container mx-auto px-6">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <span className="text-[10px] font-black text-primary uppercase tracking-[0.4em] mb-2 block">
+              {lang === 'th' ? 'บริการครบวงจรเพื่อคนรักธรรมชาติ' : 'Complete Outdoor Ecosystem'}
+            </span>
+            <h2 className="text-3xl md:text-4xl font-black font-heading text-forest dark:text-white tracking-tight uppercase">
+              {lang === 'th' ? 'เลือกการผจญภัยในแบบคุณ' : 'Choose Your Adventure Style'}
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Link href={`${langPrefix}/trips`} className="group bg-white dark:bg-zinc-900 rounded-[2rem] p-6 border border-forest/5 dark:border-white/5 card-lift flex flex-col justify-between">
+              <div>
+                <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-all">
+                  <Compass className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-black font-heading text-forest dark:text-white mb-2">
+                  {lang === 'th' ? 'เดินป่า & ปีนเขา' : 'Guided Trekking'}
+                </h3>
+                <p className="text-xs text-forest/60 dark:text-gray-400 leading-relaxed font-medium">
+                  {lang === 'th' ? 'พิชิตยอดดอยภาคเหนือ เชียงดาว อินทนนท์ พร้อมไกด์ท้องถิ่นดูแล 100%' : 'Ascend iconic northern peaks with certified mountain guides.'}
+                </p>
+              </div>
+              <div className="mt-6 flex items-center text-xs font-bold text-primary group-hover:translate-x-1 transition-transform">
+                <span>{lang === 'th' ? 'ดูทริปทั้งหมด' : 'Explore Trails'}</span>
+                <ArrowRight className="w-4 h-4 ml-1.5" />
+              </div>
+            </Link>
+
+            <Link href={`${langPrefix}/transport`} className="group bg-white dark:bg-zinc-900 rounded-[2rem] p-6 border border-forest/5 dark:border-white/5 card-lift flex flex-col justify-between">
+              <div>
+                <div className="w-12 h-12 rounded-2xl bg-ochre/10 text-ochre flex items-center justify-center mb-4 group-hover:bg-ochre group-hover:text-white transition-all">
+                  <Bus className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-black font-heading text-forest dark:text-white mb-2">
+                  {lang === 'th' ? 'รถตู้ VIP นำเที่ยว' : 'VIP Mountain Fleet'}
+                </h3>
+                <p className="text-xs text-forest/60 dark:text-gray-400 leading-relaxed font-medium">
+                  {lang === 'th' ? 'รถตู้พร้อมคนขับชำนาญเส้นทางดอย แอร์เย็น เบาะนวด ปลอดภัยสูงสุด' : 'Premium 9-seater vans with drivers who master mountain curves.'}
+                </p>
+              </div>
+              <div className="mt-6 flex items-center text-xs font-bold text-ochre group-hover:translate-x-1 transition-transform">
+                <span>{lang === 'th' ? 'ดูเส้นทาง & ราคา' : 'View Fleet & Rates'}</span>
+                <ArrowRight className="w-4 h-4 ml-1.5" />
+              </div>
+            </Link>
+
+            <Link href={`${langPrefix}/rental`} className="group bg-white dark:bg-zinc-900 rounded-[2rem] p-6 border border-forest/5 dark:border-white/5 card-lift flex flex-col justify-between">
+              <div>
+                <div className="w-12 h-12 rounded-2xl bg-accent/10 text-accent flex items-center justify-center mb-4 group-hover:bg-accent group-hover:text-white transition-all">
+                  <Tent className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-black font-heading text-forest dark:text-white mb-2">
+                  {lang === 'th' ? 'เช่าอุปกรณ์แคมป์ปิ้ง' : 'Camping Armory'}
+                </h3>
+                <p className="text-xs text-forest/60 dark:text-gray-400 leading-relaxed font-medium">
+                  {lang === 'th' ? 'เต็นท์ K2 / Coleman ถุงนอน แผ่นรองนอน ผ่านการฆ่าเชื้อทุกชิ้น 100%' : 'Sanitized high-grade tents, sleeping bags, and camp kitchens.'}
+                </p>
+              </div>
+              <div className="mt-6 flex items-center text-xs font-bold text-accent group-hover:translate-x-1 transition-transform">
+                <span>{lang === 'th' ? 'เลือกอุปกรณ์เช่า' : 'Rent Equipment'}</span>
+                <ArrowRight className="w-4 h-4 ml-1.5" />
+              </div>
+            </Link>
+
+            <Link href={`${langPrefix}/corporate`} className="group bg-white dark:bg-zinc-900 rounded-[2rem] p-6 border border-forest/5 dark:border-white/5 card-lift flex flex-col justify-between">
+              <div>
+                <div className="w-12 h-12 rounded-2xl bg-primary-deep/10 text-primary-deep flex items-center justify-center mb-4 group-hover:bg-primary-deep group-hover:text-white transition-all">
+                  <Users className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-black font-heading text-forest dark:text-white mb-2">
+                  {lang === 'th' ? 'สัมมนาองค์กร & กิจกรรม' : 'Corporate Retreats'}
+                </h3>
+                <p className="text-xs text-forest/60 dark:text-gray-400 leading-relaxed font-medium">
+                  {lang === 'th' ? 'Team building สัมมนาผู้บริหาร กิจกรรม CSR พร้อมออกใบกำกับภาษี e-Tax' : 'Team building, executive offsites & CSR with e-Tax invoice.'}
+                </p>
+              </div>
+              <div className="mt-6 flex items-center text-xs font-bold text-primary-deep group-hover:translate-x-1 transition-transform">
+                <span>{lang === 'th' ? 'ขอใบเสนอราคา' : 'Corporate Inquiry'}</span>
+                <ArrowRight className="w-4 h-4 ml-1.5" />
+              </div>
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* Featured Adventures */}
       <section className="py-12 md:py-24 bg-white">

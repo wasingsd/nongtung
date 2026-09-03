@@ -43,37 +43,69 @@ export default function Navbar({ facebookUrl = 'https://www.facebook.com/Venture
         return segments.join('/');
     };
 
+    const [scrolled, setScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 20);
+        };
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     return (
         <>
             {/* Header Bar */}
             <header
-                className={`fixed w-full z-[90] transition-colors duration-300 py-4 ${isMenuOpen ? 'bg-white dark:bg-black' : 'glass-nav'
-                    }`}
+                className={`fixed top-0 left-0 right-0 w-full z-[90] transition-all duration-300 ${
+                    isMenuOpen 
+                        ? 'bg-white dark:bg-zinc-950 py-4 shadow-sm' 
+                        : scrolled
+                        ? 'py-3 glass-nav shadow-sm'
+                        : 'py-5 bg-transparent'
+                }`}
             >
                 <div className="container mx-auto px-6 flex justify-between items-center">
                     {/* Logo */}
-                    <Link href={getLocalizedHref('/')} className="cursor-pointer flex items-center relative z-[100]">
+                    <Link href={getLocalizedHref('/')} className="cursor-pointer flex items-center relative z-[100] group">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                             src="/images/typo_logo.png"
                             alt="NONGTUNG"
-                            className="h-8 md:h-14 w-auto object-contain dark:invert"
+                            className="h-8 md:h-12 w-auto object-contain dark:invert group-hover:opacity-90 transition-opacity"
                         />
                     </Link>
 
                     {/* Desktop Menu */}
                     <div className="hidden lg:flex items-center gap-6 xl:gap-8">
-                        <Link href={getLocalizedHref('/')} className={`nav-link text-xs font-bold uppercase tracking-widest hover:text-primary transition-colors relative group ${pathname === `/${lang}` || pathname === `/${lang}/` ? 'text-primary' : 'text-forest/70 dark:text-gray-300'}`}>
+                        <Link 
+                            href={getLocalizedHref('/')} 
+                            className={`nav-link text-xs font-bold uppercase tracking-widest transition-colors relative py-1.5 px-3 rounded-full ${
+                                pathname === `/${lang}` || pathname === `/${lang}/` 
+                                    ? 'text-primary font-black bg-primary/10' 
+                                    : 'text-forest/70 dark:text-gray-300 hover:text-primary hover:bg-forest/5'
+                            }`}
+                        >
                             {dict.home}
-                            <span className={`absolute -bottom-1 left-0 h-0.5 bg-primary transition-all group-hover:w-full ${pathname === `/${lang}` || pathname === `/${lang}/` ? 'w-full' : 'w-0'}`}></span>
                         </Link>
-                        {navLinks.map((link) => (
-                            <Link key={link.id} href={getLocalizedHref(link.href)} className={`nav-link text-xs font-bold uppercase tracking-widest hover:text-primary transition-colors relative group ${pathname?.startsWith(getLocalizedHref(link.href)) ? 'text-primary' : 'text-forest/70 dark:text-gray-300'}`}>
-                                {link.label}
-                                <span className={`absolute -bottom-1 left-0 h-0.5 bg-primary transition-all group-hover:w-full ${pathname?.startsWith(getLocalizedHref(link.href)) ? 'w-full' : 'w-0'}`}></span>
-                            </Link>
-                        ))}
+                        {navLinks.map((link) => {
+                            const isActive = pathname?.startsWith(getLocalizedHref(link.href));
+                            return (
+                                <Link 
+                                    key={link.id} 
+                                    href={getLocalizedHref(link.href)} 
+                                    className={`nav-link text-xs font-bold uppercase tracking-widest transition-colors relative py-1.5 px-3 rounded-full ${
+                                        isActive 
+                                            ? 'text-primary font-black bg-primary/10' 
+                                            : 'text-forest/70 dark:text-gray-300 hover:text-primary hover:bg-forest/5'
+                                    }`}
+                                >
+                                    {link.label}
+                                </Link>
+                            );
+                        })}
 
+                        {/* Language Selector */}
                         <div className="flex items-center bg-forest/5 dark:bg-white/10 p-1 rounded-full text-[10px] font-black uppercase">
                             {(['en', 'th', 'zh'] as const).map(loc => (
                                 <Link
@@ -92,14 +124,14 @@ export default function Navbar({ facebookUrl = 'https://www.facebook.com/Venture
                             href={facebookUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="bg-primary text-white px-7 py-2.5 rounded-full font-bold uppercase text-[10px] tracking-widest hover:bg-primary-deep transition-all shadow-lg hover:shadow-primary/20 transform hover:-translate-y-0.5"
+                            className="bg-primary text-white px-6 py-2.5 rounded-full font-black uppercase text-[10px] tracking-widest hover:bg-primary-deep transition-all shadow-md hover:shadow-primary/20 transform hover:-translate-y-0.5 active:scale-95"
                         >
                             {dict.contact}
                         </a>
                     </div>
 
                     {/* Mobile Menu Toggle */}
-                    <div className="lg:hidden relative z-[100] flex items-center gap-4">
+                    <div className="lg:hidden relative z-[100] flex items-center gap-3">
                         <ThemeToggle />
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}

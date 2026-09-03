@@ -159,7 +159,7 @@ function CorporateForm() {
     return (
         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {status && (
-                <div className={`col-span-2 p-4 rounded-2xl text-center font-bold ${status.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                <div className={`col-span-2 p-4 rounded-2xl text-center text-xs font-bold ${status.success ? 'bg-emerald-50 border border-emerald-200 text-emerald-900' : 'bg-red-50 border border-red-200 text-red-900'}`}>
                     {status.message}
                 </div>
             )}
@@ -187,10 +187,21 @@ function CorporateForm() {
                 <label className="text-[10px] font-black uppercase tracking-widest text-forest/30 mb-2 block">Requirements / Budget</label>
                 <textarea name="requirements" className="w-full bg-surface border border-forest/5 rounded-2xl px-6 py-4 focus:ring-2 focus:ring-primary outline-none transition-all font-bold text-forest h-32 placeholder:text-forest/10" placeholder="Any specific requests or budget range?"></textarea>
             </div>
-            <div className="col-span-2 pt-4">
+            <div className="col-span-2 pt-4 space-y-3">
                 <button disabled={isPending} type="submit" className="w-full bg-primary hover:bg-forest text-white py-5 rounded-full font-black uppercase text-[10px] tracking-[0.2em] transition-all shadow-xl hover:shadow-primary/20 transform hover:-translate-y-1 flex items-center justify-center gap-3 group disabled:opacity-50 disabled:cursor-not-allowed">
                     {isPending ? 'Sending...' : 'Request Proposal'} <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
+                <div className="text-center">
+                    <span className="text-xs text-forest/40 font-bold block mb-2">หรือติดต่อประสานงานด่วนสำหรับองค์กร</span>
+                    <a
+                        href="https://lin.ee/pAbgN1M"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 bg-[#06C755]/10 hover:bg-[#06C755] text-[#06C755] hover:text-white px-6 py-2.5 rounded-full text-xs font-black transition-all"
+                    >
+                        <span>💬 แชทกับทีมงานฝ่ายองค์กร (LINE: @nongtung)</span>
+                    </a>
+                </div>
             </div>
         </form>
     );

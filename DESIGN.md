@@ -4,11 +4,13 @@ description: "Northern Thailand outdoor adventure, guided trekking, camping gear
 colors:
   primary: "#D66E3A"
   primary-deep: "#B54F23"
+  primary-light: "#E08556"
   forest: "#262A22"
   forest-light: "#444B3D"
   accent: "#8DA165"
   ochre: "#C89F65"
   surface: "#FAF9F4"
+  surface-card: "#FFFFFF"
   background: "#fdfdfb"
   foreground: "#2e3022"
   card-bg: "#ffffff"

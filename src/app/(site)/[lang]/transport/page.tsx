@@ -160,8 +160,8 @@ export default async function TransportPage() {
                                     </div>
 
                                     {car.note && (
-                                        <div className="mb-10 p-6 rounded-2xl bg-[#fffcf5] border border-orange-100/50">
-                                            <p className="text-xs text-orange-800 font-bold italic flex items-start gap-3 leading-relaxed">
+                                        <div className="mb-10 p-6 rounded-2xl bg-amber-50/80 border border-amber-200/80">
+                                            <p className="text-xs text-amber-900 font-bold italic flex items-start gap-3 leading-relaxed">
                                                 <Info className="w-4 h-4 shrink-0 text-primary" />
                                                 {car.note}
                                             </p>

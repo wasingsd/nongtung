@@ -38,7 +38,7 @@ export default function RentalCatalog({ rentals, lang = 'th' }: RentalCatalogPro
     return (
         <div className="space-y-10">
             {/* Control Bar */}
-            <div className="bg-white rounded-[2.5rem] immersive-shadow p-6 md:p-8 border border-forest/5">
+            <div className="bg-white dark:bg-zinc-900 rounded-[2.5rem] immersive-shadow p-6 md:p-8 border border-forest/5 dark:border-white/5">
                 <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
                     {/* Categories */}
                     <div className="flex items-center gap-2 overflow-x-auto no-scrollbar w-full lg:w-auto pb-2 lg:pb-0">
@@ -51,7 +51,7 @@ export default function RentalCatalog({ rentals, lang = 'th' }: RentalCatalogPro
                                     className={`px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-wider transition-all duration-300 whitespace-nowrap active:scale-95 ${
                                         active 
                                             ? 'bg-primary text-white shadow-md shadow-primary/25 scale-105' 
-                                            : 'bg-surface text-forest/70 hover:bg-forest/5 hover:text-forest'
+                                            : 'bg-surface dark:bg-zinc-800 text-forest/70 dark:text-gray-300 hover:bg-forest/5 dark:hover:bg-zinc-700 hover:text-forest dark:hover:text-white'
                                     }`}
                                 >
                                     {isThai ? cat.th : cat.label}
@@ -109,20 +109,20 @@ export default function RentalCatalog({ rentals, lang = 'th' }: RentalCatalogPro
                         return (
                             <div
                                 key={item.id}
-                                className="group flex flex-col h-full bg-white rounded-[2rem] overflow-hidden immersive-shadow border border-forest/5 hover:-translate-y-1.5 transition-all duration-300 p-4"
+                                className="group flex flex-col h-full bg-white dark:bg-zinc-900 rounded-[2rem] overflow-hidden immersive-shadow border border-forest/5 dark:border-white/5 hover:-translate-y-1.5 transition-all duration-300 p-4"
                             >
                                 {/* Media Container */}
-                                <div className="relative h-60 bg-surface/70 rounded-[1.75rem] overflow-hidden p-6 flex items-center justify-center group-hover:bg-white transition-colors duration-500">
+                                <div className="relative h-60 bg-surface/70 dark:bg-zinc-800/80 rounded-[1.75rem] overflow-hidden p-6 flex items-center justify-center group-hover:bg-white dark:group-hover:bg-zinc-800 transition-colors duration-500">
                                     {item.image ? (
                                         <Image
                                             src={item.image}
                                             alt={item.name}
                                             fill
-                                            className="object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500 p-4"
+                                            className="object-contain mix-blend-multiply dark:mix-blend-normal group-hover:scale-105 transition-transform duration-500 p-4"
                                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                                         />
                                     ) : (
-                                        <Package className="w-16 h-16 text-forest/10" />
+                                        <Package className="w-16 h-16 text-forest/10 dark:text-white/10" />
                                     )}
 
                                     {/* Stock Badge */}
@@ -143,22 +143,22 @@ export default function RentalCatalog({ rentals, lang = 'th' }: RentalCatalogPro
 
                                 {/* Content */}
                                 <div className="p-4 flex flex-col flex-grow">
-                                    <h3 className="text-lg font-black font-heading text-forest group-hover:text-primary transition-colors line-clamp-1 tracking-tight mb-1.5">
+                                    <h3 className="text-lg font-black font-heading text-forest dark:text-white group-hover:text-primary transition-colors line-clamp-1 tracking-tight mb-1.5">
                                         {item.name}
                                     </h3>
-                                    <p className="text-xs text-forest/50 font-medium line-clamp-2 leading-relaxed mb-4 flex-grow">
+                                    <p className="text-xs text-forest/50 dark:text-gray-400 font-medium line-clamp-2 leading-relaxed mb-4 flex-grow">
                                         {item.description || (isThai ? 'อุปกรณ์เดินป่าและแคมป์ปิ้งมาตรฐานสูง ใช้งานง่ายและทนทาน' : 'Professional high-grade outdoor equipment.')}
                                     </p>
 
                                     {/* Price & CTA */}
-                                    <div className="flex items-center justify-between pt-3 border-t border-forest/5 mt-auto">
+                                    <div className="flex items-center justify-between pt-3 border-t border-forest/5 dark:border-white/5 mt-auto">
                                         <div>
-                                            <div className="text-xs font-bold text-forest/40 uppercase tracking-wider">
+                                            <div className="text-xs font-bold text-forest/40 dark:text-gray-400 uppercase tracking-wider">
                                                 {isThai ? 'ราคาเช่า' : 'Rate'}
                                             </div>
-                                            <div className="text-xl font-black text-forest font-heading tracking-tight tabular-nums">
+                                            <div className="text-xl font-black text-forest dark:text-white font-heading tracking-tight tabular-nums">
                                                 ฿{(item.price || 0).toLocaleString()}
-                                                <span className="text-xs font-bold text-forest/40 ml-1">/{item.unit || 'Day'}</span>
+                                                <span className="text-xs font-bold text-forest/40 dark:text-gray-400 ml-1">/{item.unit || 'Day'}</span>
                                             </div>
                                         </div>
 

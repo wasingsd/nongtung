@@ -288,50 +288,71 @@ export default async function TripDetailPage({
                                     </div>
                                 </div>
 
-                                <div className="space-y-4">
+                                <div className="space-y-3">
+                                    <a
+                                        href={`https://line.me/R/oaMessage/@nongtung/?${encodeURIComponent(`สวัสดีครับ สนใจจองทริป: ${trip.title} (${trip.duration})`)}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="block w-full bg-[#06C755] hover:bg-[#05a847] text-white text-center font-black py-4.5 rounded-full uppercase text-xs tracking-wider shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 active:scale-95"
+                                    >
+                                        จองผ่าน LINE Official (เร็วที่สุด)
+                                    </a>
+
                                     <a
                                         href={`${messengerUrl}?text=${encodeURIComponent(`สวัสดีครับ สนใจจองทริป: ${trip.title}`)}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="block w-full bg-primary hover:bg-forest text-white text-center font-black py-5 rounded-full uppercase text-xs tracking-[0.2em] shadow-xl hover:shadow-primary/20 transition-all transform hover:-translate-y-1"
+                                        className="block w-full bg-forest hover:bg-primary text-white text-center font-black py-4 rounded-full uppercase text-xs tracking-wider shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5"
                                     >
-                                        {t.booking_btn}
-                                    </a>
-
-                                    <a
-                                        href={`${messengerUrl}?text=${encodeURIComponent(`สวัสดีครับ มีคำถามเกี่ยวกับทริป: ${trip.title}`)}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="block w-full bg-surface hover:bg-white text-forest text-center font-black py-4 rounded-full uppercase text-[10px] tracking-[0.2em] transition-all border border-forest/5 flex items-center justify-center gap-2"
-                                    >
-                                        <MessageCircle className="w-4 h-4" /> {t.message_us}
+                                        Facebook Messenger
                                     </a>
                                 </div>
 
-                                <div className="mt-8 flex items-center justify-center gap-2 text-[10px] font-black text-forest/20 uppercase tracking-[0.2em]">
-                                    <Shield className="w-3 h-3" /> {t.safe_direct}
+                                <div className="mt-8 flex items-center justify-center gap-2 text-[10px] font-black text-forest/30 uppercase tracking-[0.2em]">
+                                    <Shield className="w-3 h-3 text-primary" /> {t.safe_direct}
                                 </div>
                             </div>
 
                             {/* Help Box */}
                             <a
-                                href={messengerUrl}
+                                href="https://lin.ee/pAbgN1M"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="mt-8 bg-forest rounded-3xl p-8 flex items-center gap-6 hover:bg-primary transition-all duration-500 group shadow-xl"
+                                className="mt-6 bg-forest rounded-3xl p-6 md:p-8 flex items-center gap-5 hover:bg-primary transition-all duration-300 group shadow-xl"
                             >
-                                <div className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center text-white shadow-soft group-hover:scale-110 group-hover:bg-white group-hover:text-primary transition-all">
-                                    <MessageCircle className="w-7 h-7" />
+                                <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-white group-hover:scale-110 group-hover:bg-white group-hover:text-primary transition-all shrink-0">
+                                    <MessageCircle className="w-6 h-6" />
                                 </div>
                                 <div>
-                                    <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em] mb-1">{t.need_help}</p>
-                                    <p className="text-lg font-black text-white tracking-tighter">{t.talk_team}</p>
+                                    <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em] mb-0.5">{t.need_help}</p>
+                                    <p className="text-base md:text-lg font-black text-white tracking-tight">{t.talk_team}</p>
                                 </div>
                             </a>
                         </div>
                     </div>
 
                 </div>
+            </div>
+
+            {/* Mobile Bottom Sticky Booking Bar */}
+            <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-forest/10 dark:border-white/10 p-4 shadow-[0_-8px_30px_rgba(0,0,0,0.08)] flex items-center justify-between gap-4">
+                <div>
+                    <span className="text-[10px] font-bold text-forest/50 dark:text-gray-400 block uppercase">
+                        {t.price_per_person}
+                    </span>
+                    <span className="text-xl font-black font-heading text-forest dark:text-white tracking-tight">
+                        ฿{trip.price.toLocaleString()}
+                    </span>
+                </div>
+                <a
+                    href={`https://line.me/R/oaMessage/@nongtung/?${encodeURIComponent(`สวัสดีครับ สนใจจองทริป: ${trip.title}`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-[#06C755] hover:bg-[#05a847] text-white font-black px-6 py-3 rounded-full text-xs uppercase tracking-wider shadow-md active:scale-95 transition-all flex items-center gap-1.5"
+                >
+                    <MessageCircle className="w-4 h-4" />
+                    <span>{t.book_now}</span>
+                </a>
             </div>
         </div>
     );

@@ -70,12 +70,28 @@ export default function Footer({ facebookUrl = 'https://www.facebook.com/Venture
                     <div>
                         <h4 className="text-xs font-black mb-8 uppercase tracking-[0.3em] text-primary">{dict.contact}</h4>
                         <ul className="space-y-4 text-sm font-bold">
-                            <li className="flex items-center gap-4 text-white/40"><Phone className="w-4 h-4 text-primary" /> 080-442-5189</li>
-                            <li className="flex items-center gap-4 text-white/40">
-                                <Mail className="w-4 h-4 text-primary" />
+                            <li className="flex items-center gap-3 text-white/60">
+                                <Phone className="w-4 h-4 text-primary shrink-0" />
+                                <a href="tel:0804425189" className="hover:text-white transition-colors">080-442-5189</a>
+                            </li>
+                            <li className="flex items-center gap-3 text-white/60">
+                                <Mail className="w-4 h-4 text-primary shrink-0" />
                                 <a href="mailto:tripntrail.cnx@gmail.com" className="hover:text-white transition-colors">tripntrail.cnx@gmail.com</a>
                             </li>
-                            <li className="flex items-center gap-4 text-white/40"><MapPin className="w-4 h-4 text-primary" /> Chiang Mai, Thailand</li>
+                            <li className="flex items-center gap-3 text-white/60">
+                                <MapPin className="w-4 h-4 text-primary shrink-0" />
+                                <span>Chiang Mai, Thailand</span>
+                            </li>
+                            <li className="pt-2">
+                                <a
+                                    href="https://lin.ee/pAbgN1M"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-2 bg-[#06C755]/15 border border-[#06C755]/40 text-[#06C755] px-4 py-1.5 rounded-full text-xs font-black hover:bg-[#06C755] hover:text-white transition-all shadow-xs"
+                                >
+                                    <span>LINE: @nongtung</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                     <div>

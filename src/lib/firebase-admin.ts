@@ -1,6 +1,5 @@
 import { getApps, initializeApp, cert, getApp, App } from 'firebase-admin/app';
 import { getFirestore, Firestore } from 'firebase-admin/firestore';
-import { getAuth, Auth } from 'firebase-admin/auth';
 import path from 'path';
 import fs from 'fs';
 
@@ -101,8 +100,8 @@ const adminDb: Firestore = (adminApp && hasValidCredentials)
     ? getFirestore(adminApp)
     : createDummyDb();
 
-const adminAuth: Auth = (adminApp && hasValidCredentials)
-    ? getAuth(adminApp)
-    : (new Proxy({}, { get: () => () => Promise.reject(new Error('Firebase Auth not initialized')) }) as any);
+const adminAuth: any = new Proxy({}, {
+    get: () => () => Promise.reject(new Error('Firebase Auth not initialized')),
+});
 
 export { adminApp, adminDb, adminAuth, hasValidCredentials };

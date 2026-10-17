@@ -1,15 +1,12 @@
-// Firestore Database - replaces JSON file-based db.ts for Vercel compatibility
-import { db } from './firebase';
-import {
-    collection,
-    doc,
-    getDocs,
-    getDoc,
-    setDoc,
-    deleteDoc,
-    query,
-    orderBy
-} from 'firebase/firestore';
+// Firestore Database using Firebase Admin SDK with Service Account for nongtung-platform
+import { cache } from 'react';
+import { adminDb } from './firebase-admin';
+import { Trip, Rental, Transport, Article, Activity, HomeSettings, Reel, FacebookPost } from '../types/types';
+import { articles as staticArticles } from '../app/(site)/[lang]/articles/data';
+import { TRIPS as MOCK_TRIPS, RENTAL_GEAR as MOCK_RENTALS } from '@/data/mock';
+import { DEFAULT_REELS } from '@/data/defaultReels';
+import { DEFAULT_FB_POSTS } from '@/data/defaultFacebookPosts';
+
 // Collection names
 const COLLECTIONS = {
     TRIPS: 'trips',
@@ -18,59 +15,58 @@ const COLLECTIONS = {
     QUOTES: 'quotes',
     ARTICLES: 'articles',
     ACTIVITIES: 'activities',
-    SETTINGS: 'settings'
+    SETTINGS: 'settings',
+    REELS: 'reels',
+    FB_POSTS: 'fb_posts'
 } as const;
 
-import { Trip, Rental, Transport, Article, Activity, HomeSettings } from '../types/types';
-
-import { articles as staticArticles } from '../app/(site)/[lang]/articles/data';
-
 // --- ARTICLES ---
-export async function getArticles(): Promise<Article[]> {
-    // Return static articles first (for SEO content), potentially merge with DB later
+export const getArticles = cache(async (): Promise<Article[]> => {
+    try {
+        const snapshot = await adminDb.collection(COLLECTIONS.ARTICLES).get();
+        if (!snapshot.empty) {
+            return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Article));
+        }
+    } catch (e) {
+        console.warn('⚠️ Firestore getArticles failed, falling back to static:', (e as Error).message);
+    }
     return staticArticles.map(a => ({ ...a, id: a.slug } as Article));
-}
+});
 
-export async function getArticle(slug: string): Promise<Article | null> {
-    // Try static first
+export const getArticle = cache(async (slug: string): Promise<Article | null> => {
     const staticArticle = staticArticles.find(a => a.slug === slug);
+    try {
+        const docSnap = await adminDb.collection(COLLECTIONS.ARTICLES).doc(slug).get();
+        if (docSnap.exists) {
+            const data = docSnap.data() || {};
+            return {
+                id: docSnap.id,
+                ...data,
+                subImages: (Array.isArray(data.subImages) && data.subImages.length > 0)
+                    ? data.subImages
+                    : (staticArticle?.subImages || [])
+            } as Article;
+        }
+    } catch (error) {
+        console.error('Error fetching article from Firestore:', error);
+    }
+
     if (staticArticle) {
         return { ...staticArticle, id: staticArticle.slug } as Article;
     }
 
-    try {
-        // Since we query by slug, we can't use getDoc directly unless ID is slug
-        // Let's assume ID might not be slug for flexibility, so we query
-        const q = query(
-            collection(db, COLLECTIONS.ARTICLES),
-            // We need to fetch all and filter or set up an index. 
-            // For small scale, fetch all is fine or query by field if indexed.
-            // But usually getDoc by ID (slug) is best if we enforce ID=slug.
-        );
-        // Better approach: Use ID = slug when saving.
-        const docRef = doc(db, COLLECTIONS.ARTICLES, slug);
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-            return { id: docSnap.id, ...docSnap.data() } as Article;
-        }
-        return null;
-    } catch (error) {
-        console.error('Error fetching article:', error);
-        return null;
-    }
-}
+    return null;
+});
 
 export async function saveArticle(article: Article): Promise<void> {
     try {
-        // Use slug as ID for friendly URLs and easy lookup
-        const docRef = doc(db, COLLECTIONS.ARTICLES, article.slug);
-        await setDoc(docRef, {
+        await adminDb.collection(COLLECTIONS.ARTICLES).doc(article.slug).set({
             slug: article.slug,
             title: article.title,
             excerpt: article.excerpt,
             content: article.content,
             coverImage: article.coverImage,
+            subImages: article.subImages || [],
             author: article.author,
             date: article.date,
             readingTime: article.readingTime,
@@ -78,7 +74,7 @@ export async function saveArticle(article: Article): Promise<void> {
             keywords: article.keywords || [],
             relatedTripId: article.relatedTripId || '',
             relatedRentalId: article.relatedRentalId || '',
-        });
+        }, { merge: true });
     } catch (error) {
         console.error('Error saving article:', error);
         throw error;
@@ -87,8 +83,7 @@ export async function saveArticle(article: Article): Promise<void> {
 
 export async function deleteArticle(slug: string): Promise<void> {
     try {
-        const docRef = doc(db, COLLECTIONS.ARTICLES, slug);
-        await deleteDoc(docRef);
+        await adminDb.collection(COLLECTIONS.ARTICLES).doc(slug).delete();
     } catch (error) {
         console.error('Error deleting article:', error);
         throw error;
@@ -101,14 +96,11 @@ export interface Quote {
     contactPerson: string;
     phone: string;
     groupSize: string;
-    expectedDate: string | null; // Saved as ISO string or timestamp
+    expectedDate: string | null;
     requirements?: string;
     status: 'pending' | 'done';
-    createdAt: string; // ISO string
+    createdAt: string;
 }
-
-// --- TRIPS ---
-import { TRIPS as MOCK_TRIPS, RENTAL_GEAR as MOCK_RENTALS } from '@/data/mock';
 
 // Helper to map mock trip to full Trip type
 const mapMockTrip = (t: any): Trip => ({
@@ -125,32 +117,27 @@ const mapMockTrip = (t: any): Trip => ({
     notIncluded: ['Personal expenses', 'Alcohol'],
 });
 
-export async function getTrips(): Promise<Trip[]> {
+// --- TRIPS ---
+export const getTrips = cache(async (): Promise<Trip[]> => {
     try {
-        const q = query(collection(db, COLLECTIONS.TRIPS));
-        const snapshot = await getDocs(q);
+        const snapshot = await adminDb.collection(COLLECTIONS.TRIPS).get();
         if (snapshot.empty) {
-            // If DB is empty or (more likely) query failed silently, try generic catch or return empty
-            // But if permission error, it throws.
-            return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Trip));
+            return MOCK_TRIPS.map(mapMockTrip);
         }
         return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Trip));
     } catch (error: any) {
-        // Fallback to mock data if permission error or other failure
-        console.warn('⚠️ Firestore getTrips failed (likely permission), using mock data:', error.message);
+        console.warn('⚠️ Firestore getTrips failed, using mock data:', error.message);
         return MOCK_TRIPS.map(mapMockTrip);
     }
-}
+});
 
-export async function getTrip(id: string): Promise<Trip | null> {
+export const getTrip = cache(async (id: string): Promise<Trip | null> => {
     try {
-        const docRef = doc(db, COLLECTIONS.TRIPS, id);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
+        const docSnap = await adminDb.collection(COLLECTIONS.TRIPS).doc(id).get();
+        if (docSnap.exists) {
             return { id: docSnap.id, ...docSnap.data() } as Trip;
         }
 
-        // If not in DB, check mocks
         const mock = MOCK_TRIPS.find(t => t.id === id);
         if (mock) return mapMockTrip(mock);
 
@@ -160,12 +147,11 @@ export async function getTrip(id: string): Promise<Trip | null> {
         const mock = MOCK_TRIPS.find(t => t.id === id);
         return mock ? mapMockTrip(mock) : null;
     }
-}
+});
 
 export async function saveTrip(trip: Trip): Promise<void> {
     try {
-        const docRef = doc(db, COLLECTIONS.TRIPS, trip.id);
-        await setDoc(docRef, {
+        await adminDb.collection(COLLECTIONS.TRIPS).doc(trip.id).set({
             title: trip.title,
             subtitle: trip.subtitle || '',
             price: trip.price,
@@ -182,7 +168,14 @@ export async function saveTrip(trip: Trip): Promise<void> {
             itinerary: trip.itinerary || [],
             whatsIncluded: trip.whatsIncluded || [],
             notIncluded: trip.notIncluded || [],
-        });
+            meetingPoint: trip.meetingPoint || '',
+            bestSeason: trip.bestSeason || '',
+            distanceKm: trip.distanceKm || '',
+            elevationGain: trip.elevationGain || '',
+            fitnessLevel: trip.fitnessLevel || '',
+            packingList: trip.packingList || [],
+            faqs: trip.faqs || [],
+        }, { merge: true });
     } catch (error) {
         console.error('Error saving trip:', error);
         throw error;
@@ -191,8 +184,7 @@ export async function saveTrip(trip: Trip): Promise<void> {
 
 export async function deleteTrip(id: string): Promise<void> {
     try {
-        const docRef = doc(db, COLLECTIONS.TRIPS, id);
-        await deleteDoc(docRef);
+        await adminDb.collection(COLLECTIONS.TRIPS).doc(id).delete();
     } catch (error) {
         console.error('Error deleting trip:', error);
         throw error;
@@ -200,11 +192,10 @@ export async function deleteTrip(id: string): Promise<void> {
 }
 
 // --- RENTALS ---
-// Helper to map mock rental
 const mapMockRental = (r: any): Rental => ({
     id: r.id,
     name: r.name,
-    type: 'Other', // Default
+    type: 'Other',
     price: r.price,
     unit: r.unit,
     stock: r.stock,
@@ -213,40 +204,38 @@ const mapMockRental = (r: any): Rental => ({
     features: ['High Quality', 'Clean', 'Ready to use']
 });
 
-export async function getRentals(): Promise<Rental[]> {
+export const getRentals = cache(async (): Promise<Rental[]> => {
     try {
-        const q = query(collection(db, COLLECTIONS.RENTALS));
-        const snapshot = await getDocs(q);
+        const snapshot = await adminDb.collection(COLLECTIONS.RENTALS).get();
+        if (snapshot.empty) {
+            return MOCK_RENTALS.map(mapMockRental);
+        }
         return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Rental));
     } catch (error: any) {
         console.warn('⚠️ Firestore getRentals failed, using mocks:', error.message);
         return MOCK_RENTALS.map(mapMockRental);
     }
-}
+});
 
-export async function getRental(id: string): Promise<Rental | null> {
+export const getRental = cache(async (id: string): Promise<Rental | null> => {
     try {
-        const docRef = doc(db, COLLECTIONS.RENTALS, id);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
+        const docSnap = await adminDb.collection(COLLECTIONS.RENTALS).doc(id).get();
+        if (docSnap.exists) {
             return { id: docSnap.id, ...docSnap.data() } as Rental;
         }
 
         const mock = MOCK_RENTALS.find(r => r.id === id);
-        if (mock) return mapMockRental(mock);
-
-        return null;
+        return mock ? mapMockRental(mock) : null;
     } catch (error: any) {
         console.warn('⚠️ Firestore getRental failed, checking mocks:', error.message);
         const mock = MOCK_RENTALS.find(r => r.id === id);
         return mock ? mapMockRental(mock) : null;
     }
-}
+});
 
 export async function saveRental(rental: Rental): Promise<void> {
     try {
-        const docRef = doc(db, COLLECTIONS.RENTALS, rental.id);
-        await setDoc(docRef, {
+        await adminDb.collection(COLLECTIONS.RENTALS).doc(rental.id).set({
             name: rental.name,
             type: rental.type,
             price: rental.price,
@@ -264,8 +253,7 @@ export async function saveRental(rental: Rental): Promise<void> {
 
 export async function deleteRental(id: string): Promise<void> {
     try {
-        const docRef = doc(db, COLLECTIONS.RENTALS, id);
-        await deleteDoc(docRef);
+        await adminDb.collection(COLLECTIONS.RENTALS).doc(id).delete();
     } catch (error) {
         console.error('Error deleting rental:', error);
         throw error;
@@ -274,27 +262,28 @@ export async function deleteRental(id: string): Promise<void> {
 
 // --- TRANSPORT ---
 const MOCK_TRANSPORT: Transport[] = [
-    { id: 'van-vip', type: 'VIP Van 9 Seats', price1Day: 2500, price2Day: 5000, image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800', note: 'Luxury Van with Driver' },
-    { id: 'suv-4wd', type: 'SUV 4WD', price1Day: 3500, price2Day: 7000, image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=800', note: 'Adventure ready' },
-    { id: 'red-truck', type: 'Red Truck (Rod Daeng)', price1Day: 1500, price2Day: 3000, image: 'https://images.unsplash.com/photo-1563720769398-386b461f3659?w=800', note: 'Local experience' }
+    { id: 'van-vip', type: 'VIP Van 9 Seats', price1Day: 2500, price2Day: 5000, image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800', capacity: '9-10 ที่นั่ง VIP', note: 'Luxury Van with Driver' },
+    { id: 'suv-4wd', type: 'SUV 4WD', price1Day: 3500, price2Day: 7000, image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=800', capacity: '4-5 ที่นั่ง (กระบะ 4WD)', note: 'Adventure ready' },
+    { id: 'red-truck', type: 'Red Truck (Rod Daeng)', price1Day: 1500, price2Day: 3000, image: 'https://images.unsplash.com/photo-1563720769398-386b461f3659?w=800', capacity: '8-10 ที่นั่ง (สองแถว)', note: 'Local experience' }
 ];
 
-export async function getTransport(): Promise<Transport[]> {
+export const getTransport = cache(async (): Promise<Transport[]> => {
     try {
-        const q = query(collection(db, COLLECTIONS.TRANSPORT));
-        const snapshot = await getDocs(q);
+        const snapshot = await adminDb.collection(COLLECTIONS.TRANSPORT).get();
+        if (snapshot.empty) {
+            return MOCK_TRANSPORT;
+        }
         return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Transport));
     } catch (error: any) {
         console.warn('⚠️ Firestore getTransport failed, using mocks:', error.message);
         return MOCK_TRANSPORT;
     }
-}
+});
 
-export async function getTransportItem(id: string): Promise<Transport | null> {
+export const getTransportItem = cache(async (id: string): Promise<Transport | null> => {
     try {
-        const docRef = doc(db, COLLECTIONS.TRANSPORT, id);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
+        const docSnap = await adminDb.collection(COLLECTIONS.TRANSPORT).doc(id).get();
+        if (docSnap.exists) {
             return { id: docSnap.id, ...docSnap.data() } as Transport;
         }
         const mock = MOCK_TRANSPORT.find(t => t.id === id);
@@ -304,16 +293,16 @@ export async function getTransportItem(id: string): Promise<Transport | null> {
         const mock = MOCK_TRANSPORT.find(t => t.id === id);
         return mock || null;
     }
-}
+});
 
 export async function saveTransport(transport: Transport): Promise<void> {
     try {
-        const docRef = doc(db, COLLECTIONS.TRANSPORT, transport.id);
-        await setDoc(docRef, {
+        await adminDb.collection(COLLECTIONS.TRANSPORT).doc(transport.id).set({
             type: transport.type,
             price1Day: transport.price1Day,
             price2Day: transport.price2Day,
             image: transport.image,
+            capacity: transport.capacity || '',
             note: transport.note || '',
         });
     } catch (error) {
@@ -324,8 +313,7 @@ export async function saveTransport(transport: Transport): Promise<void> {
 
 export async function deleteTransport(id: string): Promise<void> {
     try {
-        const docRef = doc(db, COLLECTIONS.TRANSPORT, id);
-        await deleteDoc(docRef);
+        await adminDb.collection(COLLECTIONS.TRANSPORT).doc(id).delete();
     } catch (error) {
         console.error('Error deleting transport:', error);
         throw error;
@@ -333,16 +321,14 @@ export async function deleteTransport(id: string): Promise<void> {
 }
 
 // --- QUOTES (Corporate Inquiries) ---
-export async function getQuotes(): Promise<Quote[]> {
+export const getQuotes = cache(async (): Promise<Quote[]> => {
     try {
-        const q = query(collection(db, COLLECTIONS.QUOTES), orderBy('createdAt', 'desc'));
-        const snapshot = await getDocs(q);
+        const snapshot = await adminDb.collection(COLLECTIONS.QUOTES).orderBy('createdAt', 'desc').get();
         return snapshot.docs.map(doc => {
             const data = doc.data();
             return {
                 id: doc.id,
                 ...data,
-                // Ensure date fields are handled safely if they come back as Timestamps
                 createdAt: data.createdAt?.toDate?.() ? data.createdAt.toDate().toISOString() : data.createdAt,
                 expectedDate: data.expectedDate?.toDate?.() ? data.expectedDate.toDate().toISOString() : data.expectedDate
             } as Quote;
@@ -351,13 +337,13 @@ export async function getQuotes(): Promise<Quote[]> {
         console.error('Error fetching quotes:', error);
         return [];
     }
-}
+});
 
 export async function saveQuote(quote: Omit<Quote, 'id' | 'createdAt' | 'status'>): Promise<string> {
     try {
-        const docRef = doc(collection(db, COLLECTIONS.QUOTES));
+        const docRef = adminDb.collection(COLLECTIONS.QUOTES).doc();
         const now = new Date().toISOString();
-        await setDoc(docRef, {
+        await docRef.set({
             ...quote,
             status: 'pending',
             createdAt: now,
@@ -371,8 +357,7 @@ export async function saveQuote(quote: Omit<Quote, 'id' | 'createdAt' | 'status'
 
 export async function updateQuoteStatus(id: string, status: 'pending' | 'done'): Promise<void> {
     try {
-        const docRef = doc(db, COLLECTIONS.QUOTES, id);
-        await setDoc(docRef, { status }, { merge: true });
+        await adminDb.collection(COLLECTIONS.QUOTES).doc(id).set({ status }, { merge: true });
     } catch (error) {
         console.error('Error updating quote status:', error);
         throw error;
@@ -380,24 +365,22 @@ export async function updateQuoteStatus(id: string, status: 'pending' | 'done'):
 }
 
 // --- SETTINGS ---
-export async function getHomeSettings(): Promise<HomeSettings | null> {
+export const getHomeSettings = cache(async (): Promise<HomeSettings | null> => {
     try {
-        const docRef = doc(db, COLLECTIONS.SETTINGS, 'home');
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
+        const docSnap = await adminDb.collection(COLLECTIONS.SETTINGS).doc('home').get();
+        if (docSnap.exists) {
             return { id: docSnap.id, ...docSnap.data() } as HomeSettings;
         }
         return null;
     } catch (error: any) {
-        console.warn('⚠️ Firestore getHomeSettings failed, using default (null):', error.message);
+        console.warn('⚠️ Firestore getHomeSettings failed:', error.message);
         return null;
     }
-}
+});
 
 export async function saveHomeSettings(settings: Partial<HomeSettings>): Promise<void> {
     try {
-        const docRef = doc(db, COLLECTIONS.SETTINGS, 'home');
-        await setDoc(docRef, {
+        await adminDb.collection(COLLECTIONS.SETTINGS).doc('home').set({
             ...settings,
             id: 'home'
         }, { merge: true });
@@ -408,22 +391,20 @@ export async function saveHomeSettings(settings: Partial<HomeSettings>): Promise
 }
 
 // --- ACTIVITIES ---
-export async function getActivities(): Promise<Activity[]> {
+export const getActivities = cache(async (): Promise<Activity[]> => {
     try {
-        const q = query(collection(db, COLLECTIONS.ACTIVITIES), orderBy('startDate', 'desc'));
-        const snapshot = await getDocs(q);
+        const snapshot = await adminDb.collection(COLLECTIONS.ACTIVITIES).orderBy('startDate', 'desc').get();
         return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Activity));
     } catch (error: any) {
         console.warn('⚠️ Firestore getActivities failed:', error.message);
         return [];
     }
-}
+});
 
-export async function getActivity(slug: string): Promise<Activity | null> {
+export const getActivity = cache(async (slug: string): Promise<Activity | null> => {
     try {
-        const docRef = doc(db, COLLECTIONS.ACTIVITIES, slug);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
+        const docSnap = await adminDb.collection(COLLECTIONS.ACTIVITIES).doc(slug).get();
+        if (docSnap.exists) {
             return { id: docSnap.id, ...docSnap.data() } as Activity;
         }
         return null;
@@ -431,12 +412,11 @@ export async function getActivity(slug: string): Promise<Activity | null> {
         console.warn('⚠️ Firestore getActivity failed:', error.message);
         return null;
     }
-}
+});
 
 export async function saveActivity(activity: Activity): Promise<void> {
     try {
-        const docRef = doc(db, COLLECTIONS.ACTIVITIES, activity.slug);
-        await setDoc(docRef, {
+        await adminDb.collection(COLLECTIONS.ACTIVITIES).doc(activity.slug).set({
             slug: activity.slug,
             title: activity.title,
             subtitle: activity.subtitle || '',
@@ -475,10 +455,146 @@ export async function saveActivity(activity: Activity): Promise<void> {
 
 export async function deleteActivity(slug: string): Promise<void> {
     try {
-        const docRef = doc(db, COLLECTIONS.ACTIVITIES, slug);
-        await deleteDoc(docRef);
+        await adminDb.collection(COLLECTIONS.ACTIVITIES).doc(slug).delete();
     } catch (error) {
         console.error('Error deleting activity:', error);
         throw error;
     }
 }
+
+// --- REELS (Shoppable TikTok Clips) ---
+export const getReels = cache(async (): Promise<Reel[]> => {
+    try {
+        const snapshot = await adminDb.collection(COLLECTIONS.REELS).get();
+        if (!snapshot.empty) {
+            const reels = snapshot.docs.map(doc => {
+                const data = doc.data() as Reel;
+                let videoUrl = data.videoUrl;
+                if (!videoUrl || videoUrl.includes('mixkit.co')) {
+                    videoUrl = `/videos/${doc.id}.mp4`;
+                }
+                return {
+                    ...data,
+                    id: doc.id,
+                    videoUrl,
+                };
+            });
+            return reels.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+        }
+    } catch (error: any) {
+        console.warn('⚠️ Firestore getReels failed, using default reels:', error.message);
+    }
+    return DEFAULT_REELS;
+});
+
+export const getReel = cache(async (id: string): Promise<Reel | null> => {
+    try {
+        const docSnap = await adminDb.collection(COLLECTIONS.REELS).doc(id).get();
+        if (docSnap.exists) {
+            return { id: docSnap.id, ...docSnap.data() } as Reel;
+        }
+        const defaultMatch = DEFAULT_REELS.find(r => r.id === id);
+        return defaultMatch || null;
+    } catch (error: any) {
+        console.warn('⚠️ Firestore getReel failed:', error.message);
+        const defaultMatch = DEFAULT_REELS.find(r => r.id === id);
+        return defaultMatch || null;
+    }
+});
+
+export async function saveReel(reel: Reel): Promise<void> {
+    try {
+        const reelId = reel.id || `reel-${Date.now()}`;
+        await adminDb.collection(COLLECTIONS.REELS).doc(reelId).set({
+            id: reelId,
+            tiktokId: reel.tiktokId || '',
+            title: reel.title || '',
+            location: reel.location || '',
+            views: reel.views || '0',
+            likes: reel.likes || '0',
+            poster: reel.poster || '',
+            videoUrl: reel.videoUrl || '',
+            images: reel.images || [],
+            type: reel.type || 'video',
+            tiktokUrl: reel.tiktokUrl || (reel.tiktokId ? `https://www.tiktok.com/@nongtungrunning/video/${reel.tiktokId}` : ''),
+            audioTrack: reel.audioTrack || 'Original Sound - @nongtungrunning',
+            linkedTrip: {
+                id: reel.linkedTrip?.id || '',
+                title: reel.linkedTrip?.title || '',
+                duration: reel.linkedTrip?.duration || '',
+                price: Number(reel.linkedTrip?.price) || 0,
+                image: reel.linkedTrip?.image || '',
+                location: reel.linkedTrip?.location || '',
+                url: reel.linkedTrip?.url || `/th/trips`,
+            },
+            order: Number(reel.order) || 0,
+            isActive: reel.isActive ?? true,
+            updatedAt: new Date().toISOString(),
+            createdAt: reel.createdAt || new Date().toISOString(),
+        }, { merge: true });
+    } catch (error) {
+        console.error('Error saving reel:', error);
+        throw error;
+    }
+}
+
+export async function deleteReel(id: string): Promise<void> {
+    try {
+        await adminDb.collection(COLLECTIONS.REELS).doc(id).delete();
+    } catch (error) {
+        console.error('Error deleting reel:', error);
+        throw error;
+    }
+}
+
+export async function seedDefaultReels(): Promise<void> {
+    try {
+        const batch = adminDb.batch();
+        for (const reel of DEFAULT_REELS) {
+            const ref = adminDb.collection(COLLECTIONS.REELS).doc(reel.id);
+            batch.set(ref, {
+                ...reel,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+            });
+        }
+        await batch.commit();
+    } catch (error) {
+        console.error('Error seeding default reels:', error);
+        throw error;
+    }
+}
+
+// --- FACEBOOK POSTS (NONGTUNG STANDARDS & GROUND UPDATES) ---
+export const getFacebookPosts = cache(async (): Promise<FacebookPost[]> => {
+    try {
+        const snapshot = await adminDb.collection(COLLECTIONS.FB_POSTS).get();
+        if (!snapshot.empty) {
+            const posts = snapshot.docs
+                .map(doc => ({ id: doc.id, ...doc.data() } as FacebookPost))
+                .filter(post => post.isActive !== false);
+            if (posts.length > 0) {
+                return posts.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+            }
+        }
+    } catch (error: any) {
+        console.warn('⚠️ Firestore getFacebookPosts failed, using default posts:', error.message);
+    }
+    return DEFAULT_FB_POSTS;
+});
+
+export async function saveFacebookPost(post: FacebookPost): Promise<void> {
+    try {
+        const postId = post.id || `fb-${Date.now()}`;
+        await adminDb.collection(COLLECTIONS.FB_POSTS).doc(postId).set({
+            ...post,
+            id: postId,
+            updatedAt: new Date().toISOString(),
+            createdAt: post.created_time || new Date().toISOString(),
+        }, { merge: true });
+    } catch (error) {
+        console.error('Error saving Facebook post:', error);
+        throw error;
+    }
+}
+

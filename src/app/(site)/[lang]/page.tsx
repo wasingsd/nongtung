@@ -1,19 +1,25 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { ShieldCheck, Gem, UserCheck, ChevronRight, MapPin, Users, Calendar, ArrowRight, Compass, Heart, Award, Leaf } from 'lucide-react';
-import { getTrips, getTransport, getHomeSettings } from '@/lib/firestore-db';
-import { Trip, Transport, HomeSettings } from '@/types/types';
+import { Gem, Heart, Leaf, ArrowRight, ShieldCheck, Compass, MessageSquareHeart, CalendarCheck, MountainSnow } from 'lucide-react';
+import { getTrips, getTransport, getHomeSettings, getReels, getFacebookPosts } from '@/lib/firestore-db';
+import { Trip, Transport, HomeSettings, Reel, FacebookPost } from '@/types/types';
 import TrustBadges from '@/components/TrustBadges';
 import TikTokRTB from '@/components/TikTokRTB';
+import HeroSearchConsole from '@/components/HeroSearchConsole';
+import QuickServiceStrip from '@/components/QuickServiceStrip';
+import SectionHeader from '@/components/ui/SectionHeader';
+import TripCard from '@/components/TripCard';
+import TransportCard from '@/components/TransportCard';
+import NongtungStandardsSection from '@/components/NongtungStandardsSection';
 import { getDictionary } from '@/lib/dictionary';
 import { Locale } from '@/i18n-config';
 
-// Force dynamic rendering to fetch fresh data from Firestore on every request
-export const dynamic = 'force-dynamic';
+// ISR: Revalidate page at most once every 60 seconds, with on-demand purge via Server Actions
+export const revalidate = 60;
 
 type Props = {
   params: Promise<{ lang: Locale }>;
-}
+};
 
 export default async function Home({ params }: Props) {
   const { lang } = await params;
@@ -24,71 +30,118 @@ export default async function Home({ params }: Props) {
   let trips: Trip[] = [];
   let transports: Transport[] = [];
   let settings: HomeSettings | null = null;
+  let reels: Reel[] = [];
+  let fbPosts: FacebookPost[] = [];
 
   try {
-    [trips, transports, settings] = await Promise.all([
+    [trips, transports, settings, reels, fbPosts] = await Promise.all([
       getTrips(),
       getTransport(),
-      getHomeSettings()
+      getHomeSettings(),
+      getReels(),
+      getFacebookPosts(),
     ]);
   } catch (e) {
-    console.error("Critical Error fetching homepage data:", e);
-    // Continue with empty data
+    console.error('Critical Error fetching homepage data:', e);
   }
 
   let featuredTrips: Trip[] = [];
   if (settings?.popularAdventureIds?.length) {
-    // Map IDs to trip objects, maintaining the order from settings
     featuredTrips = settings.popularAdventureIds
-      .map(id => trips.find(t => t.id === id))
+      .map((id) => trips.find((t) => t.id === id))
       .filter((t): t is Trip => !!t);
-  } else {
-    // Fallback to first 6 if no settings
+  }
+  if (!featuredTrips.length) {
     featuredTrips = trips.slice(0, 6);
   }
 
   const featuredFleet = transports.slice(0, 3);
 
+  const facebookUrl = settings?.facebookUrl || 'https://www.facebook.com/NONGTUNG.Adventure';
+  const fbHandle = facebookUrl.includes('facebook.com/')
+    ? facebookUrl.split('facebook.com/').pop()?.split('/').filter(Boolean)[0]
+    : 'NONGTUNG.Adventure';
+  const messengerUrl = `https://m.me/${fbHandle}`;
+  const lineUrl = 'https://line.me/R/ti/p/@nongtungrunning';
+
+  const faqQuestions = {
+    th: [
+      {
+        q: 'น่องตึง (Nongtung) มีบริการทริปอะไรบ้างในเชียงใหม่และภาคเหนือ?',
+        a: 'น่องตึงให้บริการจัดทริปเดินป่า (Trekking) แคมป์ปิ้ง (Camping) ทริปธรรมชาติทั้งสำหรับมือใหม่และสายลุย เช่น ดอยหลวงเชียงดาว ห้วยกุ๊บกั๊บ ดอยผากลอง ผาช่อ ม่อนจอง ปัว น่าน รวมถึงบริการเช่ารถตู้ VIP พร้อมคนขับชำนาญทางเขา',
+      },
+      {
+        q: 'มือใหม่ไม่เคยเดินป่ามาก่อน สามารถร่วมทริปกับน่องตึงได้ไหม?',
+        a: 'ได้แน่นอนครับ เรามีทริประดับเริ่มต้น (Beginner Friendly) เส้นทางไม่ยาก พร้อมทีมงานไกด์คนพื้นที่คอยดูแลอย่างใกล้ชิด อุปกรณ์แคมป์ปิ้งมาตรฐานสูง และมีประกันอุบัติเหตุคุ้มครองทุกทริป',
+      },
+      {
+        q: 'บริการเช่ารถตู้ VIP เชียงใหม่ พร้อมคนขับของน่องตึง มีจุดเด่นอย่างไร?',
+        a: 'รถตู้ VIP ของเราเป็นรถตู้ 9-10 ที่นั่ง เบาะปรับเอนสบาย แอร์เย็น พร้อมคนขับที่มีประสบการณ์ชำนาญเส้นทางภูเขาภาคเหนือ (เชียงใหม่ แม่ฮ่องสอน น่าน ปาย) ขับขี่นุ่มนวล ปลอดภัย และช่วยแนะนำจุดเช็คอินลับๆ ตลอดทาง',
+      },
+      {
+        q: 'ติดต่อจองทริปหรือสอบถามคิวรถตู้ได้อย่างไร?',
+        a: 'สามารถแอด LINE Official: @nongtungrunning หรือโทร 080-442-5189 หรือทักข้อความผ่าน Facebook ได้ตลอด 24 ชั่วโมง เพื่อให้ทีมงานช่วยปรับแต่งแผนการเดินทางเฉพาะคุณได้ฟรี',
+      },
+    ],
+    zh: [
+      {
+        q: 'Nongtung在清迈和泰北提供哪些旅行服务？',
+        a: 'Nongtung提供泰北徒步旅行、野营露营、自然探索定制行程（如清道山、Huay Kub Kab、帕丘）以及配备专业山路司机的VIP保姆车包车服务。',
+      },
+      {
+        q: '徒步新手也可以参加Nongtung的行程吗？',
+        a: '完全可以。我们为初学者设计了难度适中的轻松徒步路线，由持证专业向导全程陪伴，提供露营装备并包含全程安全旅行保险。',
+      },
+      {
+        q: '如何预订行程或咨询包车？',
+        a: '您可以通过官方LINE (@nongtungrunning)、电话 +66 80-442-5189 或在线客服随时联系我们获取专属行程定制方案。',
+      },
+    ],
+    en: [
+      {
+        q: 'What kind of trips does Nongtung offer in Chiang Mai and Northern Thailand?',
+        a: 'Nongtung offers bespoke adventure experiences in Northern Thailand, including guided trekking, wilderness camping, private tailor-made tours (Chiang Dao, Huay Kub Kab, Mon Jong), and VIP private van rentals with expert mountain drivers.',
+      },
+      {
+        q: 'Is it suitable for beginners who have never hiked before?',
+        a: 'Yes, absolutely. We have beginner-friendly trail options with expert local guides who take care of everything, from camping equipment to safety insurance on all adventures.',
+      },
+      {
+        q: 'What makes Nongtung private VIP van hire unique?',
+        a: 'Our VIP fleet features spacious 9-10 seater vans with reclining captain seats, driven by seasoned professionals who know Northern Thailand mountain roads intimately (Pai, Mae Hong Son, Nan, Chiang Rai).',
+      },
+      {
+        q: 'How can I book a trip or check private van availability?',
+        a: 'You can contact us via LINE (@nongtungrunning), phone (+66 80-442-5189), or message us on Facebook anytime for free personalized itinerary consultation.',
+      },
+    ],
+  };
+
+  const currentFaq = faqQuestions[lang as keyof typeof faqQuestions] || faqQuestions.en;
+
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'What kind of trips does Nongtung offer?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Nongtung offers bespoke adventure experiences in Northern Thailand, including trekking, camping, and private van rentals with expert local guides.'
-        }
+    mainEntity: currentFaq.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.a,
       },
-      {
-        '@type': 'Question',
-        name: 'Is it safe to travel with Nongtung?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Yes, safety is our priority. All our guides are professionally trained, and we use high-quality equipment for all our trekking and camping trips.'
-        }
-      },
-      {
-        '@type': 'Question',
-        name: 'Can I rent a private van for my own group?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Absolutely. We provide a premium fleet of comfortable 9-seater vans with professional drivers who have expert knowledge of Northern Thailand mountain roads.'
-        }
-      }
-    ]
+    })),
   };
 
   return (
-    <div className="fade-in bg-[#fdfdfb]">
+    <div className="fade-in bg-[#fdfdfb] text-forest">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      {/* Immersive Hero Section */}
-      <div className="relative h-[80vh] md:h-[90vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60 z-10"></div>
+
+      {/* 1. Immersive Hero Section */}
+      <section className="relative h-[68vh] sm:h-[75vh] md:h-[80vh] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/25 to-black/75 z-10" />
         <Image
           src="https://images.unsplash.com/photo-1510312305653-8ed496efae75?auto=format&fit=crop&q=80&w=1600"
           fill
@@ -96,225 +149,224 @@ export default async function Home({ params }: Props) {
           alt="Adventurers exploring Northern Thailand mountains"
           priority
         />
-        <div className="relative z-20 text-center text-white px-6 max-w-5xl">
-          <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.5em] mb-4 md:mb-6 block drop-shadow-lg text-primary-light">{h.hero_subtitle}</span>
-          <h1 className="text-4xl md:text-8xl font-black mb-6 md:mb-8 font-heading leading-[0.9] tracking-tighter drop-shadow-2xl">
-            {h.hero_title_1}<br /><span className="text-primary italic">{h.hero_title_2}</span>
+        <div className="relative z-20 text-center text-white px-4 sm:px-6 max-w-4xl pb-12 sm:pb-16">
+          <span className="text-[10px] sm:text-xs font-black uppercase tracking-[0.4em] mb-3 sm:mb-4 block drop-shadow-md text-primary font-heading">
+            {h.hero_subtitle}
+          </span>
+          <h1 className="text-3xl sm:text-5xl md:text-7xl font-black mb-4 sm:mb-6 font-heading leading-[1.08] tracking-tight drop-shadow-2xl">
+            {h.hero_title_1} <span className="text-primary italic">{h.hero_title_2}</span>
           </h1>
-          <p className="text-base md:text-xl text-white/90 mb-8 md:mb-12 max-w-2xl mx-auto font-medium drop-shadow-md leading-relaxed">
+          <p className="text-sm sm:text-base md:text-lg text-white/90 mb-6 sm:mb-8 max-w-2xl mx-auto font-normal font-reading drop-shadow-md leading-relaxed">
             {h.hero_description}
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center">
-            <Link href={`${langPrefix}/trips`} className="bg-primary hover:bg-forest text-white px-8 md:px-10 py-3 md:py-4 rounded-full font-black uppercase text-[10px] tracking-[0.2em] transition-all shadow-xl hover:shadow-primary/20 transform hover:-translate-y-1">
+          <div className="flex flex-wrap gap-3 sm:gap-4 justify-center">
+            <Link
+              href={`${langPrefix}/trips`}
+              className="bg-primary hover:bg-primary-deep text-white px-7 sm:px-9 py-3.5 rounded-full font-bold font-heading uppercase text-xs tracking-wider transition-all shadow-lg shadow-primary/25 hover:scale-105 active:scale-95"
+            >
               {h.explore_trips}
             </Link>
-            <Link href={`${langPrefix}/transport`} className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white hover:text-forest text-white px-8 md:px-10 py-3 md:py-4 rounded-full font-black uppercase text-[10px] tracking-[0.2em] transition-all shadow-xl">
+            <Link
+              href={`${langPrefix}/transport`}
+              className="bg-white/20 backdrop-blur-md border border-white/30 hover:bg-white hover:text-forest text-white px-7 sm:px-9 py-3.5 rounded-full font-bold font-heading uppercase text-xs tracking-wider transition-all shadow-lg active:scale-95"
+            >
               {h.private_transport}
             </Link>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Trust Badges */}
+      {/* 2. Streamlined Floating Adventure Search Console (Positive spacing, no negative margin clashes) */}
+      <HeroSearchConsole lang={lang} />
+
+      {/* 3. 4 Core Services Category Strip */}
+      <QuickServiceStrip lang={lang} />
+
+      {/* 4. Trust & Credibility Badges */}
       <TrustBadges />
 
-      {/* Featured Adventures */}
-      <section className="py-12 md:py-24 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-10 md:mb-16 gap-4 md:gap-6">
-            <div className="max-w-xl">
-              <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-2 md:mb-3 block">{h.curated_change}</span>
-              <h2 className="text-3xl md:text-5xl font-black font-heading text-forest tracking-tighter uppercase">{h.signature_experiences}</h2>
-            </div>
-            <Link href={`${langPrefix}/trips`} className="text-[10px] font-black uppercase tracking-[0.2em] text-forest/40 hover:text-primary transition-colors flex items-center gap-2 group">
-              {h.view_all_collections} <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
+      {/* 5. Featured Adventures Section */}
+      <section className="py-12 sm:py-16 md:py-20 bg-white border-y border-forest/5">
+        <div className="container mx-auto px-4 sm:px-6">
+          <SectionHeader
+            eyebrow={h.curated_change}
+            title={h.signature_experiences}
+            actionText={h.view_all_collections}
+            actionHref={`${langPrefix}/trips`}
+          />
+
+          {/* Desktop 3-column Grid */}
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            {featuredTrips.map((trip) => (
+              <TripCard
+                key={trip.id}
+                trip={trip}
+                langPrefix={langPrefix}
+                viewDetailsText="ดูทริป"
+              />
+            ))}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-            {featuredTrips.map(trip => (
-              <Link key={trip.id} href={`${langPrefix}/trips/${trip.id}`} className="group block h-full">
-                <div className="relative aspect-[4/5] rounded-[2rem] md:rounded-[2.5rem] overflow-hidden immersive-shadow border border-forest/5 mb-4 md:mb-6">
-                  <Image
-                    src={trip.image}
-                    alt={trip.title}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="absolute top-4 left-4 md:top-5 md:left-5">
-                    <span className="bg-white/95 backdrop-blur-md text-forest font-black px-3 py-1.5 rounded-xl text-[10px] uppercase tracking-widest shadow-sm">
-                      {trip.duration}
-                    </span>
-                  </div>
-                  <div className="absolute bottom-4 left-4 right-4 md:bottom-5 md:left-5 md:right-5 flex justify-between items-end translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                    <span className="bg-primary text-white px-4 py-2 rounded-xl text-lg font-black shadow-xl">
-                      ฿{trip.price.toLocaleString()}
-                    </span>
-                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-forest shadow-xl">
-                      <ArrowRight className="w-5 h-5" />
-                    </div>
-                  </div>
-                </div>
-                <div className="px-2">
-                  <h3 className="text-base font-black text-forest font-heading group-hover:text-primary transition-colors leading-tight break-words">
-                    {trip.title}
-                  </h3>
-                  {trip.subtitle && (
-                    <p className="text-[11px] font-medium text-forest/40 mt-1 line-clamp-2">
-                      {trip.subtitle}
-                    </p>
-                  )}
-                  <div className="flex flex-wrap gap-2 mt-2 mb-4">
-                    {trip.tags?.slice(0, 3).map(tag => (
-                      <span key={tag} className="text-[9px] font-black uppercase tracking-[0.2em] text-forest/40">
-                        • {tag}
+          {/* Mobile Snap Carousel */}
+          <div className="md:hidden flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 no-scrollbar -mx-4 px-4">
+            {featuredTrips.map((trip) => (
+              <div key={trip.id} className="w-[280px] shrink-0 snap-start">
+                <TripCard
+                  trip={trip}
+                  langPrefix={langPrefix}
+                  viewDetailsText="จองเลย"
+                  compact
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 6. Nongtung Standards & Our Promise + Live Facebook Social Proof */}
+      <NongtungStandardsSection
+        posts={fbPosts}
+        facebookUrl={facebookUrl}
+        lineUrl={lineUrl}
+      />
+
+      {/* 7. Effortless Planning Process */}
+      <section className="py-16 sm:py-24 bg-gradient-to-b from-[#FBF9F5] via-[#F4F0E7] to-[#FBF9F5] border-y border-forest/10 relative overflow-hidden">
+        {/* Decorative ambient subtle background glows */}
+        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-96 h-96 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+          <SectionHeader
+            eyebrow={h.seamless_journey}
+            title={h.effortless_planning}
+            centered
+          />
+
+          {/* Stepper Grid with Connecting Flow */}
+          <div className="relative mt-10 sm:mt-14">
+            {/* Desktop connecting guide line */}
+            <div className="hidden lg:block absolute top-14 left-[8%] right-[8%] h-[2px] bg-gradient-to-r from-primary/10 via-primary/30 to-primary/10 -z-0" />
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-7 relative z-10">
+              {[
+                { icon: Compass, title: h.step_1_title, desc: h.step_1_desc, stepNum: '01' },
+                { icon: MessageSquareHeart, title: h.step_2_title, desc: h.step_2_desc, stepNum: '02' },
+                { icon: CalendarCheck, title: h.step_3_title, desc: h.step_3_desc, stepNum: '03' },
+                { icon: MountainSnow, title: h.step_4_title, desc: h.step_4_desc, stepNum: '04' },
+              ].map((step, i) => (
+                <div
+                  key={i}
+                  className="bg-white rounded-3xl p-7 sm:p-8 border border-forest/8 shadow-[0_4px_24px_rgb(0,0,0,0.05)] hover:shadow-[0_16px_40px_rgb(214,110,58,0.14)] hover:-translate-y-1.5 transition-all duration-300 relative group flex flex-col justify-between"
+                >
+                  {/* Subtle top accent bar on hover */}
+                  <div className="absolute top-0 left-8 right-8 h-1 bg-gradient-to-r from-primary/0 via-primary to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-b-full" />
+
+                  {/* Top content */}
+                  <div>
+                    <div className="flex items-center justify-between mb-5">
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-surface border border-forest/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300 shadow-sm">
+                        <step.icon className="w-6 h-6 sm:w-7 sm:h-7 transition-transform duration-300 group-hover:scale-110" />
+                      </div>
+                      <span className="text-3xl sm:text-4xl font-black font-heading text-forest/15 group-hover:text-primary/35 transition-colors">
+                        {step.stepNum}
                       </span>
-                    ))}
+                    </div>
+
+                    <div className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-wider uppercase bg-primary/10 text-primary mb-3">
+                      STEP {step.stepNum}
+                    </div>
+
+                    <h3 className="text-lg sm:text-xl font-bold text-forest mb-2.5 font-heading tracking-tight group-hover:text-primary transition-colors">
+                      {step.title}
+                    </h3>
+
+                    <p className="text-xs sm:text-sm text-forest/70 font-normal leading-relaxed">
+                      {step.desc}
+                    </p>
                   </div>
+
+                  {/* Flow Arrow Indicator on Desktop (between cards, except last) */}
+                  {i < 3 && (
+                    <div className="hidden lg:flex absolute -right-3.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white border border-forest/15 shadow-sm items-center justify-center text-forest/40 z-20 pointer-events-none group-hover:text-primary group-hover:border-primary/40 group-hover:scale-110 transition-all">
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </div>
+                  )}
                 </div>
-              </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 8. TikTok Social Proof RTB (Resilient Reel) */}
+      <TikTokRTB reels={reels} />
+
+      {/* 9. VIP Transport Fleet Showcase */}
+      <section className="py-14 sm:py-20 bg-white">
+        <div className="container mx-auto px-4 sm:px-6">
+          <SectionHeader
+            eyebrow={h.fleet_subtitle}
+            title={h.fleet_title}
+            actionText={h.see_all_transport}
+            actionHref={`${langPrefix}/transport`}
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            {featuredFleet.map((car) => (
+              <TransportCard
+                key={car.id}
+                car={car}
+                langPrefix={langPrefix}
+                selectText={h.select_van}
+                messengerUrl={messengerUrl}
+              />
             ))}
           </div>
         </div>
       </section>
 
-      {/* Why Nongtueng - The Premium Edge */}
-      <section className="py-12 md:py-24 bg-surface/30">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-10 md:mb-20">
-            <span className="text-[10px] font-black text-forest/20 uppercase tracking-[0.4em] mb-2 md:mb-4 block">{h.our_promise}</span>
-            <h2 className="text-3xl md:text-5xl font-black font-heading text-forest tracking-tighter">{h.nongtung_standard}</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
-            {[
-              { icon: Gem, title: h.standard_1_title, desc: h.standard_1_desc },
-              { icon: Heart, title: h.standard_2_title, desc: h.standard_2_desc },
-              { icon: Leaf, title: h.standard_3_title, desc: h.standard_3_desc }
-            ].map((item, i) => (
-              <div key={i} className="bg-white p-8 md:p-12 rounded-[2rem] md:rounded-[3rem] immersive-shadow border border-forest/5 hover:-translate-y-2 transition-all duration-500 group">
-                <div className="w-14 h-14 md:w-16 md:h-16 bg-surface rounded-2xl flex items-center justify-center text-primary mb-6 md:mb-8 group-hover:bg-primary group-hover:text-white transition-all shadow-soft overflow-hidden">
-                  <item.icon className="w-6 h-6 md:w-8 md:h-8" />
-                </div>
-                <h3 className="text-xl md:text-2xl font-black font-heading text-forest mb-2 md:mb-4 tracking-tighter">{item.title}</h3>
-                <p className="text-sm md:text-base text-forest/50 font-medium leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Process: The Easy Path to Adventure */}
-      <section className="py-12 md:py-24 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-10 md:mb-20">
-            <span className="text-[10px] font-black text-forest/20 uppercase tracking-[0.4em] mb-2 md:mb-4 block">{h.seamless_journey}</span>
-            <h2 className="text-3xl md:text-5xl font-black font-heading text-forest tracking-tighter">{h.effortless_planning}</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12">
-            {[
-              { title: h.step_1_title, desc: h.step_1_desc },
-              { title: h.step_2_title, desc: h.step_2_desc },
-              { title: h.step_3_title, desc: h.step_3_desc },
-              { title: h.step_4_title, desc: h.step_4_desc }
-            ].map((step, i) => (
-              <div key={i} className="relative group">
-                <div className="text-[6rem] md:text-[8rem] font-black text-forest/[0.03] absolute -top-12 md:-top-16 -left-2 md:-left-4 z-0 pointer-events-none group-hover:text-primary/5 transition-colors">0{i + 1}</div>
-                <div className="relative z-10 pl-4 md:pl-0">
-                  <h3 className="text-xl md:text-2xl font-black text-forest mb-2 md:mb-4 font-heading tracking-tighter">{step.title}</h3>
-                  <p className="text-sm md:text-base text-forest/50 font-medium leading-relaxed">{step.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* TikTok Social Proof RTB */}
-      <TikTokRTB />
-
-      {/* Deep Immersive CTA */}
-      <section className="py-20 md:py-32 relative overflow-hidden bg-forest">
-        <div className="absolute inset-0 opacity-30 scale-110">
+      {/* 10. Deep Immersive Nature CTA */}
+      <section className="py-16 sm:py-24 relative overflow-hidden bg-forest text-white">
+        <div className="absolute inset-0 opacity-25 scale-105">
           <Image
             src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=1600"
             fill
             className="object-cover"
-            alt="Stunning mountain landscapes in Chiang Mai Northern Thailand"
+            alt="Stunning mountain landscapes in Northern Thailand"
           />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-forest via-forest/40 to-transparent"></div>
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="text-center text-white max-w-4xl mx-auto">
-            <span className="text-[10px] font-black uppercase tracking-[0.5em] mb-4 md:mb-8 block text-primary shadow-glow">{h.cta_subtitle}</span>
-            <h2 className="text-4xl md:text-8xl font-black font-heading mb-6 md:mb-10 tracking-tighter leading-[0.9]">
-              {h.cta_title_1}<br /><span className="italic">{h.cta_title_2}</span>
+        <div className="absolute inset-0 bg-gradient-to-t from-forest via-forest/70 to-transparent" />
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+          <div className="text-center max-w-3xl mx-auto">
+            <span className="text-[10px] sm:text-xs font-black uppercase tracking-[0.4em] mb-3 block text-primary">
+              {h.cta_subtitle}
+            </span>
+            <h2 className="text-3xl sm:text-5xl md:text-6xl font-black font-heading mb-4 sm:mb-6 tracking-tight leading-tight">
+              {h.cta_title_1} <span className="italic text-primary">{h.cta_title_2}</span>
             </h2>
-            <p className="text-lg md:text-xl text-white/60 mb-8 md:mb-12 max-w-2xl mx-auto font-medium">
+            <p className="text-sm sm:text-base text-white/85 mb-8 max-w-xl mx-auto font-normal font-reading leading-relaxed">
               {h.cta_description}
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center">
-              <Link href={`${langPrefix}/trips`} className="bg-primary hover:bg-white hover:text-forest text-white px-8 md:px-12 py-4 md:py-5 rounded-full font-black uppercase text-[10px] tracking-[0.2em] transition-all shadow-2xl transform hover:-translate-y-1">
+            <div className="flex flex-wrap gap-3 sm:gap-4 justify-center">
+              <Link
+                href={`${langPrefix}/trips`}
+                className="bg-primary hover:bg-primary-deep text-white px-8 sm:px-10 py-3.5 rounded-full font-bold font-heading uppercase text-xs tracking-wider transition-all shadow-xl hover:scale-105 active:scale-95"
+              >
                 {h.begin_adventure}
               </Link>
-              {(() => {
-                const facebookUrl = settings?.facebookUrl || "https://www.facebook.com/Venturevibecnx";
-                const fbHandle = facebookUrl.includes('facebook.com/')
-                  ? facebookUrl.split('facebook.com/').pop()?.split('/').filter(Boolean)[0]
-                  : 'Venturevibecnx';
-                const messengerUrl = `https://m.me/${fbHandle}`;
-                return (
-                  <a href={messengerUrl} target="_blank" rel="noopener noreferrer" className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white hover:text-forest text-white px-8 md:px-12 py-4 md:py-5 rounded-full font-black uppercase text-[10px] tracking-[0.2em] transition-all shadow-xl">
-                    {h.chat_team}
-                  </a>
-                );
-              })()}
+              <a
+                href={lineUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-[#06c755] hover:bg-[#05b34c] text-white px-8 sm:px-10 py-3.5 rounded-full font-bold font-heading uppercase text-xs tracking-wider transition-all shadow-xl active:scale-95 flex items-center gap-2"
+              >
+                <svg className="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 5.92 2 10.75c0 2.92 1.63 5.53 4.17 7.08-.18.66-.66 2.4-0.76 2.78-.12.48.18.47.37.35.15-.09 2.05-1.39 2.87-1.95.45.06.9.1 1.35.1 5.52 0 10-3.92 10-8.75S17.52 2 12 2z"/>
+                </svg>
+                <span>{h.chat_team}</span>
+              </a>
             </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* Premium Fleet: Elevate Your Journey */}
-      <section className="py-12 md:py-24 bg-white relative z-30">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-10 md:mb-16 gap-4 md:gap-6">
-            <div className="max-w-xl">
-              <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-2 md:mb-3 block">{h.fleet_subtitle}</span>
-              <h2 className="text-3xl md:text-5xl font-black font-heading text-forest tracking-tighter uppercase">{h.fleet_title}</h2>
-            </div>
-            <Link href={`${langPrefix}/transport`} className="text-[10px] font-black uppercase tracking-[0.2em] text-forest/40 hover:text-primary transition-colors flex items-center gap-2 group">
-              {h.see_all_transport} <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
-            {featuredFleet.map((car) => (
-              <div key={car.id} className="group flex flex-col h-full bg-white rounded-[2rem] md:rounded-[3rem] overflow-hidden immersive-shadow border border-forest/5 hover:-translate-y-2 transition-all duration-500">
-                <div className="relative h-48 md:h-64 overflow-hidden">
-                  <Image
-                    src={car.image}
-                    alt={car.type}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-forest/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                </div>
-                <div className="p-6 md:p-10 flex flex-col flex-grow">
-                  <h3 className="text-xl md:text-2xl font-black text-forest tracking-tighter mb-4 md:mb-6">{car.type}</h3>
-                  <div className="flex items-center justify-between p-4 md:p-5 bg-surface rounded-[2rem] border border-forest/5 group-hover:bg-white group-hover:shadow-soft transition-all duration-500">
-                    <span className="font-bold text-forest/40 uppercase tracking-widest text-[9px]">{h.starting_from}</span>
-                    <span className="text-lg md:text-xl font-black text-forest tracking-tighter">฿{(car.price1Day || 0).toLocaleString()}</span>
-                  </div>
-                  <Link
-                    href={`${langPrefix}/transport`}
-                    className="mt-6 md:mt-8 block w-full bg-forest text-white py-3 md:py-4 rounded-full font-black text-[10px] tracking-[0.2em] text-center transition-all duration-300 shadow-lg hover:shadow-forest/30 uppercase group-hover:bg-primary"
-                  >
-                    {h.select_van}
-                  </Link>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>

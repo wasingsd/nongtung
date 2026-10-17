@@ -2,95 +2,140 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getArticles } from '@/lib/firestore-db';
 import { Metadata } from 'next';
-import { Calendar, User, ArrowRight, TrendingUp } from 'lucide-react';
+import { Calendar, User, ArrowRight, TrendingUp, BookOpen } from 'lucide-react';
+import SectionHeader from '@/components/ui/SectionHeader';
 
-// Force dynamic rendering to fetch fresh data from Firestore on every request
-export const dynamic = 'force-dynamic';
+// ISR: Revalidate page at most once every 60 seconds
+export const revalidate = 60;
 
 export const metadata: Metadata = {
-    title: 'Travel Journal & Guides | Nongtung Adventure',
-    description: 'Explore Northern Thailand with our expert guides. Tips for trekking, camping, and hidden gems in Chiang Mai.',
-    openGraph: {
-        title: 'Travel Journal | Nongtung',
-        description: 'Stories and guides from the mountains of Northern Thailand.',
-        images: ['https://images.unsplash.com/photo-1533227297464-9d5d1e21b77d?auto=format&fit=crop&q=80&w=1600'],
-    }
+  title: 'เรื่องเล่า & บทความท่องเที่ยว | Nongtung Journal',
+  description: 'คู่มือท่องเที่ยวและบันทึกการเดินทางสู่ขุนเขาภาคเหนือ เคล็ดลับการเดินป่า แคมป์ปิ้ง และจุดเช็คอินลับในเชียงใหม่-น่าน',
+  openGraph: {
+    title: 'เรื่องเล่า & บทความ | Nongtung Journal',
+    description: 'คู่มือท่องเที่ยวและบันทึกการเดินทางสู่ขุนเขาภาคเหนือ',
+    images: ['/videos/reel-1-cover.jpg'],
+  },
 };
 
 export default async function ArticlesIndex() {
-    const articles = await getArticles();
-    return (
-        <div className="fade-in bg-[#fdfdfb] min-h-screen pb-32">
+  const articles = await getArticles();
 
-            {/* Header Section */}
-            <div className="pt-32 pb-20 px-6 container mx-auto text-center">
-                <span className="text-[10px] font-black text-primary uppercase tracking-[0.4em] mb-4 block">The Journal</span>
-                <h1 className="text-4xl md:text-7xl font-black font-heading text-forest mb-6 tracking-tighter">
-                    STORIES <span className="italic text-primary">FROM THE WILD</span>
-                </h1>
-                <p className="text-xl text-forest/50 max-w-2xl mx-auto font-medium leading-relaxed">
-                    Guides, tips, and tales from our adventures in Northern Thailand.
-                </p>
-            </div>
+  return (
+    <div className="fade-in bg-[#fdfdfb] text-forest min-h-screen pt-28 pb-24">
+      {/* 1. Header Section */}
+      <div className="container mx-auto px-4 sm:px-6">
+        <SectionHeader
+          eyebrow="The Journal"
+          title="STORIES FROM"
+          highlight="THE WILD"
+          description="คู่มือท่องเที่ยว บันทึกเส้นทางเดินป่า และเรื่องเล่าธรรมชาติจากประสบการณ์จริงของทีมงานนองตึง"
+          centered
+          className="mb-12 sm:mb-16"
+        />
 
-            {/* Featured Articles Grid */}
-            <div className="container mx-auto px-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                    {articles.map((article) => (
-                        <Link href={`/articles/${article.slug}`} key={article.slug} className="group flex flex-col h-full">
-                            <div className="relative h-64 md:h-72 rounded-[2rem] overflow-hidden immersive-shadow border border-forest/5 mb-6">
-                                <Image
-                                    src={article.coverImage}
-                                    alt={article.title}
-                                    fill
-                                    className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity"></div>
-                                <div className="absolute top-4 left-4">
-                                    <span className="bg-white/90 backdrop-blur-md text-forest px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm">
-                                        {article.tags[0]}
-                                    </span>
-                                </div>
-                            </div>
+        {/* 2. Articles Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          {articles.map((article) => (
+            <Link
+              href={`/articles/${article.slug}`}
+              key={article.slug}
+              className="group flex flex-col h-full bg-white rounded-3xl overflow-hidden border border-forest/5 impeccable-card-shadow hover:-translate-y-1.5 transition-all duration-300"
+            >
+              {/* 16:10 Cover Photo */}
+              <div className="relative aspect-[16/10] overflow-hidden bg-surface">
+                <Image
+                  src={article.coverImage || '/videos/reel-1-cover.jpg'}
+                  alt={article.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                {article.tags?.[0] && (
+                  <div className="absolute top-3.5 left-3.5 z-10">
+                    <span className="bg-white/95 backdrop-blur-md text-forest font-bold px-3 py-1 rounded-full text-[10px] uppercase tracking-wider shadow-sm">
+                      {article.tags[0]}
+                    </span>
+                  </div>
+                )}
+              </div>
 
-                            <div className="flex-grow flex flex-col px-2">
-                                <div className="flex items-center gap-4 text-[10px] font-bold text-forest/40 uppercase tracking-widest mb-3">
-                                    <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {article.date}</span>
-                                    <span className="flex items-center gap-1"><User className="w-3 h-3" /> {article.author}</span>
-                                </div>
-                                <h2 className="text-2xl font-black font-heading text-forest group-hover:text-primary transition-colors leading-tight mb-3 tracking-tight">
-                                    {article.title}
-                                </h2>
-                                <p className="text-forest/60 text-sm leading-relaxed line-clamp-3 mb-6 font-medium">
-                                    {article.excerpt}
-                                </p>
-                                <div className="mt-auto flex items-center text-primary font-black text-xs uppercase tracking-widest group-hover:translate-x-2 transition-transform">
-                                    Read Article <ArrowRight className="w-4 h-4 ml-2" />
-                                </div>
-                            </div>
-                        </Link>
-                    ))}
+              {/* Content Body */}
+              <div className="p-5 sm:p-6 flex flex-col flex-grow justify-between">
+                <div>
+                  <div className="flex items-center gap-3 text-[11px] font-bold text-forest/40 uppercase tracking-wider mb-2">
+                    <span className="flex items-center gap-1">
+                      <Calendar className="w-3 h-3 text-primary" /> {article.date}
+                    </span>
+                    {article.author && (
+                      <span className="flex items-center gap-1">
+                        <User className="w-3 h-3 text-primary" /> {article.author}
+                      </span>
+                    )}
+                  </div>
+
+                  <h3 className="text-base sm:text-lg font-bold font-heading text-forest group-hover:text-primary transition-colors leading-snug line-clamp-2 mb-2">
+                    {article.title}
+                  </h3>
+
+                  <p className="text-xs text-forest/65 leading-relaxed line-clamp-3 font-normal mb-4">
+                    {article.excerpt}
+                  </p>
                 </div>
-            </div>
 
-            {/* Newsletter / Connect Section */}
-            <div className="container mx-auto px-6 mt-32">
-                <div className="bg-forest rounded-[3rem] p-10 md:p-20 text-center relative overflow-hidden">
-                    <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-                    <div className="relative z-10 max-w-3xl mx-auto">
-                        <TrendingUp className="w-12 h-12 text-primary mx-auto mb-6" />
-                        <h2 className="text-3xl md:text-5xl font-black font-heading text-white mb-6 tracking-tighter">
-                            WANT MORE <span className="text-primary italic">ADVENTURE?</span>
-                        </h2>
-                        <p className="text-white/60 text-lg mb-10 font-medium">
-                            Follow us on Facebook for the latest trip updates and hidden spots.
-                        </p>
-                        <a href="https://www.facebook.com/nongtung" target="_blank" rel="noopener noreferrer" className="inline-block bg-white text-forest px-10 py-4 rounded-full font-black uppercase text-xs tracking-[0.2em] hover:bg-primary hover:text-white transition-all shadow-xl hover:shadow-primary/30 transform hover:-translate-y-1">
-                            Follow Nongtung
-                        </a>
-                    </div>
+                <div className="pt-3 border-t border-forest/5 flex items-center justify-between text-xs font-bold text-primary group-hover:text-primary-deep transition-colors">
+                  <span>อ่านบทความฉบับเต็ม</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </div>
-            </div>
+              </div>
+            </Link>
+          ))}
         </div>
-    );
+
+        {articles.length === 0 && (
+          <div className="text-center py-20 bg-surface/50 rounded-3xl border border-forest/10 max-w-xl mx-auto">
+            <BookOpen className="w-12 h-12 text-forest/20 mx-auto mb-3" />
+            <p className="text-forest/60 font-bold text-sm">
+              กำลังจัดเตรียมเรื่องเล่าและบทความใหม่ๆ เร็วๆ นี้
+            </p>
+          </div>
+        )}
+
+        {/* 3. Connect Banner */}
+        <div className="mt-16 sm:mt-24 max-w-4xl mx-auto bg-forest rounded-3xl p-8 sm:p-14 text-center text-white relative overflow-hidden shadow-2xl">
+          <div className="relative z-10">
+            <TrendingUp className="w-10 h-10 text-primary mx-auto mb-4" />
+            <h2 className="text-2xl sm:text-4xl font-black font-heading mb-3 tracking-tight">
+              WANT MORE <span className="text-primary italic">ADVENTURE?</span>
+            </h2>
+            <p className="text-xs sm:text-sm text-white/75 max-w-md mx-auto mb-6 font-normal">
+              ติดตามเพจ Facebook ของนองตึงเพื่ออัปเดตเส้นทางเปิดใหม่ บรรยากาศทริปสด และโปรโมชั่นพิเศษ
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <a
+                href="https://line.me/R/ti/p/@nongtungrunning"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-[#06C755] hover:bg-[#05b34c] text-white px-8 py-3.5 rounded-full font-bold uppercase text-xs tracking-wider transition-all shadow-lg active:scale-95"
+              >
+                <svg className="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 5.92 2 10.75c0 2.92 1.63 5.53 4.17 7.08-.18.66-.66 2.4-0.76 2.78-.12.48.18.47.37.35.15-.09 2.05-1.39 2.87-1.95.45.06.9.1 1.35.1 5.52 0 10-3.92 10-8.75S17.52 2 12 2z"/>
+                </svg>
+                <span>ปรึกษาแผนเที่ยวทาง LINE</span>
+              </a>
+              <a
+                href="https://www.facebook.com/NONGTUNG.Adventure"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block bg-white/10 hover:bg-white/20 text-white px-8 py-3.5 rounded-full font-bold uppercase text-xs tracking-wider transition-all border border-white/20 active:scale-95"
+              >
+                Facebook: Nongtung
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }

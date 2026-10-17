@@ -1,18 +1,27 @@
 import type { Metadata } from "next";
-import { Kanit, Urbanist } from "next/font/google";
+import { Kanit, Urbanist, Sarabun } from "next/font/google";
 import { Providers } from "@/app/providers";
 import "../globals.css";
 
 const kanit = Kanit({
-    weight: ['300', '400', '500', '600'],
+    weight: ['400', '500', '600', '700', '800'],
     subsets: ["latin", "thai"],
     variable: "--font-kanit",
+    display: 'swap',
 });
 
 const urbanist = Urbanist({
-    weight: ['400', '600', '700', '900'],
+    weight: ['400', '500', '600', '700', '800', '900'],
     subsets: ["latin"],
     variable: "--font-urbanist",
+    display: 'swap',
+});
+
+const sarabun = Sarabun({
+    weight: ['300', '400', '500', '600', '700'],
+    subsets: ["latin", "thai"],
+    variable: "--font-sarabun",
+    display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -27,7 +36,7 @@ export default function AdminRootLayout({
 }) {
     return (
         <html lang="en">
-            <body className={`${kanit.variable} ${urbanist.variable} antialiased bg-gray-50`}>
+            <body className={`${kanit.variable} ${urbanist.variable} ${sarabun.variable} antialiased bg-gray-50`}>
                 <Providers>
                     {children}
                 </Providers>

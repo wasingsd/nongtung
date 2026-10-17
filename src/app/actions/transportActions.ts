@@ -15,10 +15,12 @@ export async function createTransport(formData: FormData) {
             price1Day: Number(formData.get('price1Day')) || 0,
             price2Day: Number(formData.get('price2Day')) || 0,
             image: imageUrl || 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800',
+            capacity: (formData.get('capacity') as string) || '',
             note: (formData.get('note') as string) || '',
         };
 
         await dbSaveTransport(transport);
+        revalidatePath('/', 'layout');
         revalidatePath('/adminnongtung/transport');
         revalidatePath('/transport');
     } catch (err: any) {
@@ -38,10 +40,12 @@ export async function updateTransport(id: string, formData: FormData) {
             price1Day: Number(formData.get('price1Day')) || 0,
             price2Day: Number(formData.get('price2Day')) || 0,
             image: imageUrl || 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800',
+            capacity: (formData.get('capacity') as string) || '',
             note: (formData.get('note') as string) || '',
         };
 
         await dbSaveTransport(transport);
+        revalidatePath('/', 'layout');
         revalidatePath('/adminnongtung/transport');
         revalidatePath('/transport');
     } catch (err: any) {
@@ -53,6 +57,7 @@ export async function updateTransport(id: string, formData: FormData) {
 
 export async function deleteTransport(id: string) {
     await dbDeleteTransport(id);
+    revalidatePath('/', 'layout');
     revalidatePath('/adminnongtung/transport');
     revalidatePath('/transport');
 }

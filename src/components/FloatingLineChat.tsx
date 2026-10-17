@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import { MessageCircle } from 'lucide-react';
+import { trackLeadConversion } from '@/lib/analytics';
 
 export default function FloatingLineChat() {
     const pathname = usePathname();
@@ -10,13 +11,16 @@ export default function FloatingLineChat() {
     if (pathname?.startsWith('/adminnongtung')) return null;
 
     // LINE Official Account URL
-    const lineUrl = 'https://lin.ee/pAbgN1M';
+    const lineUrl = 'https://line.me/R/ti/p/@nongtungrunning';
 
     return (
         <a
             href={lineUrl}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => {
+                trackLeadConversion({ channel: 'line' });
+            }}
             className="fixed bottom-6 right-6 z-50 group"
             aria-label="Chat with us on LINE"
         >

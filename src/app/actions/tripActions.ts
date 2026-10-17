@@ -60,9 +60,17 @@ export async function createTrip(formData: FormData) {
             itinerary: safeParse('itinerary'),
             whatsIncluded: safeParse('whatsIncluded'),
             notIncluded: safeParse('notIncluded'),
+            meetingPoint: (formData.get('meetingPoint') as string) || '',
+            bestSeason: (formData.get('bestSeason') as string) || '',
+            distanceKm: (formData.get('distanceKm') as string) || '',
+            elevationGain: (formData.get('elevationGain') as string) || '',
+            fitnessLevel: (formData.get('fitnessLevel') as string) || '',
+            packingList: safeParse('packingList'),
+            faqs: safeParse('faqs'),
         };
 
         await dbSaveTrip(trip);
+        revalidatePath('/', 'layout');
         revalidatePath('/trips');
         revalidatePath(`/trips/${slug}`);
         revalidatePath('/adminnongtung/trips');
@@ -130,6 +138,13 @@ export async function updateTrip(originalId: string, formData: FormData) {
             itinerary: safeParse('itinerary'),
             whatsIncluded: safeParse('whatsIncluded'),
             notIncluded: safeParse('notIncluded'),
+            meetingPoint: (formData.get('meetingPoint') as string) || '',
+            bestSeason: (formData.get('bestSeason') as string) || '',
+            distanceKm: (formData.get('distanceKm') as string) || '',
+            elevationGain: (formData.get('elevationGain') as string) || '',
+            fitnessLevel: (formData.get('fitnessLevel') as string) || '',
+            packingList: safeParse('packingList'),
+            faqs: safeParse('faqs'),
         };
 
         await dbSaveTrip(trip);
@@ -139,6 +154,7 @@ export async function updateTrip(originalId: string, formData: FormData) {
             await dbDeleteTrip(originalId);
         }
 
+        revalidatePath('/', 'layout');
         revalidatePath('/trips');
         revalidatePath('/trips/' + originalId);
         revalidatePath('/trips/' + newId);
@@ -153,6 +169,7 @@ export async function updateTrip(originalId: string, formData: FormData) {
 
 export async function deleteTrip(id: string) {
     await dbDeleteTrip(id);
+    revalidatePath('/', 'layout');
     revalidatePath('/trips');
     revalidatePath('/adminnongtung/trips');
 }

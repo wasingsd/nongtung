@@ -377,14 +377,19 @@ export default function ActivitiesClient({ activities }: ActivitiesClientProps) 
                                 Follow us to get updates on new activities, special promotions, and exclusive experiences in Chiang Mai.
                             </p>
                         </div>
-                        <a
-                            href="https://www.facebook.com/Venturevibecnx"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex-shrink-0 bg-white text-forest px-10 py-4 rounded-full font-black uppercase text-sm tracking-widest hover:bg-primary hover:text-white transition-all shadow-xl hover:shadow-primary/30 transform hover:-translate-y-1"
-                        >
-                            Follow Us
-                        </a>
+                        <div className="flex flex-wrap gap-3">
+                            <a
+                                href="https://line.me/R/ti/p/@nongtungrunning"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex-shrink-0 bg-[#06c755] hover:bg-[#05b34c] text-white px-8 py-4 rounded-full font-black uppercase text-sm tracking-widest transition-all shadow-xl hover:shadow-[#06c755]/30 transform hover:-translate-y-1 flex items-center gap-2"
+                            >
+                                <svg className="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 5.92 2 10.75c0 2.92 1.63 5.53 4.17 7.08-.18.66-.66 2.4-0.76 2.78-.12.48.18.47.37.35.15-.09 2.05-1.39 2.87-1.95.45.06.9.1 1.35.1 5.52 0 10-3.92 10-8.75S17.52 2 12 2z"/>
+                                </svg>
+                                <span>Add LINE: @nongtungrunning</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

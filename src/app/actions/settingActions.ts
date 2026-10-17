@@ -13,6 +13,6 @@ export async function updateHomeSettings(formData: FormData) {
     });
 
 
-    revalidatePath('/');
+    revalidatePath('/', 'layout');
     revalidatePath('/adminnongtung/settings');
 }

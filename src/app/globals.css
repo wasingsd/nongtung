@@ -10,20 +10,28 @@
     --color-surface: #FAF9F4;
     --color-line: #06c755;
 
-    --font-heading: var(--font-urbanist), sans-serif;
-    --font-body: var(--font-kanit), sans-serif;
+    /* Unified Typography System */
+    /* Headings & Display: Urbanist (English) + Kanit (Thai modern punchy) */
+    --font-heading: var(--font-urbanist), var(--font-kanit), sans-serif;
+    /* Body & Long Reading: Urbanist (English/Numbers) + Sarabun (Thai looped, readable) */
+    --font-body: var(--font-urbanist), var(--font-sarabun), sans-serif;
+    --font-reading: var(--font-sarabun), sans-serif;
+    --font-kanit: var(--font-kanit), sans-serif;
+    --font-urbanist: var(--font-urbanist), sans-serif;
+    --font-sarabun: var(--font-sarabun), sans-serif;
 }
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* Custom properties for theme colors */
 :root {
     --background: #fdfdfb;
-    --foreground: #2e3022;
+    --foreground: #262A22;
     --card-bg: #ffffff;
 }
 
 .dark {
     --background: #1a1b16;
-    /* Deep forest dark */
     --foreground: #f9f9f5;
     --card-bg: #2e3022;
 }
@@ -46,20 +54,39 @@ body {
     font-family: var(--font-body);
     color: var(--foreground);
     background: var(--background);
-    line-height: 1.65;
+    line-height: 1.7;
     -webkit-font-smoothing: antialiased;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Headings, Display, UI Controls, Navigation Menus, Tabs, Badges & Buttons */
 h1,
 h2,
 h3,
 h4,
 h5,
 h6,
-.font-heading {
+button,
+input,
+select,
+textarea,
+.font-heading,
+.nav-link,
+.tab-btn,
+.btn-pill {
     font-family: var(--font-heading);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.015em;
+}
+
+/* Body Text, Articles, Long Reading, Descriptions */
+p,
+article,
+.font-body {
+    font-family: var(--font-body);
+}
+
+.font-reading {
+    font-family: var(--font-reading);
 }
 
 .glass-nav {
@@ -84,6 +111,26 @@ h6,
 
 .immersive-shadow {
     box-shadow: 0 10px 50px -12px rgba(46, 48, 34, 0.1);
+}
+
+.impeccable-surface-shadow {
+    box-shadow: 0 4px 20px -2px rgba(38, 42, 34, 0.05), 0 2px 6px -1px rgba(38, 42, 34, 0.03);
+}
+
+.impeccable-card-shadow {
+    box-shadow: 0 4px 20px -2px rgba(38, 42, 34, 0.06), 0 2px 6px -1px rgba(38, 42, 34, 0.04);
+}
+
+.impeccable-hover-shadow:hover {
+    box-shadow: 0 16px 36px -6px rgba(38, 42, 34, 0.12), 0 6px 14px -2px rgba(38, 42, 34, 0.06);
+}
+
+.gother-surface-shadow {
+    box-shadow: 0 4px 12px rgba(38, 42, 34, 0.05), 0 20px 32px rgba(38, 42, 34, 0.06);
+}
+
+.gother-card-shadow {
+    box-shadow: 0 2px 8px rgba(38, 42, 34, 0.04), 0 12px 24px rgba(38, 42, 34, 0.05);
 }
 
 .btn-pill {

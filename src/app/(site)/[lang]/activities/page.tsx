@@ -2,8 +2,8 @@ import { getActivities } from '@/lib/firestore-db';
 import { Metadata } from 'next';
 import ActivitiesClient from './ActivitiesClient';
 
-// Force dynamic rendering to fetch fresh data from Firestore on every request
-export const dynamic = 'force-dynamic';
+// ISR: Revalidate page at most once every 60 seconds
+export const revalidate = 60;
 
 export const metadata: Metadata = {
     title: 'Activities & Events | Nongtung Adventure Chiang Mai',

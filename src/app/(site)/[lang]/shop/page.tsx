@@ -85,11 +85,14 @@ export default function ShopPage() {
                     </div>
                 </div>
                 <a
-                    href="https://line.me/ti/p/@nongtung"
+                    href="https://line.me/R/ti/p/@nongtungrunning"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-block mt-12 bg-forest text-white px-8 py-3 rounded-full font-bold uppercase tracking-wider hover:bg-gray-800 transition-all">
-                    Add LINE: @nongtung
+                    className="inline-flex items-center gap-2 mt-12 bg-[#06C755] hover:bg-[#05b34c] text-white px-8 py-3 rounded-full font-bold uppercase tracking-wider transition-all shadow-md active:scale-95">
+                    <svg className="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 5.92 2 10.75c0 2.92 1.63 5.53 4.17 7.08-.18.66-.66 2.4-0.76 2.78-.12.48.18.47.37.35.15-.09 2.05-1.39 2.87-1.95.45.06.9.1 1.35.1 5.52 0 10-3.92 10-8.75S17.52 2 12 2z"/>
+                    </svg>
+                    <span>Add LINE: @nongtungrunning</span>
                 </a>
             </div>
         </div>

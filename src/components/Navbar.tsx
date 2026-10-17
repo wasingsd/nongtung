@@ -5,8 +5,9 @@ import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { ThemeToggle } from './ThemeToggle';
+import { trackLeadConversion } from '@/lib/analytics';
 
-export default function Navbar({ facebookUrl = 'https://www.facebook.com/Venturevibecnx', lang, dict }: { facebookUrl?: string, lang: string, dict: any }) {
+export default function Navbar({ facebookUrl = 'https://www.facebook.com/NONGTUNG.Adventure', lang, dict }: { facebookUrl?: string, lang: string, dict: any }) {
     const pathname = usePathname();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -20,12 +21,9 @@ export default function Navbar({ facebookUrl = 'https://www.facebook.com/Venture
 
     const navLinks = [
         { id: 'trips', label: dict.trips, href: '/trips' },
-        { id: 'activities', label: dict.activities, href: '/activities' },
         { id: 'transport', label: dict.transport, href: '/transport' },
-        { id: 'rental', label: dict.rental, href: '/rental' },
-        { id: 'articles', label: dict.articles, href: '/articles' },
-        // { id: 'shop', label: 'Shop', href: '/shop' }, // Hidden
         { id: 'corporate', label: dict.corporate, href: '/corporate' },
+        { id: 'articles', label: dict.articles, href: '/articles' },
     ];
 
     const getLocalizedHref = (path: string) => `/${lang}${path === '/' ? '' : path}`;
@@ -63,18 +61,18 @@ export default function Navbar({ facebookUrl = 'https://www.facebook.com/Venture
 
                     {/* Desktop Menu */}
                     <div className="hidden lg:flex items-center gap-6 xl:gap-8">
-                        <Link href={getLocalizedHref('/')} className={`nav-link text-xs font-bold uppercase tracking-widest hover:text-primary transition-colors relative group ${pathname === `/${lang}` || pathname === `/${lang}/` ? 'text-primary' : 'text-forest/70 dark:text-gray-300'}`}>
+                        <Link href={getLocalizedHref('/')} className={`nav-link text-xs font-bold uppercase tracking-widest hover:text-primary transition-colors relative group font-heading ${pathname === `/${lang}` || pathname === `/${lang}/` ? 'text-primary' : 'text-forest/70 dark:text-gray-300'}`}>
                             {dict.home}
                             <span className={`absolute -bottom-1 left-0 h-0.5 bg-primary transition-all group-hover:w-full ${pathname === `/${lang}` || pathname === `/${lang}/` ? 'w-full' : 'w-0'}`}></span>
                         </Link>
                         {navLinks.map((link) => (
-                            <Link key={link.id} href={getLocalizedHref(link.href)} className={`nav-link text-xs font-bold uppercase tracking-widest hover:text-primary transition-colors relative group ${pathname?.startsWith(getLocalizedHref(link.href)) ? 'text-primary' : 'text-forest/70 dark:text-gray-300'}`}>
+                            <Link key={link.id} href={getLocalizedHref(link.href)} className={`nav-link text-xs font-bold uppercase tracking-widest hover:text-primary transition-colors relative group font-heading ${pathname?.startsWith(getLocalizedHref(link.href)) ? 'text-primary' : 'text-forest/70 dark:text-gray-300'}`}>
                                 {link.label}
                                 <span className={`absolute -bottom-1 left-0 h-0.5 bg-primary transition-all group-hover:w-full ${pathname?.startsWith(getLocalizedHref(link.href)) ? 'w-full' : 'w-0'}`}></span>
                             </Link>
                         ))}
 
-                        <div className="flex gap-2 items-center text-[10px] font-black uppercase">
+                        <div className="flex gap-2 items-center text-[10px] font-black uppercase font-heading">
                             <Link href={switchLocale('en')} className={`hover:text-primary transition-colors ${lang === 'en' ? 'text-primary' : 'text-forest/70 dark:text-gray-400'}`}>EN</Link>
                             <span className="text-forest/30 dark:text-gray-600">|</span>
                             <Link href={switchLocale('th')} className={`hover:text-primary transition-colors ${lang === 'th' ? 'text-primary' : 'text-forest/70 dark:text-gray-400'}`}>TH</Link>
@@ -85,12 +83,13 @@ export default function Navbar({ facebookUrl = 'https://www.facebook.com/Venture
                         <ThemeToggle />
 
                         <a
-                            href={facebookUrl}
+                            href="https://line.me/R/ti/p/@nongtungrunning"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="bg-primary text-white px-7 py-2.5 rounded-full font-bold uppercase text-[10px] tracking-widest hover:bg-primary-deep transition-all shadow-lg hover:shadow-primary/20 transform hover:-translate-y-0.5"
+                            onClick={() => trackLeadConversion({ channel: 'line', locationName: 'navbar_desktop' })}
+                            className="bg-primary text-white px-7 py-2.5 rounded-full font-bold uppercase text-[10px] tracking-widest hover:bg-primary-deep transition-all shadow-lg hover:shadow-primary/20 transform hover:-translate-y-0.5 font-heading flex items-center gap-1.5"
                         >
-                            {dict.contact}
+                            <span>{dict.contact}</span>
                         </a>
                     </div>
 
@@ -128,12 +127,13 @@ export default function Navbar({ facebookUrl = 'https://www.facebook.com/Venture
                         </Link>
                     ))}
                     <a
-                        href={facebookUrl}
+                        href="https://line.me/R/ti/p/@nongtungrunning"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-8 bg-primary text-white px-10 py-4 md:px-14 md:py-5 rounded-full font-black uppercase text-[10px] md:text-xs tracking-widest shadow-2xl active:scale-95 transition-all text-center"
+                        onClick={() => trackLeadConversion({ channel: 'line', locationName: 'navbar_mobile' })}
+                        className="mt-8 bg-primary text-white px-10 py-4 md:px-14 md:py-5 rounded-full font-black uppercase text-[10px] md:text-xs tracking-widest shadow-2xl active:scale-95 transition-all text-center flex items-center justify-center gap-2"
                     >
-                        {dict.contact}
+                        <span>{dict.contact}</span>
                     </a>
 
                     <div className="flex gap-4 items-center text-lg font-black uppercase mt-4">

@@ -1,8 +1,16 @@
+export interface ArticleSubImage {
+    id?: string;
+    url: string;
+    caption?: string;
+    position: 'mid' | 'bottom';
+}
+
 export interface Article {
     slug: string;
     title: string;
     excerpt: string;
     coverImage: string;
+    subImages?: ArticleSubImage[];
     date: string;
     author: string;
     readingTime: string;
@@ -23,7 +31,33 @@ export const articles: Article[] = [
         slug: 'top-5-trails-chiang-mai',
         title: 'รวม 5 เส้นทางเดินป่าเชียงใหม่ ที่สายธรรมชาติต้องไปสักครั้ง 🌲 (ฉบับอัปเดต 2025)',
         excerpt: 'เชียงใหม่ไม่ได้มีแค่ดอยอินทนนท์! มาค้นพบ 5 เส้นทางเทรลลับๆ ที่จะพาคุณไปสัมผัสธรรมชาติแบบ Exclusive พร้อมคำแนะนำสำหรับมือใหม่ ระดับความยาก และช่วงเวลาที่เหมาะสมที่สุด',
-        coverImage: 'https://loremflickr.com/800/600/mountain,trekking/all?lock=6',
+        coverImage: '/videos/reel-2-cover.jpg',
+        subImages: [
+            {
+                id: 'sub-1',
+                url: '/videos/reel-1-cover.jpg',
+                caption: 'จุดชมวิวทะเลหมอกยามเช้า ดอยหลวงเชียงดาว ทัศนียภาพกึ่งอัลไพน์',
+                position: 'mid'
+            },
+            {
+                id: 'sub-2',
+                url: '/videos/reel-3-cover.jpg',
+                caption: 'เส้นทางเดินป่าดึกดำบรรพ์ กิ่วแม่ปาน ดอยอินทนนท์',
+                position: 'mid'
+            },
+            {
+                id: 'sub-3',
+                url: '/videos/reel-4-cover.jpg',
+                caption: 'บรรยากาศแคมป์ปิ้งกางเต็นท์ริมลำธาร อากาศเย็นสบายตลอดปี',
+                position: 'bottom'
+            },
+            {
+                id: 'sub-4',
+                url: '/videos/reel-2-cover.jpg',
+                caption: 'วิวทิวทัศน์ 360 องศา สันเขายอดดอยปุย เชียงใหม่',
+                position: 'bottom'
+            }
+        ],
         date: '2025-06-15',
         author: 'Nongtung Team',
         readingTime: '10 min read',
@@ -121,7 +155,7 @@ export const articles: Article[] = [
         slug: 'camping-101-beginner-guide',
         title: 'มือใหม่หัดแคมป์? คู่มือเตรียมตัวและอุปกรณ์ฉบับครบจบในที่เดียว ⛺',
         excerpt: 'อยากลองนอนเต็นท์ดูสักครั้งแต่ไม่รู้จะเริ่มยังไง? สรุป Checklist อุปกรณ์ที่ต้องมี วิธีเลือกทำเลกางเต็นท์ และเทคนิคการเอาตัวรอดในคืนแรก',
-        coverImage: 'https://loremflickr.com/800/600/camping,tent,night/all?lock=7',
+        coverImage: '/videos/reel-1-cover.jpg',
         date: '2025-06-20',
         author: 'Camp Master',
         readingTime: '12 min read',
@@ -219,7 +253,7 @@ export const articles: Article[] = [
         slug: 'hidden-gems-chiang-mai-trekking',
         title: 'Monk\'s Trail & Hidden Waterfalls: The Authentic Chiang Mai Trekking Guide 🛕',
         excerpt: 'Skip the tourist traps. Discover the spiritual Monk\'s Trail (Wat Pha Lat) and lush hidden waterfalls. A guide for those seeking an authentic connection with Northern Thailand\'s nature.',
-        coverImage: 'https://loremflickr.com/800/600/temple,forest/all?lock=8',
+        coverImage: '/videos/reel-2-img-3.jpg',
         date: '2025-07-01',
         author: 'Nongtung Local Expert',
         readingTime: '15 min read',
@@ -305,7 +339,7 @@ export const articles: Article[] = [
         slug: 'why-rent-private-van-chiang-mai',
         title: 'Why Private Van Rental is the Best Way to Explore Northern Thailand 🚐 (2025 Guide)',
         excerpt: 'Planning a road trip to Pai or Chiang Rai? Forget the crowded buses. Here is why renting a private van with a driver is the smartest travel hack for your group. Plus, a complete 3-day itinerary.',
-        coverImage: 'https://loremflickr.com/800/600/campervan,roadtrip/all?lock=1',
+        coverImage: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80&w=1200',
         date: '2025-07-05',
         author: 'Nongtung Logistics',
         readingTime: '12 min read',
@@ -389,7 +423,7 @@ export const articles: Article[] = [
         slug: 'ultimate-glamping-experience-doi-inthanon',
         title: 'Eco-Friendly Glamping: Sustainable Luxury in Doi Inthanon 🌿',
         excerpt: 'Experience the "Sea of Mist" without leaving your carbon footprint. Our guide to sustainable glamping in Northern Thailand combines luxury with eco-consciousness.',
-        coverImage: 'https://loremflickr.com/800/600/glamping,tent/all?lock=2',
+        coverImage: '/videos/reel-1-img-1.jpg',
         date: '2025-07-10',
         author: 'Nongtung Eco Team',
         readingTime: '11 min read',
@@ -451,7 +485,7 @@ export const articles: Article[] = [
         slug: 'ultimate-trekking-guide-chiang-mai-2025',
         title: 'คู่มือเดินป่าเชียงใหม่ 2025: ครบทุกเส้นทาง สายลุยห้ามพลาด! ⛰️',
         excerpt: 'อัปเดตล่าสุดเส้นทางเดินป่าดอยสุเทพ-ดอยปุย และม่อนแจ่ม ฉบับคนท้องถิ่นพาเที่ยว จอยทริปยังไงให้สนุก เตรียมตัวยังไงไม่ให้เฟล',
-        coverImage: 'https://loremflickr.com/800/600/jungle,waterfall,chiangmai/all?lock=3',
+        coverImage: '/videos/reel-4-cover.jpg',
         date: '2025-08-01',
         author: 'Nongtung Local Guide',
         readingTime: '15 min read',
@@ -518,7 +552,7 @@ export const articles: Article[] = [
         slug: 'chiang-mai-camping-gear-rental-guide',
         title: 'เช่าอุปกรณ์แคมป์ปิ้งเชียงใหม่: สะอาด ครบ จบที่เดียว (K2, Coleman Available) ⛺',
         excerpt: 'ไม่ต้องแบกให้หนัก! บริการเช่าเต็นท์และอุปกรณ์เดินป่าเกรดพรีเมียมในเชียงใหม่ สะอาดเหมือนใหม่ ผ่านการฆ่าเชื้อทุกครั้งก่อนส่งมอบ พร้อมคู่มือการกางเต็นท์',
-        coverImage: 'https://loremflickr.com/800/600/camping,equipment/all?lock=4',
+        coverImage: '/videos/reel-1-img-0.jpg',
         date: '2025-08-05',
         author: 'Nongtung Rental',
         readingTime: '10 min read',
@@ -641,7 +675,7 @@ export const articles: Article[] = [
         slug: 'corporate-outing-teambuilding-chiang-mai',
         title: 'จัด Outing เชียงใหม่ยังไงให้พนักงาน Love? ไอเดีย Teambuilding เชิงผจญภัย 🤝 (2025 Edition)',
         excerpt: 'ลืมการละลายพฤติกรรมในห้องแอร์ไปได้เลย พาพนักงานและผู้บริหารมาเปิดประสบการณ์ใหม่กับกิจกรรม Adventure ที่ทั้งปลอดภัยและได้สาระ สร้าง Team Spirit ได้จริง',
-        coverImage: 'https://loremflickr.com/800/600/group,hiking,team/all?lock=5', /* Replaced broken Unsplash with valid source */
+        coverImage: '/videos/reel-3-cover.jpg',
         date: '2025-08-10',
         author: 'Nongtung Corporate',
         readingTime: '15 min read',
@@ -764,7 +798,349 @@ export const articles: Article[] = [
             <p><em>*ราคารวมรถรับส่ง, ที่พัก, อาหาร 4 มื้อ, กิจกรรมทั้งหมด, ประกันแบะสตาฟดูแล</em></p>
 
             <br>
-            <p>การลงทุนกับ "คน" คุ้มค่าเสมอ ให้ธรรมชาติช่วยฟื้นฟูพลังและสร้าง Team Spirit ใหม่ๆ ให้องค์กรของคุณนะครับ ติดต่อเราเพื่อออกแบบทริปเฉพาะคุณได้เลย!</p>
+            <p>การลงทุนกับ "คน" คุ้มค่าเสมอ ให้ธรรมชาติช่วยฟื้นฟูพลังและสร้าง Team Spirit ใหม่ๆ ให้องค์กรของคุณนะครับ <a href="https://line.me/R/ti/p/@nongtungrunning" target="_blank" style="color: #06C755; font-weight: bold; text-decoration: underline;">ติดต่อเราทาง LINE: @nongtungrunning</a> เพื่อออกแบบทริปเฉพาะคุณได้เลย!</p>
+        `
+    },
+    {
+        slug: 'chiang-mai-trail-trekking-comparison',
+        title: 'เปรียบเทียบ 6 เส้นทางเดินป่า & เทรลเชียงใหม่ยอดฮิต 2026: ที่ไหนเหมาะกับคุณ? (พร้อมตารางรูป & สรุปชัดเจน)',
+        excerpt: 'เจาะลึก 6 พิกัดเดินเทรลยอดดอยเชียงใหม่: ดอยหลวงเชียงดาว, ดอยผากลอง (ออนใต้), ห้วยกุ๊บกั๊บ, ม่อนจอง, ดอยผ้าห่มปก, และกิ่วแม่ปาน พร้อมตารางเปรียบเทียบระยะทาง ความสูง ระดับความยาก ช่วงเวลาที่ควรไป และรูปภาพประกอบ',
+        coverImage: '/videos/reel-2-img-0.jpg',
+        date: '2026-10-17',
+        author: 'ทีมงานน่องตึง (Nongtung)',
+        readingTime: '12 min read',
+        tags: ['Chiang Mai', 'Trekking', 'Trail Running', 'Comparison', 'Guide'],
+        keywords: [
+            'เดินป่าเชียงใหม่', 'เปรียบเทียบเส้นทางเดินป่า', 'เทรลเชียงใหม่ 2026',
+            'ดอยหลวงเชียงดาว', 'ดอยผากลอง', 'ห้วยกุ๊บกั๊บ', 'ม่อนจอง', 'กิ่วแม่ปาน',
+            'ดอยผ้าห่มปก', 'เดินป่ามือใหม่ เชียงใหม่'
+        ],
+        relatedTripId: 'chiang-dao-hike',
+        content: `
+            <p class="lead">เชียงใหม่คือสวรรค์ของคนรักขุนเขาและเส้นทางธรรมชาติ แต่ละดอยมีเสน่ห์ ระดับความชัน และความยากง่ายที่แตกต่างกันอย่างสิ้นเชิง สำหรับใครที่กำลังวางแผนทริปเดินป่าหรืออยากลองก้าวเท้าสู่เส้นทางเทรล วันนี้ <strong>น่องตึง (Nongtung)</strong> ได้รวบรวมและ <strong>เปรียบเทียบ 6 เส้นทางเดินป่าเชียงใหม่ยอดฮิต</strong> มาให้คุณตัดสินใจได้ง่ายในตารางเดียว พร้อมคำแนะนำแบบคนพื้นที่แท้ๆ ครับ</p>
+
+            <hr>
+
+            <h2>📊 ตารางเปรียบเทียบ 6 เส้นทางเดินป่าเชียงใหม่ (พร้อมภาพพรีวิว)</h2>
+            <p>สรุปข้อมูลสำคัญที่จะช่วยให้คุณประเมินความพร้อม ร่างกาย และเวลาสำหรับแต่ละเส้นทาง:</p>
+
+            <div style="overflow-x: auto; margin: 2rem 0; border-radius: 1.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.06); border: 1px solid rgba(38,42,34,0.1);">
+                <table style="width: 100%; border-collapse: collapse; min-width: 680px; background: #ffffff; font-size: 14px;">
+                    <thead>
+                        <tr style="background: #262A22; color: #ffffff;">
+                            <th style="padding: 16px 14px; border-bottom: 2px solid #D66E3A; text-align: left; width: 17%;">พิกัด / ยอดดอย</th>
+                            <th style="padding: 16px 10px; border-bottom: 2px solid #D66E3A; text-align: center; width: 110px;">รูปภาพพรีวิว</th>
+                            <th style="padding: 16px 14px; border-bottom: 2px solid #D66E3A; text-align: left; width: 16%;">ความสูง & ระยะทาง</th>
+                            <th style="padding: 16px 14px; border-bottom: 2px solid #D66E3A; text-align: left; width: 14%;">ระดับความยาก</th>
+                            <th style="padding: 16px 14px; border-bottom: 2px solid #D66E3A; text-align: left; width: 15%;">ช่วงเวลาเปิด / แนะนำ</th>
+                            <th style="padding: 16px 14px; border-bottom: 2px solid #D66E3A; text-align: left; width: 28%;">ไฮไลท์สำคัญ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid #f0f0f0;">
+                            <td style="padding: 16px; font-weight: bold; color: #262A22;">
+                                1. ดอยหลวงเชียงดาว<br>
+                                <span style="font-size: 12px; color: #D66E3A; font-weight: normal;">อ.เชียงดาว</span>
+                            </td>
+                            <td style="padding: 12px;">
+                                <img src="/images/articles/chiang-dao-summit.jpg" alt="ดอยหลวงเชียงดาว" style="width: 100px; height: 68px; object-fit: cover; border-radius: 12px;" />
+                            </td>
+                            <td style="padding: 16px;">
+                                สูง 2,225 ม.<br>
+                                <span style="color: #666;">เดิน 8.5 - 19 กม.</span>
+                            </td>
+                            <td style="padding: 16px;">
+                                <span style="background: #fee2e2; color: #b91c1c; padding: 4px 10px; border-radius: 999px; font-weight: bold; font-size: 12px;">ท้าทาย (Hard)</span><br>
+                                <small style="color: #777;">2-3 วัน 1-2 คืน</small>
+                            </td>
+                            <td style="padding: 16px;">พ.ย. - ก.พ.<br><small style="color: #D66E3A;">(ต้องจองคิวอุทยานฯ)</small></td>
+                            <td style="padding: 16px;">พืชพรรณกึ่งอัลไพน์ ดอกเทียนนกแก้ว กวางผา และทะเลหมอก 360° สุดอลังการ</td>
+                        </tr>
+                        <tr style="background: #FAF9F4; border-bottom: 1px solid #f0f0f0;">
+                            <td style="padding: 16px; font-weight: bold; color: #262A22;">
+                                2. ดอยผากลอง (ออนใต้)<br>
+                                <span style="font-size: 12px; color: #D66E3A; font-weight: normal;">อ.สันกำแพง</span>
+                            </td>
+                            <td style="padding: 12px;">
+                                <img src="/images/articles/doi-pha-klong-canyon.jpg" alt="ดอยผากลอง ออนใต้" style="width: 100px; height: 68px; object-fit: cover; border-radius: 12px;" />
+                            </td>
+                            <td style="padding: 16px;">
+                                สูง 700 ม.<br>
+                                <span style="color: #666;">เดิน 4 - 6 กม.</span>
+                            </td>
+                            <td style="padding: 16px;">
+                                <span style="background: #dcfce7; color: #15803d; padding: 4px 10px; border-radius: 999px; font-weight: bold; font-size: 12px;">ง่าย (Day Hike)</span><br>
+                                <small style="color: #777;">ไปเช้า-เย็นกลับ</small>
+                            </td>
+                            <td style="padding: 16px;">เที่ยวได้ตลอดปี<br><small style="color: #666;">(เช้าตรู่ / เย็นแดดร่ม)</small></td>
+                            <td style="padding: 16px;">ใกล้เมืองเพียง 35 นาที หน้าผาหินแคนยอน ป่าสน และชมวิวอ่างเก็บน้ำแม่ผาแหน</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #f0f0f0;">
+                            <td style="padding: 16px; font-weight: bold; color: #262A22;">
+                                3. ห้วยกุ๊บกั๊บ<br>
+                                <span style="font-size: 12px; color: #D66E3A; font-weight: normal;">อ.แม่แตง</span>
+                            </td>
+                            <td style="padding: 12px;">
+                                <img src="/images/articles/huay-kub-kab-mist.jpg" alt="ห้วยกุ๊บกั๊บ" style="width: 100px; height: 68px; object-fit: cover; border-radius: 12px;" />
+                            </td>
+                            <td style="padding: 16px;">
+                                สูง 1,100 ม.<br>
+                                <span style="color: #666;">เดิน 4.5 กม.</span>
+                            </td>
+                            <td style="padding: 16px;">
+                                <span style="background: #fef3c7; color: #b45309; padding: 4px 10px; border-radius: 999px; font-weight: bold; font-size: 12px;">ปานกลาง (Medium)</span><br>
+                                <small style="color: #777;">2 วัน 1 คืน</small>
+                            </td>
+                            <td style="padding: 16px;">ก.ค. - ก.พ.<br><small style="color: #666;">(หน้าฝนหมอกหนา)</small></td>
+                            <td style="padding: 16px;">วิวยอดดอยพีระมิด หมอกเช้าหน้าต่างระเบียง และวิถีโฮมสเตย์ชุมชนชาวลาหู่</td>
+                        </tr>
+                        <tr style="background: #FAF9F4; border-bottom: 1px solid #f0f0f0;">
+                            <td style="padding: 16px; font-weight: bold; color: #262A22;">
+                                4. ดอยม่อนจอง<br>
+                                <span style="font-size: 12px; color: #D66E3A; font-weight: normal;">อ.อมก๋อย</span>
+                            </td>
+                            <td style="padding: 12px;">
+                                <img src="/images/articles/doi-mon-jong-golden-ridge.jpg" alt="ดอยม่อนจอง" style="width: 100px; height: 68px; object-fit: cover; border-radius: 12px;" />
+                            </td>
+                            <td style="padding: 16px;">
+                                สูง 1,929 ม.<br>
+                                <span style="color: #666;">เดิน 4 - 6 กม.</span>
+                            </td>
+                            <td style="padding: 16px;">
+                                <span style="background: #fef3c7; color: #b45309; padding: 4px 10px; border-radius: 999px; font-weight: bold; font-size: 12px;">ปานกลาง (Medium)</span><br>
+                                <small style="color: #777;">2 วัน 1 คืน</small>
+                            </td>
+                            <td style="padding: 16px;">พ.ย. - ก.พ.<br><small style="color: #D66E3A;">(เปิดเฉพาะฤดูหนาว)</small></td>
+                            <td style="padding: 16px;">ทุ่งหญ้าสีทอง สันเขารูปหัวสิงห์ กวางผา และกุหลาบพันปีสีแดงสด</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #f0f0f0;">
+                            <td style="padding: 16px; font-weight: bold; color: #262A22;">
+                                5. ดอยผ้าห่มปก<br>
+                                <span style="font-size: 12px; color: #D66E3A; font-weight: normal;">อ.ฝาง</span>
+                            </td>
+                            <td style="padding: 12px;">
+                                <img src="/images/articles/doi-pha-hom-pok-peak.jpg" alt="ดอยผ้าห่มปก" style="width: 100px; height: 68px; object-fit: cover; border-radius: 12px;" />
+                            </td>
+                            <td style="padding: 16px;">
+                                สูง 2,285 ม.<br>
+                                <span style="color: #666;">เดิน 3.5 กม. จากกิ่วลม</span>
+                            </td>
+                            <td style="padding: 16px;">
+                                <span style="background: #fef3c7; color: #b45309; padding: 4px 10px; border-radius: 999px; font-weight: bold; font-size: 12px;">ปานกลาง (Medium)</span><br>
+                                <small style="color: #777;">2 วัน 1 คืน</small>
+                            </td>
+                            <td style="padding: 16px;">พ.ย. - ก.พ.<br><small style="color: #666;">(หนาวจัด ลมแรง)</small></td>
+                            <td style="padding: 16px;">ยอดเขาสูงอันดับ 2 ของไทย ชมพระอาทิตย์ขึ้นเหนือทะเลหมอกสองแผ่นดินไทย-พม่า</td>
+                        </tr>
+                        <tr style="background: #FAF9F4;">
+                            <td style="padding: 16px; font-weight: bold; color: #262A22;">
+                                6. กิ่วแม่ปาน (ดอยอินทนนท์)<br>
+                                <span style="font-size: 12px; color: #D66E3A; font-weight: normal;">อ.จอมทอง</span>
+                            </td>
+                            <td style="padding: 12px;">
+                                <img src="/images/articles/kew-mae-pan-boardwalk.jpg" alt="กิ่วแม่ปาน" style="width: 100px; height: 68px; object-fit: cover; border-radius: 12px;" />
+                            </td>
+                            <td style="padding: 16px;">
+                                สูง 2,200 ม.<br>
+                                <span style="color: #666;">เดิน 3.2 กม. (วงกลม)</span>
+                            </td>
+                            <td style="padding: 16px;">
+                                <span style="background: #dcfce7; color: #15803d; padding: 4px 10px; border-radius: 999px; font-weight: bold; font-size: 12px;">ง่ายมาก (Easy)</span><br>
+                                <small style="color: #777;">ใช้เวลา 2-3 ชม.</small>
+                            </td>
+                            <td style="padding: 16px;">1 พ.ย. - 31 พ.ค.<br><small style="color: #666;">(ปิดฟื้นฟูหน้าฝน)</small></td>
+                            <td style="padding: 16px;">ป่าเมฆดึกดำบรรพ์ พรมมอสเขียว สันเขาชมวิวทะเลหมอก และกุหลาบพันปีแดง</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <hr>
+
+            <h2>🎯 สรุปคำแนะนำ: คุณเหมาะกับเส้นทางไหน?</h2>
+            <ul>
+                <li><strong>หากคุณเป็นมือใหม่ มีเวลาครึ่งวัน อยากเดินชิลล์ๆ:</strong> เลือก <em>กิ่วแม่ปาน</em> หรือ <em>ดอยผากลอง (ออนใต้)</em> เดินง่าย ไม่เหนื่อยล้าจนเกินไป ได้รูปสวยแน่นอน</li>
+                <li><strong>หากต้องการสัมผัสหมอกหนา วิถีชุมชน พักค้าง 1 คืน:</strong> เลือก <em>ห้วยกุ๊บกั๊บ</em> ขึ้นรถโฟร์วิลสนุกๆ แล้วเดินต่อ ได้ทั้งบรรยากาศสโลว์ไลฟ์และอาหารพื้นบ้าน</li>
+                <li><strong>หากอยากได้ภาพวิวทุ่งหญ้าทองคำ สไตล์ต่างประเทศ:</strong> เลือก <em>ดอยม่อนจอง</em> สันเขาหัวสิงห์คือมุมถ่ายรูปไฮไลท์ที่ไม่เหมือนใคร</li>
+                <li><strong>หากต้องการความท้าทาย พิชิตยอดเขาในฝันสักครั้งในชีวิต:</strong> เลือก <em>ดอยหลวงเชียงดาว</em> ยอดเขาหินปูนที่ยืนหนึ่งเรื่องความสวยงามทางธรรมชาติ</li>
+            </ul>
+
+            <div style="background: #262A22; color: #ffffff; padding: 2rem; border-radius: 1.5rem; margin-top: 2.5rem;">
+                <h3 style="color: #D66E3A; margin-top: 0;">ให้ทีมงาน "น่องตึง" ช่วยจัดทริปเฉพาะคุณ!</h3>
+                <p style="color: rgba(255,255,255,0.85); margin-bottom: 1.5rem;">ไม่ว่าจะเป็นทริปส่วนตัว กลุ่มเพื่อน หรือทริปองค์กร เรามีทั้งไกด์คนพื้นที่ผู้ชำนาญทาง อุปกรณ์แคมป์ปิ้งคุณภาพ และบริการรถตู้ VIP พร้อมคนขับรับส่งถึงที่พัก</p>
+                <a href="/th/trips" style="background: #D66E3A; color: #ffffff; padding: 12px 24px; border-radius: 999px; font-weight: bold; text-decoration: none; display: inline-block;">ดูทริปทั้งหมดของน่องตึง →</a>
+            </div>
+        `
+    },
+    {
+        slug: 'chiang-mai-best-camping-spots-comparison',
+        title: 'คัดเน้นๆ 6 ลานกางเต็นท์ & แคมป์ปิ้งยอดดอยเชียงใหม่ 2026: วิวทะเลหมอกหลักล้าน (พร้อมตารางรูป & เปรียบเทียบ)',
+        excerpt: 'รวมพิกัดกางเต็นท์นอนดูดาวและตื่นมารับทะเลหมอกบนดอยเชียงใหม่: สันป่าเกี๊ยะ ดอยแม่ตะมาน, ม่อนเงาะ, ดอยปุย (ขุนช่างเคี่ยน), ดอยอ่างขาง, ดงสนดอยอินทนนท์, และม่อนแจ่ม พร้อมตารางเปรียบเทียบสิ่งอำนวยความสะดวก รถยนต์เข้าถึงได้ไหม และสภาพอากาศ',
+        coverImage: '/videos/reel-1-img-3.jpg',
+        date: '2026-10-17',
+        author: 'ทีมงานน่องตึง (Nongtung)',
+        readingTime: '11 min read',
+        tags: ['Chiang Mai', 'Camping', 'Sea of Mist', 'Comparison', 'Guide'],
+        keywords: [
+            'กางเต็นท์เชียงใหม่', 'แคมป์ปิ้งเชียงใหม่ 2026', 'จุดกางเต็นท์ทะเลหมอก',
+            'สันป่าเกี๊ยะ', 'ดอยแม่ตะมาน', 'ม่อนเงาะ', 'ดอยปุย', 'ดอยอ่างขาง',
+            'ลานสนดอยอินทนนท์', 'เช่าอุปกรณ์แคมป์ปิ้ง เชียงใหม่'
+        ],
+        relatedTripId: 'chiang-dao-hike',
+        content: `
+            <p class="lead">การนอนกางเต็นท์รับลมหนาว ท่ามกลางกลิ่นไอสน สูดอากาศบริสุทธิ์ให้เต็มปอด และเปิดเต็นท์ออกมาเจอกับทะเลหมอกขาวโพลนตัดกับยอดเขาสีคราม คือเสน่ห์ที่ทำให้ใครหลายคนหลงรักเชียงใหม่ซ้ำแล้วซ้ำเล่า แต่คำถามยอดฮิตคือ: <strong>"ลานกางเต็นท์ไหนสวยสุด? รถเก๋งหรือรถตู้ขึ้นได้ไหม? ห้องน้ำและสัญญาณมือถือเป็นอย่างไร?"</strong> วันนี้ <strong>น่องตึง</strong> รวบรวมคำตอบมาให้ในตารางเปรียบเทียบแบบเจาะลึก 6 ลานกางเต็นท์ยอดดอยเชียงใหม่ครับ</p>
+
+            <hr>
+
+            <h2>⛺ ตารางเปรียบเทียบ 6 ลานกางเต็นท์ & แคมป์ปิ้งยอดดอยเชียงใหม่</h2>
+            <p>เช็คก่อนเดินทาง: ประเภทรถที่เข้าถึงได้ สิ่งอำนวยความสะดวก และจุดเด่นของแต่ละพิกัด:</p>
+
+            <div style="overflow-x: auto; margin: 2rem 0; border-radius: 1.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.06); border: 1px solid rgba(38,42,34,0.1);">
+                <table style="width: 100%; border-collapse: collapse; min-width: 680px; background: #ffffff; font-size: 14px;">
+                    <thead>
+                        <tr style="background: #262A22; color: #ffffff;">
+                            <th style="padding: 16px 14px; border-bottom: 2px solid #D66E3A; text-align: left; width: 17%;">ลานแคมป์ / พิกัด</th>
+                            <th style="padding: 16px 10px; border-bottom: 2px solid #D66E3A; text-align: center; width: 110px;">รูปภาพพรีวิว</th>
+                            <th style="padding: 16px 14px; border-bottom: 2px solid #D66E3A; text-align: left; width: 16%;">การเดินทาง & รถที่ขึ้นได้</th>
+                            <th style="padding: 16px 14px; border-bottom: 2px solid #D66E3A; text-align: left; width: 18%;">สิ่งอำนวยความสะดวก</th>
+                            <th style="padding: 16px 12px; border-bottom: 2px solid #D66E3A; text-align: left; width: 12%;">อุณหภูมิหน้าหนาว</th>
+                            <th style="padding: 16px 14px; border-bottom: 2px solid #D66E3A; text-align: left; width: 27%;">ไฮไลท์วิวเด่น</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid #f0f0f0;">
+                            <td style="padding: 16px; font-weight: bold; color: #262A22;">
+                                1. สันป่าเกี๊ยะ ดอยแม่ตะมาน<br>
+                                <span style="font-size: 12px; color: #D66E3A; font-weight: normal;">อ.เชียงดาว</span>
+                            </td>
+                            <td style="padding: 12px;">
+                                <img src="/images/articles/san-pa-kia-camp.jpg" alt="สันป่าเกี๊ยะ ดอยแม่ตะมาน" style="width: 100px; height: 68px; object-fit: cover; border-radius: 12px;" />
+                            </td>
+                            <td style="padding: 16px;">
+                                <span style="background: #fee2e2; color: #b91c1c; padding: 4px 8px; border-radius: 999px; font-weight: bold; font-size: 11px;">4WD / กระบะสูงเท่านั้น</span><br>
+                                <small style="color: #666;">ทางลูกรังลูกคลื่น 21 กม.</small>
+                            </td>
+                            <td style="padding: 16px;">
+                                ห้องน้ำรวมมีน้ำใช้<br>
+                                <small style="color: #888;">ไฟโซลาร์เซลล์ปิด 21:00 น. / สัญญาณ AIS พอมี</small>
+                            </td>
+                            <td style="padding: 16px; font-weight: bold; color: #1e3a8a;">5 - 12°C</td>
+                            <td style="padding: 16px;">วิวหน้าผาดอยหลวงเชียงดาวตั้งตระหง่านอยู่ตรงหน้าเต็มสองตา ทะเลดาวกลางคืนที่ชัดที่สุด</td>
+                        </tr>
+                        <tr style="background: #FAF9F4; border-bottom: 1px solid #f0f0f0;">
+                            <td style="padding: 16px; font-weight: bold; color: #262A22;">
+                                2. ม่อนเงาะ (โครงการหลวง)<br>
+                                <span style="font-size: 12px; color: #D66E3A; font-weight: normal;">อ.แม่แตง</span>
+                            </td>
+                            <td style="padding: 12px;">
+                                <img src="/images/articles/huay-kub-kab-mist.jpg" alt="ม่อนเงาะ" style="width: 100px; height: 68px; object-fit: cover; border-radius: 12px;" />
+                            </td>
+                            <td style="padding: 16px;">
+                                <span style="background: #dcfce7; color: #15803d; padding: 4px 8px; border-radius: 999px; font-weight: bold; font-size: 11px;">รถเก๋ง / รถตู้ขึ้นได้</span><br>
+                                <small style="color: #666;">ถนนลาดยาง มีช่วงแคบชัน</small>
+                            </td>
+                            <td style="padding: 16px;">
+                                ห้องน้ำสะอาด มีจุดต่อไฟ<br>
+                                <small style="color: #888;">สัญญาณโทรศัพท์ชัดเจนทุกค่าย</small>
+                            </td>
+                            <td style="padding: 16px; font-weight: bold; color: #1e3a8a;">8 - 15°C</td>
+                            <td style="padding: 16px;">ชมวิวพระอาทิตย์ขึ้น 360° ทะเลหมอกไหลผ่านหุบเขาไร่ชาเขียวขจี</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #f0f0f0;">
+                            <td style="padding: 16px; font-weight: bold; color: #262A22;">
+                                3. ลานกางเต็นท์ดอยปุย<br>
+                                <span style="font-size: 12px; color: #D66E3A; font-weight: normal;">อ.เมือง (อุทยานฯ สุเทพ-ปุย)</span>
+                            </td>
+                            <td style="padding: 12px;">
+                                <img src="/images/articles/doi-pui-pine-campsite.jpg" alt="ลานกางเต็นท์ดอยปุย" style="width: 100px; height: 68px; object-fit: cover; border-radius: 12px;" />
+                            </td>
+                            <td style="padding: 16px;">
+                                <span style="background: #dcfce7; color: #15803d; padding: 4px 8px; border-radius: 999px; font-weight: bold; font-size: 11px;">รถทุกชนิดขึ้นได้</span><br>
+                                <small style="color: #666;">ห่างจากคูเมืองเพียง 45 นาที</small>
+                            </td>
+                            <td style="padding: 16px;">
+                                ห้องน้ำแยกชายหญิง มีร้านสวัสดิการ<br>
+                                <small style="color: #888;">มีเต็นท์และเครื่องนอนของอุทยานฯ ให้เช่า</small>
+                            </td>
+                            <td style="padding: 16px; font-weight: bold; color: #1e3a8a;">10 - 16°C</td>
+                            <td style="padding: 16px;">บรรยากาศใต้ป่าสนสามใบสูงใหญ่ ร่มรื่น และช่วง ม.ค. ชมดอกนางพญาเสือโคร่งขุนช่างเคี่ยน</td>
+                        </tr>
+                        <tr style="background: #FAF9F4; border-bottom: 1px solid #f0f0f0;">
+                            <td style="padding: 16px; font-weight: bold; color: #262A22;">
+                                4. ลานกางเต็นท์ดงสน (ดอยอินทนนท์)<br>
+                                <span style="font-size: 12px; color: #D66E3A; font-weight: normal;">อ.จอมทอง</span>
+                            </td>
+                            <td style="padding: 12px;">
+                                <img src="/images/fb/real-fb-4.jpg" alt="ลานสน ดอยอินทนนท์" style="width: 100px; height: 68px; object-fit: cover; border-radius: 12px;" />
+                            </td>
+                            <td style="padding: 16px;">
+                                <span style="background: #dcfce7; color: #15803d; padding: 4px 8px; border-radius: 999px; font-weight: bold; font-size: 11px;">รถทุกชนิดขึ้นได้</span><br>
+                                <small style="color: #666;">ถนนลาดยาง 4 เลน สะดวกสบาย</small>
+                            </td>
+                            <td style="padding: 16px;">
+                                ห้องน้ำมาตรฐานอุทยานฯ<br>
+                                <small style="color: #888;">ใกล้ร้านค้า ร้านอาหาร สัญญาณ 5G ครบ</small>
+                            </td>
+                            <td style="padding: 16px; font-weight: bold; color: #1e3a8a;">0 - 8°C<br><small style="color: #D66E3A;">(หนาวจัด แม่คะนิ้ง)</small></td>
+                            <td style="padding: 16px;">ลานกางเต็นท์ที่หนาวที่สุดในไทย ใกล้ยอดดอยอินทนนท์ พระมหาธาตุฯ และกิ่วแม่ปาน</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #f0f0f0;">
+                            <td style="padding: 16px; font-weight: bold; color: #262A22;">
+                                5. ดอยอ่างขาง (ลานกางเต็นท์ม่อนสน)<br>
+                                <span style="font-size: 12px; color: #D66E3A; font-weight: normal;">อ.ฝาง</span>
+                            </td>
+                            <td style="padding: 12px;">
+                                <img src="/images/articles/doi-ang-khang-view.jpg" alt="ม่อนสน ดอยอ่างขาง" style="width: 100px; height: 68px; object-fit: cover; border-radius: 12px;" />
+                            </td>
+                            <td style="padding: 16px;">
+                                <span style="background: #fef3c7; color: #b45309; padding: 4px 8px; border-radius: 999px; font-weight: bold; font-size: 11px;">รถเก๋ง / รถตู้ขึ้นได้</span><br>
+                                <small style="color: #666;">ทางขึ้นเขาคดเคี้ยว ชันเป็นช่วง</small>
+                            </td>
+                            <td style="padding: 16px;">
+                                ห้องน้ำสะอาด มีน้ำอุ่น (หยอดเหรียญ)<br>
+                                <small style="color: #888;">ร้านค้าชาวบ้าน ข้าวต้ม ชาร้อน</small>
+                            </td>
+                            <td style="padding: 16px; font-weight: bold; color: #1e3a8a;">2 - 10°C</td>
+                            <td style="padding: 16px;">ทะเลหมอกสองแผ่นดินไทย-พม่า พระอาทิตย์ขึ้นตัดกับแนวทิวเขา และสวนดอกไม้เมืองหนาว</td>
+                        </tr>
+                        <tr style="background: #FAF9F4;">
+                            <td style="padding: 16px; font-weight: bold; color: #262A22;">
+                                6. ดอยม่อนล้าน (อุทยานฯ ศรีลานนา)<br>
+                                <span style="font-size: 12px; color: #D66E3A; font-weight: normal;">อ.พร้าว</span>
+                            </td>
+                            <td style="padding: 12px;">
+                                <img src="/images/articles/camping-tent-setup.jpg" alt="ดอยม่อนล้าน" style="width: 100px; height: 68px; object-fit: cover; border-radius: 12px;" />
+                            </td>
+                            <td style="padding: 16px;">
+                                <span style="background: #fef3c7; color: #b45309; padding: 4px 8px; border-radius: 999px; font-weight: bold; font-size: 11px;">กระบะ / รถตู้ชำนาญทาง</span><br>
+                                <small style="color: #666;">ทางคอนกรีตสลับลูกรังบางช่วง</small>
+                            </td>
+                            <td style="padding: 16px;">
+                                ห้องน้ำอุทยานฯ พอใช้<br>
+                                <small style="color: #888;">เงียบสงบ คนไม่พลุกพล่าน ไฟฟ้ามีจำกัด</small>
+                            </td>
+                            <td style="padding: 16px; font-weight: bold; color: #1e3a8a;">6 - 13°C</td>
+                            <td style="padding: 16px;">จุดชมวิวพระอาทิตย์ขึ้นและตกได้ในที่เดียว มองเห็นวิว 3 จังหวัด (เชียงใหม่ ลำปาง เชียงราย)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <hr>
+
+            <h2>💡 ทริคเตรียมตัวแคมป์ปิ้งยอดดอยให้สนุกและปลอดภัย</h2>
+            <ol>
+                <li><strong>แผ่นรองนอนและถุงนอนคุณภาพดี:</strong> ความเย็นจากพื้นดินจะดูดความร้อนออกจากร่างกายอย่างรวดเร็ว อย่าลืมแผ่นโฟมหรือแผ่นรองนอนเป่าลมเสมอ</li>
+                <li><strong>เสื้อผ้าแบบ Layering:</strong> เตรียมเสื้อชั้นในระบายเหงื่อ (Base Layer) + เสื้อฟลีซหรือขนเป็ด (Mid Layer) + เสื้อกันลมกันหมอก (Outer Layer)</li>
+                <li><strong>ไฟฉายและพาวเวอร์แบงค์:</strong> อากาศเย็นจัดจะทำให้แบตเตอรี่โทรศัพท์หมดเร็วกว่าปกติ ควรเก็บโทรศัพท์และอุปกรณ์ไฟฟ้าไว้ในกระเป๋าเสื้อให้อบอุ่น</li>
+                <li><strong>ช่วยกันรักษาความสะอาด (Leave No Trace):</strong> นำขยะทุกชิ้นลงมาทิ้งด้านล่าง เพื่อรักษาธรรมชาติให้สวยงามต่อไป</li>
+            </ol>
+
+            <div style="background: #262A22; color: #ffffff; padding: 2rem; border-radius: 1.5rem; margin-top: 2.5rem;">
+                <h3 style="color: #D66E3A; margin-top: 0;">ไม่มีอุปกรณ์? ขับรถขึ้นดอยไม่ชิน? ให้น่องตึงดูแล!</h3>
+                <p style="color: rgba(255,255,255,0.85); margin-bottom: 1.5rem;">น่องตึงมีบริการครบวงจร: เช่าเต็นท์และอุปกรณ์แคมป์ปิ้งพรีเมียม พร้อม <strong>บริการรถตู้ VIP พร้อมคนขับชำนาญทางขึ้นเขาสูง</strong> รับส่งตั้งแต่สนามบินเชียงใหม่ พาไปกางเต็นท์ ชงกาแฟ ดื่มด่ำธรรมชาติได้แบบไร้กังวล</p>
+                <a href="https://line.me/R/ti/p/@nongtungrunning" target="_blank" style="background: #06C755; color: #ffffff; padding: 12px 24px; border-radius: 999px; font-weight: bold; text-decoration: none; display: inline-block;">ปรึกษาแผนเที่ยวทาง LINE: @nongtungrunning →</a>
+            </div>
         `
     }
 ];

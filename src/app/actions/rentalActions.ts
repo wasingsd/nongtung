@@ -34,6 +34,7 @@ export async function createRental(formData: FormData) {
         };
 
         await dbSaveRental(rental);
+        revalidatePath('/', 'layout');
         revalidatePath('/adminnongtung/rental');
         revalidatePath('/rental');
     } catch (err: any) {
@@ -72,6 +73,7 @@ export async function updateRental(id: string, formData: FormData) {
         };
 
         await dbSaveRental(rental);
+        revalidatePath('/', 'layout');
         revalidatePath('/adminnongtung/rental');
         revalidatePath('/rental');
     } catch (err: any) {
@@ -83,6 +85,7 @@ export async function updateRental(id: string, formData: FormData) {
 
 export async function deleteRental(id: string) {
     await dbDeleteRental(id);
+    revalidatePath('/', 'layout');
     revalidatePath('/adminnongtung/rental');
     revalidatePath('/rental');
 }

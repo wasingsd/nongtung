@@ -5,8 +5,8 @@ import { getActivity, getTrips } from '@/lib/firestore-db';
 import { Metadata } from 'next';
 import { Calendar, MapPin, Clock, Users, ChevronLeft, Share2, Tag, ArrowRight, Check, AlertCircle, Sparkles } from 'lucide-react';
 
-// Force dynamic rendering to fetch fresh data from Firestore on every request
-export const dynamic = 'force-dynamic';
+// ISR: Revalidate page at most once every 60 seconds
+export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     const { slug } = await params;
@@ -71,7 +71,7 @@ export default async function ActivityPage({ params }: { params: Promise<{ slug:
     const isEnded = activity.status === 'completed' || activity.status === 'cancelled';
 
     return (
-        <div className="fade-in bg-[#fdfdfb] min-h-screen pb-32 font-kanit">
+        <div className="fade-in bg-[#fdfdfb] min-h-screen pb-32 font-reading">
             {/* Hero Section */}
             <div className="relative h-[70vh] w-full overflow-hidden bg-forest">
                 <Image
@@ -255,12 +255,15 @@ export default async function ActivityPage({ params }: { params: Promise<{ slug:
                                 </div>
                             ) : (
                                 <a
-                                    href={activity.contactInfo || "https://www.facebook.com/Venturevibecnx"}
+                                    href={activity.contactInfo || "https://line.me/R/ti/p/@nongtungrunning"}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="block w-full bg-primary hover:bg-white hover:text-forest text-white py-4 rounded-full font-black uppercase text-xs tracking-widest transition-all shadow-lg text-center"
+                                    className="w-full bg-[#06c755] hover:bg-[#05b34c] text-white py-4 rounded-full font-black uppercase text-xs tracking-widest transition-all shadow-lg text-center flex items-center justify-center gap-2"
                                 >
-                                    Book Now / Register
+                                    <svg className="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
+                                        <path d="M12 2C6.48 2 2 5.92 2 10.75c0 2.92 1.63 5.53 4.17 7.08-.18.66-.66 2.4-0.76 2.78-.12.48.18.47.37.35.15-.09 2.05-1.39 2.87-1.95.45.06.9.1 1.35.1 5.52 0 10-3.92 10-8.75S17.52 2 12 2z"/>
+                                    </svg>
+                                    <span>จอง / ลงทะเบียนผ่าน LINE</span>
                                 </a>
                             )}
 

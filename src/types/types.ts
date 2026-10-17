@@ -1,3 +1,10 @@
+export interface ItineraryItem {
+  day: string;
+  title: string;
+  desc: string;
+  images?: string[];
+}
+
 export interface Trip {
   id: string;
   title: string;
@@ -13,9 +20,16 @@ export interface Trip {
   description: string;
   location: string;
   highlights: string[];
-  itinerary: { day: string; title: string; desc: string }[];
+  itinerary: ItineraryItem[];
   whatsIncluded: string[];
   notIncluded: string[];
+  meetingPoint?: string;
+  bestSeason?: string;
+  distanceKm?: string;
+  elevationGain?: string;
+  fitnessLevel?: string;
+  packingList?: string[];
+  faqs?: { question: string; answer: string }[];
 }
 
 export interface Rental {
@@ -36,7 +50,15 @@ export interface Transport {
   price1Day: number; // ราคาสำหรับ 1 วัน
   price2Day: number; // ราคาสำหรับ 2 วัน
   image: string;
+  capacity?: string; // จำนวนที่นั่ง/ความจุ เช่น '9-10 ที่นั่ง VIP', '4-5 ที่นั่ง (กระบะ 4WD)', '8-10 ที่นั่ง (สองแถว)'
   note?: string;     // หมายเหตุเพิ่มเติม
+}
+
+export interface ArticleSubImage {
+  id?: string;
+  url: string;
+  caption?: string;
+  position: 'mid' | 'bottom'; // 'mid' = กลางเนื้อหา, 'bottom' = ล่างเนื้อหา/ท้ายบทความ
 }
 
 export interface Article {
@@ -46,6 +68,7 @@ export interface Article {
   excerpt: string; // Changed from summary
   content: string;
   coverImage: string;
+  subImages?: ArticleSubImage[];
   author: string;
   date: string; // Changed from publishedAt for consistency
   readingTime: string;
@@ -64,6 +87,36 @@ export interface HomeSettings {
   id: 'home';
   popularAdventureIds: string[]; // IDs of trips to show in POPULAR ADVENTURES section
   facebookUrl?: string; // Sales closing link
+}
+
+export interface LinkedProduct {
+  id: string;
+  title: string;
+  duration?: string;
+  price: number;
+  image: string;
+  location: string;
+  url?: string;
+}
+
+export interface Reel {
+  id: string;
+  tiktokId: string;
+  title: string;
+  location: string;
+  views: string;
+  likes: string;
+  poster: string;
+  videoUrl?: string;
+  images?: string[];
+  type: 'video' | 'photo';
+  tiktokUrl: string;
+  audioTrack?: string;
+  linkedTrip: LinkedProduct;
+  order: number;
+  isActive: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Activity {
@@ -116,5 +169,20 @@ export interface Activity {
   // Timestamps
   createdAt: string;
   updatedAt: string;
+}
+
+export interface FacebookPost {
+  id: string;
+  message: string;
+  permalink_url: string;
+  full_picture?: string;
+  created_time: string;
+  reactions_count?: number;
+  comments_count?: number;
+  shares_count?: number;
+  badge?: string;
+  authorName?: string;
+  order?: number;
+  isActive?: boolean;
 }
 

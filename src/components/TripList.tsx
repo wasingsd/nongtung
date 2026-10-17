@@ -1,183 +1,168 @@
 'use client';
 
-import Link from 'next/link';
 import { useState } from 'react';
-import Image from 'next/image';
-import { Filter, Map, BarChart, CheckSquare } from 'lucide-react';
+import { Filter, Map, BarChart, Compass } from 'lucide-react';
 import { Trip } from '@/types/types';
+import TripCard from '@/components/TripCard';
 
-export default function TripList({ trips, lang, dict }: { trips: Trip[], lang: string, dict: any }) {
-    const [filter, setFilter] = useState({ duration: 'all', type: 'all', difficulty: 'all', location: 'all' });
+export default function TripList({
+  trips,
+  lang,
+  dict,
+}: {
+  trips: Trip[];
+  lang: string;
+  dict: any;
+}) {
+  const [filter, setFilter] = useState({
+    duration: 'all',
+    type: 'all',
+    difficulty: 'all',
+    location: 'all',
+  });
 
-    const provinces = Array.from(new Set(trips.map(t => {
-        const parts = t.location.split(',');
-        return parts[parts.length - 1].trim();
-    }))).filter(p => p && p !== 'ไทย' && p !== 'Thailand').sort();
+  const langPrefix = `/${lang}`;
 
-    const filteredTrips = trips.filter(t => {
-        const dFilter = filter.duration === 'all' ||
-            (filter.duration === '1d' && t.duration === '1D') ||
-            (filter.duration === '2d' && t.duration === '2D1N') ||
-            (filter.duration === '3d' && t.duration === '3D+');
-        const tFilter = filter.type === 'all' || t.type === filter.type;
-        const diffFilter = filter.difficulty === 'all' || t.difficulty === filter.difficulty;
-        const locFilter = filter.location === 'all' || t.location.includes(filter.location);
-        return dFilter && tFilter && diffFilter && locFilter;
-    });
+  const provinces = Array.from(
+    new Set(
+      trips.map((t) => {
+        const parts = t.location ? t.location.split(',') : [];
+        return parts.length ? parts[parts.length - 1].trim() : '';
+      })
+    )
+  )
+    .filter((p) => p && p !== 'ไทย' && p !== 'Thailand')
+    .sort();
 
-    return (
-        <>
-            {/* Filters */}
-            <div className="bg-surface/50 backdrop-blur-sm p-6 rounded-[2rem] border border-forest/5 fade-in shadow-sm overflow-x-auto no-scrollbar">
-                <div className="flex flex-nowrap md:flex-wrap gap-6 items-center min-w-max md:min-w-0">
-                    {/* Duration */}
-                    <div className="flex items-center gap-3">
-                        <span className="font-bold text-[10px] text-forest/40 uppercase tracking-[0.2em] whitespace-nowrap flex items-center">
-                            <Filter className="w-3 h-3 mr-2" /> {dict.duration}:
-                        </span>
-                        <div className="flex gap-2">
-                            {['All', '1D', '2D', '3D+'].map(d => (
-                                <button
-                                    key={d}
-                                    onClick={() => setFilter({ ...filter, duration: d.toLowerCase() })}
-                                    className={`px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${filter.duration === d.toLowerCase() ? 'bg-primary text-white shadow-lg shadow-primary/20 scale-105' : 'bg-white text-forest/60 hover:text-primary border border-forest/5'}`}
-                                >
-                                    {d === 'All' ? dict.all : d}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
+  const filteredTrips = trips.filter((t) => {
+    const dFilter =
+      filter.duration === 'all' ||
+      (filter.duration === '1d' && t.duration?.includes('1')) ||
+      (filter.duration === '2d' && t.duration?.includes('2')) ||
+      (filter.duration === '3d' && (t.duration?.includes('3') || t.duration?.includes('4')));
+    const tFilter = filter.type === 'all' || t.type?.toLowerCase() === filter.type;
+    const diffFilter = filter.difficulty === 'all' || t.difficulty === filter.difficulty;
+    const locFilter = filter.location === 'all' || (t.location && t.location.includes(filter.location));
+    return dFilter && tFilter && diffFilter && locFilter;
+  });
 
-                    <div className="w-px h-6 bg-forest/10 hidden xl:block"></div>
-
-                    {/* Trip Type */}
-                    <div className="flex gap-2">
-                        {['All', 'Join', 'Private'].map(t => (
-                            <button
-                                key={t}
-                                onClick={() => setFilter({ ...filter, type: t.toLowerCase() })}
-                                className={`px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${filter.type === t.toLowerCase() ? 'bg-forest text-white shadow-lg shadow-forest/20 scale-105' : 'bg-white text-forest/60 hover:text-forest border border-forest/5'}`}
-                            >
-                                {t === 'All' ? dict.all : (t === 'Join' ? dict.join : (t === 'Private' ? dict.private : t))}
-                            </button>
-                        ))}
-                    </div>
-
-                    <div className="w-px h-6 bg-forest/10 hidden xl:block"></div>
-
-                    {/* Difficulty */}
-                    <div className="flex items-center gap-3">
-                        <span className="font-bold text-[10px] text-forest/40 uppercase tracking-[0.2em] whitespace-nowrap flex items-center">
-                            <BarChart className="w-3 h-3 mr-2" /> {dict.difficulty}:
-                        </span>
-                        <select
-                            value={filter.difficulty}
-                            onChange={(e) => setFilter({ ...filter, difficulty: e.target.value })}
-                            className="bg-white border border-forest/5 text-forest/60 text-[10px] font-black uppercase tracking-widest rounded-full px-5 py-2 outline-none focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer appearance-none min-w-[120px]"
-                        >
-                            <option value="all">ALL LEVELS</option>
-                            <option value="Easy">EASY</option>
-                            <option value="Moderate">MODERATE</option>
-                            <option value="Hard">HARD</option>
-                        </select>
-                    </div>
-
-                    <div className="w-px h-6 bg-forest/10 hidden xl:block"></div>
-
-                    {/* Location */}
-                    <div className="flex items-center gap-3 flex-grow">
-                        <span className="font-bold text-[10px] text-forest/40 uppercase tracking-[0.2em] whitespace-nowrap flex items-center">
-                            <Map className="w-3 h-3 mr-2" /> {dict.location}:
-                        </span>
-                        <select
-                            value={filter.location}
-                            onChange={(e) => setFilter({ ...filter, location: e.target.value })}
-                            className="bg-white border border-forest/5 text-forest/60 text-[10px] font-black uppercase tracking-widest rounded-full px-5 py-2 outline-none focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer appearance-none min-w-[140px]"
-                        >
-                            <option value="all">ALL LOCATIONS</option>
-                            {provinces.map(p => (
-                                <option key={p} value={p}>{p.toUpperCase()}</option>
-                            ))}
-                        </select>
-                    </div>
-                </div>
+  return (
+    <>
+      {/* Impeccable Filter Console */}
+      <div className="bg-white p-5 sm:p-6 rounded-3xl border border-forest/10 impeccable-surface-shadow mb-8 sm:mb-12 overflow-x-auto no-scrollbar">
+        <div className="flex flex-nowrap md:flex-wrap gap-4 sm:gap-6 items-center min-w-max md:min-w-0">
+          {/* Duration Pills */}
+          <div className="flex items-center gap-2.5">
+            <span className="font-bold font-heading text-[11px] text-forest/50 uppercase tracking-wider whitespace-nowrap flex items-center">
+              <Filter className="w-3.5 h-3.5 mr-1.5 text-primary" /> {dict?.duration || 'ระยะเวลา'}:
+            </span>
+            <div className="flex gap-1.5">
+              {[
+                { label: dict?.all || 'ทั้งหมด', val: 'all' },
+                { label: '1 วัน', val: '1d' },
+                { label: '2 วัน', val: '2d' },
+                { label: '3 วัน+', val: '3d' },
+              ].map((d) => (
+                <button
+                  key={d.val}
+                  onClick={() => setFilter({ ...filter, duration: d.val })}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-bold font-heading transition-all duration-300 ${
+                    filter.duration === d.val
+                      ? 'bg-primary text-white shadow-sm shadow-primary/25 scale-102'
+                      : 'bg-surface text-forest/70 hover:text-primary hover:bg-forest/5'
+                  }`}
+                >
+                  {d.label}
+                </button>
+              ))}
             </div>
+          </div>
 
-            {/* Trip Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10 mt-8 md:mt-12">
-                {filteredTrips.map(t => (
-                    <div key={t.id} className="group flex flex-col h-full bg-white rounded-[2rem] overflow-hidden immersive-shadow border border-forest/5 hover:-translate-y-2 transition-all duration-500">
-                        {/* Image Container */}
-                        <div className="relative h-60 md:h-72 overflow-hidden">
-                            <Image
-                                src={t.image}
-                                alt={t.title}
-                                fill
-                                className="object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
-                            />
-                            {/* Tags on Image Overlay */}
-                            <div className="absolute top-4 md:top-5 left-4 md:left-5 z-10 flex flex-wrap gap-2">
-                                <span className="bg-white/95 backdrop-blur-md text-forest font-black px-3 py-1.5 rounded-xl text-[9px] md:text-[10px] uppercase tracking-widest shadow-sm">
-                                    {t.duration}
-                                </span>
-                            </div>
-                            {/* Price Label */}
-                            <div className="absolute bottom-4 md:bottom-5 left-4 md:left-5 z-10">
-                                <span className="bg-primary text-white px-3 py-1.5 md:px-4 md:py-2 rounded-xl text-base md:text-lg font-black shadow-xl flex items-center gap-1">
-                                    <span className="text-[9px] md:text-[10px] font-medium opacity-80 mt-1">THB</span>
-                                    {t.price.toLocaleString()}
-                                </span>
-                            </div>
-                            <div className="absolute inset-0 bg-gradient-to-t from-forest/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        </div>
+          <div className="w-px h-6 bg-forest/10 hidden xl:block" />
 
-                        {/* Content */}
-                        <div className="p-5 md:p-8 flex flex-col flex-grow">
-                            <h3 className="text-base font-black text-forest font-heading group-hover:text-primary transition-colors duration-300 leading-tight break-words">
-                                {t.title}
-                            </h3>
-                            {t.subtitle && (
-                                <p className="text-[10px] md:text-[11px] font-medium text-forest/40 mt-1 line-clamp-2">
-                                    {t.subtitle}
-                                </p>
-                            )}
+          {/* Trip Type Pills */}
+          <div className="flex items-center gap-1.5">
+            {[
+              { label: dict?.all || 'ทุกรูปแบบ', val: 'all' },
+              { label: dict?.join || 'Join ทริป', val: 'join' },
+              { label: dict?.private || 'กรุ๊ปเหมา ส่วนตัว', val: 'private' },
+            ].map((t) => (
+              <button
+                key={t.val}
+                onClick={() => setFilter({ ...filter, type: t.val })}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-bold font-heading transition-all duration-300 ${
+                  filter.type === t.val
+                    ? 'bg-forest text-white shadow-sm scale-102'
+                    : 'bg-surface text-forest/70 hover:text-forest hover:bg-forest/5'
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
 
-                            <div className="flex flex-wrap gap-2 mt-2 mb-4 md:mb-6">
-                                {t.tags.slice(0, 3).map(tag => (
-                                    <span key={tag} className="text-[9px] font-black uppercase tracking-[0.2em] text-forest/40">
-                                        • {tag}
-                                    </span>
-                                ))}
-                            </div>
+          <div className="w-px h-6 bg-forest/10 hidden xl:block" />
 
-                            <div className="space-y-2 md:space-y-3 mb-6 md:mb-8 text-forest-light/70 font-medium">
-                                <div className="flex items-center gap-3">
-                                    <div className="bg-surface p-1.5 md:p-2 rounded-lg">
-                                        <Map className="w-3 h-3 md:w-3.5 md:h-3.5" />
-                                    </div>
-                                    <span className="text-xs">{t.location || 'เชียงใหม่, ไทย'}</span>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <div className="bg-surface p-1.5 md:p-2 rounded-lg">
-                                        <BarChart className="w-3 h-3 md:w-3.5 md:h-3.5" />
-                                    </div>
-                                    <span className="text-xs">{dict.level}: {t.difficulty}</span>
-                                </div>
-                            </div>
+          {/* Difficulty Dropdown */}
+          <div className="flex items-center gap-2">
+            <span className="font-bold font-heading text-[11px] text-forest/50 uppercase tracking-wider whitespace-nowrap flex items-center">
+              <BarChart className="w-3.5 h-3.5 mr-1.5 text-primary" /> {dict?.difficulty || 'ระดับความยาก'}:
+            </span>
+            <select
+              value={filter.difficulty}
+              onChange={(e) => setFilter({ ...filter, difficulty: e.target.value })}
+              className="bg-surface text-forest text-xs font-bold font-heading rounded-full px-4 py-1.5 outline-none border border-forest/10 focus:border-primary cursor-pointer transition-all"
+            >
+              <option value="all">ทุกระดับ (ALL)</option>
+              <option value="Easy">ระดับง่าย (EASY)</option>
+              <option value="Moderate">ปานกลาง (MODERATE)</option>
+              <option value="Hard">ท้าทาย (HARD)</option>
+            </select>
+          </div>
 
-                            <div className="mt-auto pt-4 md:pt-6 border-t border-forest/5">
-                                <Link
-                                    href={`/${lang}/trips/${t.id}`}
-                                    className="block w-full bg-forest text-white hover:bg-primary py-3 md:py-4 rounded-full font-black text-[9px] md:text-[10px] tracking-[0.2em] text-center transition-all duration-300 shadow-lg hover:shadow-primary/30 uppercase"
-                                >
-                                    {dict.discover}
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div >
-            {filteredTrips.length === 0 && <div className="text-center py-20 text-forest/40 italic">{dict.no_results}</div>}
-        </>
-    );
+          <div className="w-px h-6 bg-forest/10 hidden xl:block" />
+
+          {/* Location Dropdown */}
+          <div className="flex items-center gap-2 flex-grow">
+            <span className="font-bold font-heading text-[11px] text-forest/50 uppercase tracking-wider whitespace-nowrap flex items-center">
+              <Map className="w-3.5 h-3.5 mr-1.5 text-primary" /> {dict?.location || 'พื้นที่'}:
+            </span>
+            <select
+              value={filter.location}
+              onChange={(e) => setFilter({ ...filter, location: e.target.value })}
+              className="bg-surface text-forest text-xs font-bold font-heading rounded-full px-4 py-1.5 outline-none border border-forest/10 focus:border-primary cursor-pointer transition-all"
+            >
+              <option value="all">ทุกพื้นที่ (ALL LOCATIONS)</option>
+              {provinces.map((p) => (
+                <option key={p} value={p}>
+                  {p}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {/* Grid of Standardized TripCards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        {filteredTrips.map((t) => (
+          <TripCard
+            key={t.id}
+            trip={t}
+            langPrefix={langPrefix}
+            viewDetailsText={dict?.discover || 'ดูทริป'}
+          />
+        ))}
+      </div>
+
+      {filteredTrips.length === 0 && (
+        <div className="text-center py-20 bg-surface/50 rounded-3xl border border-forest/10">
+          <Compass className="w-12 h-12 text-forest/20 mx-auto mb-3" />
+          <p className="text-forest/60 font-bold font-heading text-sm">
+            {dict?.no_results || 'ไม่พบทริปตามเงื่อนไขที่เลือก กรุณาลองเลือกตัวกรองใหม่อีกครั้ง'}
+          </p>
+        </div>
+      )}
+    </>
+  );
 }

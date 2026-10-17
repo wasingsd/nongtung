@@ -12,7 +12,7 @@ export function middleware(request: NextRequest) {
         pathname.startsWith('/adminnongtung') ||
         pathname.includes('.')
     ) {
-        return
+        return NextResponse.next()
     }
 
     // Check if pathname already has a locale
@@ -20,7 +20,7 @@ export function middleware(request: NextRequest) {
         (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
     )
 
-    if (pathnameHasLocale) return
+    if (pathnameHasLocale) return NextResponse.next()
 
     // Redirect to default locale
     const locale = i18n.defaultLocale

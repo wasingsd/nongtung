@@ -12,11 +12,17 @@ export const metadata = {
 export const dynamic = 'force-dynamic';
 
 export default async function AdminTripsPage() {
-  const trips = await getTrips();
+  let rawTrips: any[] = [];
+  try {
+    rawTrips = await getTrips().catch(() => []);
+  } catch (e) {
+    console.error('AdminTripsPage getTrips error:', e);
+  }
+  const trips = Array.isArray(rawTrips) ? rawTrips : [];
 
-  const availableCount = trips.filter((t) => t.status === 'available').length;
-  const limitedCount = trips.filter((t) => t.status === 'limited').length;
-  const soldOutCount = trips.filter((t) => t.status === 'sold-out').length;
+  const availableCount = trips.filter((t) => t && t.status === 'available').length;
+  const limitedCount = trips.filter((t) => t && t.status === 'limited').length;
+  const soldOutCount = trips.filter((t) => t && t.status === 'sold-out').length;
 
   return (
     <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-300">
@@ -123,7 +129,7 @@ export default async function AdminTripsPage() {
 
                   <td className="px-8 py-5">
                     <div className="text-sm font-black text-forest">
-                      ฿{trip.price.toLocaleString()}
+                      ฿{(Number(trip.price) || 0).toLocaleString()}
                     </div>
                     <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-0.5">
                       Net Price / Pax

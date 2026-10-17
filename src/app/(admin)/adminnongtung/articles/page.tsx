@@ -11,7 +11,8 @@ export const metadata = {
 export const dynamic = 'force-dynamic';
 
 export default async function AdminArticlesPage() {
-  const articles = await getArticles();
+  const rawArticles = await getArticles().catch(() => []);
+  const articles = Array.isArray(rawArticles) ? rawArticles : [];
 
   return (
     <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-300">

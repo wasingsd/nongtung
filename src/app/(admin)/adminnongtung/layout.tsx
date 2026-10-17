@@ -17,9 +17,11 @@ export default async function AdminLayout({
     let pendingQuotes: any[] = [];
     let pendingCount = 0;
     try {
-        const allQuotes = await getQuotes();
-        pendingQuotes = allQuotes.filter(q => q.status === 'pending');
-        pendingCount = pendingQuotes.length;
+        const allQuotes = await getQuotes().catch(() => []);
+        if (Array.isArray(allQuotes)) {
+            pendingQuotes = allQuotes.filter(q => q && q.status === 'pending');
+            pendingCount = pendingQuotes.length;
+        }
     } catch (error) {
         console.error('Error fetching quotes for notification:', error);
     }

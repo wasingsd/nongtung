@@ -19,7 +19,8 @@ const TYPE_LABELS: Record<string, string> = {
 };
 
 export default async function AdminActivitiesPage() {
-    const activities = await getActivities();
+    const rawActivities = await getActivities().catch(() => []);
+    const activities = Array.isArray(rawActivities) ? rawActivities : [];
 
     return (
         <div className="max-w-7xl mx-auto">

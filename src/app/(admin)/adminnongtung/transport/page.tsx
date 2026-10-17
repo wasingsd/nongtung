@@ -12,7 +12,8 @@ export const metadata = {
 export const dynamic = 'force-dynamic';
 
 export default async function AdminTransportPage() {
-  const transports = await getTransport();
+  const rawTransports = await getTransport().catch(() => []);
+  const transports = Array.isArray(rawTransports) ? rawTransports : [];
 
   return (
     <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-300">

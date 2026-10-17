@@ -6,7 +6,8 @@ import { DeleteButton } from '@/components/DeleteButton';
 import Image from 'next/image';
 
 export default async function AdminRentalPage() {
-    const rentals = await getRentals();
+    const rawRentals = await getRentals().catch(() => []);
+    const rentals = Array.isArray(rawRentals) ? rawRentals : [];
 
     return (
         <div className="container mx-auto px-6 py-12">

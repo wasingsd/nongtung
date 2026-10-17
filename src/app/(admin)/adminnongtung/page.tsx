@@ -29,17 +29,33 @@ export const metadata = {
 export const dynamic = 'force-dynamic';
 
 export default async function AdminDashboardPage() {
-  const [trips, reels, transports, quotes, articles] = await Promise.all([
-    getTrips(),
-    getReels(),
-    getTransport(),
-    getQuotes(),
-    getArticles(),
-  ]);
+  let trips: any[] = [];
+  let reels: any[] = [];
+  let transports: any[] = [];
+  let quotes: any[] = [];
+  let articles: any[] = [];
 
-  const pendingQuotes = quotes.filter((q) => q.status === 'pending');
-  const activeReels = reels.filter((r) => r.isActive !== false);
-  const availableTrips = trips.filter((t) => t.status === 'available');
+  try {
+    [trips, reels, transports, quotes, articles] = await Promise.all([
+      getTrips().catch((e) => { console.warn('Dashboard getTrips error:', e); return []; }),
+      getReels().catch((e) => { console.warn('Dashboard getReels error:', e); return []; }),
+      getTransport().catch((e) => { console.warn('Dashboard getTransport error:', e); return []; }),
+      getQuotes().catch((e) => { console.warn('Dashboard getQuotes error:', e); return []; }),
+      getArticles().catch((e) => { console.warn('Dashboard getArticles error:', e); return []; }),
+    ]);
+  } catch (err) {
+    console.error('Error loading dashboard data:', err);
+  }
+
+  const safeTrips = Array.isArray(trips) ? trips : [];
+  const safeReels = Array.isArray(reels) ? reels : [];
+  const safeTransports = Array.isArray(transports) ? transports : [];
+  const safeQuotes = Array.isArray(quotes) ? quotes : [];
+  const safeArticles = Array.isArray(articles) ? articles : [];
+
+  const pendingQuotes = safeQuotes.filter((q) => q && q.status === 'pending');
+  const activeReels = safeReels.filter((r) => r && r.isActive !== false);
+  const availableTrips = safeTrips.filter((t) => t && t.status === 'available');
 
   // Format today's date in Thai
   const todayStr = new Intl.DateTimeFormat('th-TH', {
@@ -299,7 +315,14 @@ export default async function AdminDashboardPage() {
 
                   <div className="text-right shrink-0">
                     <div className="text-[10px] text-gray-400 font-mono">
-                      {q.createdAt ? new Date(q.createdAt).toLocaleDateString('th-TH') : '-'}
+                      {q.createdAt ? (() => {
+                        try {
+                          const d = new Date(q.createdAt);
+                          return isNaN(d.getTime()) ? '-' : d.toLocaleDateString('th-TH');
+                        } catch {
+                          return '-';
+                        }
+                      })() : '-'}
                     </div>
                     <Link
                       href="/adminnongtung/corporate"
@@ -418,7 +441,7 @@ export default async function AdminDashboardPage() {
                     </div>
                   </div>
                   <div className="text-right shrink-0">
-                    <div className="text-xs font-black text-primary">฿{trip.price.toLocaleString()}</div>
+                    <div className="text-xs font-black text-primary">฿{(Number(trip.price) || 0).toLocaleString()}</div>
                     <span
                       className={`text-[8px] font-black uppercase px-2 py-0.5 rounded-full inline-block mt-0.5 ${
                         trip.status === 'available'

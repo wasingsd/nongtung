@@ -9,11 +9,17 @@ export const metadata = {
 export const dynamic = 'force-dynamic';
 
 export default async function AdminCorporatePage() {
-  const { data: inquiries } = await getCorporateInquiries();
+  let inquiries: any[] = [];
+  try {
+    const res = await getCorporateInquiries().catch(() => ({ data: [] }));
+    inquiries = res?.data || [];
+  } catch (e) {
+    console.error('getCorporateInquiries error:', e);
+  }
 
-  const allInquiries = inquiries || [];
-  const pendingCount = allInquiries.filter((i: any) => i.status === 'pending').length;
-  const doneCount = allInquiries.filter((i: any) => i.status === 'done').length;
+  const allInquiries = Array.isArray(inquiries) ? inquiries : [];
+  const pendingCount = allInquiries.filter((i: any) => i && i.status === 'pending').length;
+  const doneCount = allInquiries.filter((i: any) => i && i.status === 'done').length;
 
   return (
     <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-300">

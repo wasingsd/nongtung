@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic';
 
 export default async function AdminFacebookPage() {
-  const posts = await getFacebookPosts();
+  const posts = await getFacebookPosts().catch(() => []);
   const hasApiToken = !!process.env.FB_PAGE_ACCESS_TOKEN;
 
   return (

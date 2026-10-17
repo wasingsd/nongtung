@@ -11,11 +11,13 @@ export const dynamic = 'force-dynamic';
 
 export default async function AdminReelsPage() {
   const [reels, trips] = await Promise.all([
-    getReels(),
-    getTrips(),
+    getReels().catch(() => []),
+    getTrips().catch(() => []),
   ]);
+  const safeReels = Array.isArray(reels) ? reels : [];
+  const safeTrips = Array.isArray(trips) ? trips : [];
 
-  const activeCount = reels.filter((r) => r.isActive !== false).length;
+  const activeCount = safeReels.filter((r) => r && r.isActive !== false).length;
 
   return (
     <div className="max-w-7xl mx-auto space-y-8">
@@ -54,7 +56,7 @@ export default async function AdminReelsPage() {
       </div>
 
       {/* Main Reels Editor */}
-      <ReelsEditor initialReels={reels} allTrips={trips} />
+      <ReelsEditor initialReels={safeReels} allTrips={safeTrips} />
     </div>
   );
 }

@@ -37,18 +37,24 @@ export default function NotificationBell({ initialPendingCount, initialPendingQu
     }, []);
 
     // Format date for display
-    const formatDate = (dateString: string) => {
-        const date = new Date(dateString);
-        const now = new Date();
-        const diffMs = now.getTime() - date.getTime();
-        const diffMins = Math.floor(diffMs / 60000);
-        const diffHours = Math.floor(diffMs / 3600000);
-        const diffDays = Math.floor(diffMs / 86400000);
+    const formatDate = (dateString?: string) => {
+        if (!dateString) return '-';
+        try {
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) return '-';
+            const now = new Date();
+            const diffMs = now.getTime() - date.getTime();
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
 
-        if (diffMins < 60) return `${diffMins} นาทีที่แล้ว`;
-        if (diffHours < 24) return `${diffHours} ชั่วโมงที่แล้ว`;
-        if (diffDays < 7) return `${diffDays} วันที่แล้ว`;
-        return date.toLocaleDateString('th-TH');
+            if (diffMins < 60) return `${Math.max(1, diffMins)} นาทีที่แล้ว`;
+            if (diffHours < 24) return `${diffHours} ชั่วโมงที่แล้ว`;
+            if (diffDays < 7) return `${diffDays} วันที่แล้ว`;
+            return date.toLocaleDateString('th-TH');
+        } catch {
+            return '-';
+        }
     };
 
     return (

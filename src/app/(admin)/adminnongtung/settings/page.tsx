@@ -10,9 +10,10 @@ export const dynamic = 'force-dynamic';
 
 export default async function SettingsPage() {
   const [trips, settings] = await Promise.all([
-    getTrips(),
-    getHomeSettings(),
+    getTrips().catch(() => []),
+    getHomeSettings().catch(() => null),
   ]);
+  const safeTrips = Array.isArray(trips) ? trips : [];
 
   const initialSelectedIds = settings?.popularAdventureIds || [];
   const initialFacebookUrl = settings?.facebookUrl || 'https://www.facebook.com/NONGTUNG.Adventure';
@@ -47,7 +48,7 @@ export default async function SettingsPage() {
       </div>
 
       <HomeSettingsEditor
-        allTrips={trips}
+        allTrips={safeTrips}
         initialSelectedIds={initialSelectedIds}
         initialFacebookUrl={initialFacebookUrl}
       />

@@ -45,6 +45,10 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'res.cloudinary.com',
+      },
+      {
+        protocol: 'https',
         hostname: 'firebasestorage.googleapis.com',
       },
       {
@@ -53,7 +57,19 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: '**',
+        hostname: 'img.kapook.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.kapook.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.fbcdn.net',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.facebook.com',
       },
     ],
   },

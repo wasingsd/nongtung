@@ -408,8 +408,8 @@ export default async function AdminDashboardPage() {
                   key={trip.id}
                   className="flex items-center gap-3 p-2.5 rounded-2xl bg-surface/50 border border-forest/5 hover:bg-surface transition-all"
                 >
-                  <div className="relative w-12 h-12 rounded-xl overflow-hidden shrink-0 border border-forest/10">
-                    <Image src={trip.image} alt={trip.title} fill className="object-cover" />
+                  <div className="relative w-12 h-12 rounded-xl overflow-hidden shrink-0 border border-forest/10 bg-surface">
+                    <img src={trip.image || '/images/og-image-hq.png'} alt={trip.title} className="w-full h-full object-cover" />
                   </div>
                   <div className="min-w-0 flex-grow">
                     <div className="text-xs font-bold text-forest truncate">{trip.title}</div>

@@ -61,11 +61,10 @@ export default async function AdminTransportPage() {
             <div>
               {/* Image Header with Price Badge */}
               <div className="relative aspect-[16/10] w-full overflow-hidden bg-forest/5">
-                <Image
+                <img
                   src={car.image || 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800'}
                   alt={car.type}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
 

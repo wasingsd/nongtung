@@ -103,12 +103,11 @@ export default async function AdminTripsPage() {
                 <tr key={trip.id} className="group hover:bg-gray-50/60 transition-colors">
                   <td className="px-8 py-5">
                     <div className="flex items-center gap-4">
-                      <div className="w-14 h-14 rounded-2xl overflow-hidden relative shadow-sm border border-forest/10 shrink-0">
-                        <Image
-                          src={trip.image}
+                      <div className="w-14 h-14 rounded-2xl overflow-hidden relative shadow-sm border border-forest/10 shrink-0 bg-surface">
+                        <img
+                          src={trip.image || '/images/og-image-hq.png'}
                           alt={trip.title}
-                          fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         />
                       </div>
                       <div className="min-w-0">

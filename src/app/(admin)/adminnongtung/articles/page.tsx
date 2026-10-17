@@ -86,12 +86,11 @@ export default async function AdminArticlesPage() {
                     <td className="px-8 py-5">
                       <div className="flex items-center gap-4">
                         {article.coverImage && (
-                          <div className="relative w-14 h-14 rounded-2xl overflow-hidden shrink-0 border border-forest/10 shadow-sm">
-                            <Image
+                          <div className="relative w-14 h-14 rounded-2xl overflow-hidden shrink-0 border border-forest/10 shadow-sm bg-surface">
+                            <img
                               src={article.coverImage}
                               alt={article.title}
-                              fill
-                              className="object-cover group-hover:scale-105 transition-transform duration-300"
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                             />
                           </div>
                         )}

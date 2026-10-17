@@ -35,7 +35,7 @@ export default async function AdminRentalPage() {
                                 <td className="px-6 py-4">
                                     <div className="relative w-12 h-12 rounded overflow-hidden bg-gray-100">
                                         {item.image ? (
-                                            <Image src={item.image} alt={item.name} fill className="object-cover" />
+                                            <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                                         ) : (
                                             <div className="w-full h-full flex items-center justify-center text-gray-300">
                                                 <Package className="w-6 h-6" />

@@ -105,16 +105,16 @@ export interface Quote {
 // Helper to map mock trip to full Trip type
 const mapMockTrip = (t: any): Trip => ({
     ...t,
-    gallery: [t.image],
-    description: t.subtitle || 'Experience the beauty of Northern Thailand with this amazing adventure.',
-    location: 'Chiang Mai',
-    highlights: ['Scenic Views', 'Professional Guide', 'Safety Equipment'],
-    itinerary: [
+    gallery: (Array.isArray(t.gallery) && t.gallery.length > 0) ? t.gallery : [t.image],
+    description: t.description || t.subtitle || 'Experience the beauty of Northern Thailand with this amazing adventure.',
+    location: t.location || 'Chiang Mai',
+    highlights: (Array.isArray(t.highlights) && t.highlights.length > 0) ? t.highlights : ['Scenic Views', 'Professional Guide', 'Safety Equipment'],
+    itinerary: (Array.isArray(t.itinerary) && t.itinerary.length > 0) ? t.itinerary : [
         { day: 'Day 1', title: 'Start Adventure', desc: 'Meeting at Chiang Mai city and travel to the destination.' },
         { day: 'Day 2', title: 'Explore & Return', desc: 'Morning hike and return to the city.' }
     ],
-    whatsIncluded: ['Guide', 'Meals', 'Transportation'],
-    notIncluded: ['Personal expenses', 'Alcohol'],
+    whatsIncluded: (Array.isArray(t.whatsIncluded) && t.whatsIncluded.length > 0) ? t.whatsIncluded : ['Guide', 'Meals', 'Transportation'],
+    notIncluded: (Array.isArray(t.notIncluded) && t.notIncluded.length > 0) ? t.notIncluded : ['Personal expenses', 'Alcohol'],
 });
 
 // --- TRIPS ---
@@ -195,13 +195,13 @@ export async function deleteTrip(id: string): Promise<void> {
 const mapMockRental = (r: any): Rental => ({
     id: r.id,
     name: r.name,
-    type: 'Other',
+    type: r.type || 'Other',
     price: r.price,
     unit: r.unit,
     stock: r.stock,
     image: r.image,
-    description: r.desc,
-    features: ['High Quality', 'Clean', 'Ready to use']
+    description: r.description || r.desc || '',
+    features: (Array.isArray(r.features) && r.features.length > 0) ? r.features : ['High Quality', 'Clean', 'Ready to use']
 });
 
 export const getRentals = cache(async (): Promise<Rental[]> => {
@@ -262,9 +262,33 @@ export async function deleteRental(id: string): Promise<void> {
 
 // --- TRANSPORT ---
 const MOCK_TRANSPORT: Transport[] = [
-    { id: 'van-vip', type: 'VIP Van 9 Seats', price1Day: 2500, price2Day: 5000, image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800', capacity: '9-10 ที่นั่ง VIP', note: 'Luxury Van with Driver' },
-    { id: 'suv-4wd', type: 'SUV 4WD', price1Day: 3500, price2Day: 7000, image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=800', capacity: '4-5 ที่นั่ง (กระบะ 4WD)', note: 'Adventure ready' },
-    { id: 'red-truck', type: 'Red Truck (Rod Daeng)', price1Day: 1500, price2Day: 3000, image: 'https://images.unsplash.com/photo-1563720769398-386b461f3659?w=800', capacity: '8-10 ที่นั่ง (สองแถว)', note: 'Local experience' }
+    {
+        "id": "3ba6040d-5fd3-47be-8b49-cf0b9e9adbc2",
+        "type": "private van",
+        "price1Day": 3000,
+        "price2Day": 5800,
+        "image": "https://res.cloudinary.com/dljdzrcp7/image/upload/v1770452258/Van_j0pab4.png",
+        "note": "รถตู้ VIP 9-10 ที่นั่ง เบาะปรับเอนสบาย แอร์เย็น พร้อมคนขับชำนาญทางเขาภาคเหนือ บริการวันละ 10 ชม. (ไม่รวมค่าน้ำมันตามจริง)",
+        "capacity": "9-10 ที่นั่ง VIP"
+    },
+    {
+        "id": "86d1bf70-c423-43f8-946b-50d29c3ee62a",
+        "type": "Pickup truck",
+        "price1Day": 2400,
+        "price2Day": 4800,
+        "image": "https://res.cloudinary.com/dljdzrcp7/image/upload/v1770452047/Truck_uqnkwr.png",
+        "note": "รถกระบะ 4 ประตู ยกสูง 4WD นั่งสบาย 4 ท่าน พร้อมกระบะท้ายบรรทุกสัมภาระ/เต็นท์แคมป์ปิ้ง ลุยทางเขาชัน บริการวันละ 10 ชม. (ไม่รวมค่าน้ำมันตามจริง)",
+        "capacity": "4-5 ที่นั่ง (กระบะ 4WD)"
+    },
+    {
+        "id": "9b1f2075-c7e1-4ce2-b84e-dc54ed9f9697",
+        "type": "Chiang mai songthaew",
+        "price1Day": 2000,
+        "price2Day": 4000,
+        "image": "https://res.cloudinary.com/dljdzrcp7/image/upload/v1770452047/%E0%B8%A3%E0%B8%96%E0%B9%81%E0%B8%94%E0%B8%87_modfqj.png",
+        "note": "รถสองแถวแดงเชียงใหม่ เบาะ 2 แถว นั่งรับลมชมวิวธรรมชาติ เหมาะสำหรับ 8-10 ท่าน บริการวันละ 10 ชม. (ไม่รวมค่าน้ำมันตามจริง)",
+        "capacity": "8-10 ที่นั่ง (สองแถว)"
+    }
 ];
 
 export const getTransport = cache(async (): Promise<Transport[]> => {

@@ -184,5 +184,6 @@ export interface FacebookPost {
   authorName?: string;
   order?: number;
   isActive?: boolean;
+  updatedAt?: string;
 }
 
